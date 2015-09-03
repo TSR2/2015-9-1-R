@@ -1,0 +1,15 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+
+```{r}
+library(foreign)
+#libname為目標資料夾路徑，sectionnames為檔案名稱，sascmd為sas安裝處
+x=read.ssd(libname = "C:\\Users\\TSR\\Desktop\\data",sectionnames = "employee_information",sascmd="C:\\Program Files\\SASHome\\SASFoundation\\9.3\\sas.exe")
+x
+
+```
+

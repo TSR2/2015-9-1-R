@@ -1,0 +1,18 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+```{r}
+####不知為甚麼knitr不能跑
+library(RODBC)
+#連接上x
+x=odbcConnectExcel2007("C:\\Users\\TSR\\Desktop\\data\\104-1實習課上課一覽表（公告版）1040902.xlsx")
+#利用sql與劇作query
+data1=sqlQuery(x,'select * from [104-1實習課all $]')
+data1
+#中斷連接x
+close(x)
+```
+

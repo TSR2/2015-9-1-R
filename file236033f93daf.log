@@ -1,0 +1,49 @@
+1                                                   The SAS System               2015年09月03日 星期四 下午09時38分01秒
+
+NOTE: Copyright (c) 2002-2010 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.3 (TS1M0 DBCS3060) 
+      Licensed to UNIVERSITY OF NORTH TEXAS - T&R, Site 70080564.
+NOTE: This session is executing on the X64_7PRO  platform.
+
+
+
+NOTE: SAS initialization used:
+      real time           0.04 seconds
+      cpu time            0.04 seconds
+      
+1          option validvarname = v6;libname src2rd 'C:\Users\TSR\AppData\Local\Temp\Rtmp0omd99';
+NOTE: Libref SRC2RD was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: C:\Users\TSR\AppData\Local\Temp\Rtmp0omd99
+2          libname rd xport 'C:\Users\TSR\AppData\Local\Temp\Rtmp0omd99\file2360281b68c1';
+NOTE: Libref RD was successfully assigned as follows: 
+      Engine:        XPORT 
+      Physical Name: C:\Users\TSR\AppData\Local\Temp\Rtmp0omd99\file2360281b68c1
+3          proc copy in=src2rd out=rd;
+4          select sn1 ;
+NOTE: 正在將 SRC2RD.SN1 複製到 RD.SN1 (memtype=DATA)。
+NOTE: The variable name Employee_ID has been truncated to Employee.
+NOTE: The variable name Start_Date has been truncated to Start_Da.
+NOTE: The variable name Department has been truncated to Departme.
+NOTE: The variable Departme now has a label set to Department.
+NOTE: The variable name Job_Title has been truncated to Job_Titl.
+NOTE: The variable name Employee_Gender has been truncated to Employee.
+NOTE: Variable EMPLOYEE already exists on file RD.SN1, using EMPLOYE2 instead.
+NOTE: The variable name Birth_Date has been truncated to Birth_Da.
+NOTE: The variable name Employee_Hire_Date has been truncated to Employee.
+NOTE: Variable EMPLOYEE already exists on file RD.SN1, using EMPLOYE3 instead.
+NOTE: The variable name Employee_Term_Date has been truncated to Employee.
+NOTE: Variable EMPLOYEE already exists on file RD.SN1, using EMPLOYE4 instead.
+NOTE: The variable name Manager_ID has been truncated to Manager_.
+NOTE: There were 424 observations read from the data set SRC2RD.SN1.
+NOTE: The data set RD.SN1 has 424 observations and 11 variables.
+NOTE: PROCEDURE COPY used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           0.06 seconds
+      cpu time            0.06 seconds
+      

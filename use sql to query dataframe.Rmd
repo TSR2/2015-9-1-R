@@ -1,0 +1,10 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r}
+library(sqldf)
+x=sqldf('select * from iris')
+x
+```

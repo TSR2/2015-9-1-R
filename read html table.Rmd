@@ -1,0 +1,12 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r}
+library(XML)
+#which 是指定該網頁的第幾個表格
+x=readHTMLTable("http://rate.bot.com.tw/Pages/Static/UIP003.zh-TW.htm",which=7)
+x
+```
+
