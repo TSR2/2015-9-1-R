@@ -1,0 +1,25 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+```{r}
+library(lattice)
+library(ggplot2)
+#從資料中抽樣1000筆來畫圖
+x=diamonds[sample(nrow(diamonds),1000),]
+#auto.key 為自動創造label ,corner=c(1,0)為指定label創建的位置 c(0,0)為左下,c(1,1)為右上
+#cyplot畫散布圖
+xyplot(price~carat,data=x,groups = cut,type=c("p","smooth"),span=0.7,auto.key =list(corner=c(1,0)) )
+
+#畫盒狀圖
+bwplot(color~price | cut ,data=diamonds)
+#畫price的直方圖根據color分組
+histogram(~price | color,data=diamonds)
+x=iris[,2]
+y=iris[,3]
+z=iris[,4]
+levelplot(z~x*y)
+```
+

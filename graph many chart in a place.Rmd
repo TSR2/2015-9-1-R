@@ -1,0 +1,20 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+
+```{r}
+#矩陣內第一個向量，用來分割圖哪個位置該畫哪個圖，後面兩個數字用來確認幾成幾
+layout(matrix(c(1,1,1,2,2,2,3,3,3),3,3))
+#可顯示分隔完之後畫圖的結構，數字為第幾個圖時的結構
+layout.show(3)
+plot(iris[,1])
+plot(iris[,2])
+plot(iris[,3])
+#回復原本設定
+layout(1)
+
+```
+

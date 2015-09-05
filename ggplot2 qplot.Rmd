@@ -1,0 +1,25 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+
+```{r}
+library(ggplot2)
+x=diamonds[sample(nrow(diamonds),200),]
+
+#x軸為carat, y軸為price ,分群為cut 
+qplot(x = carat,y = price,data=x,shape=cut,color=color)
+
+qplot(x = carat,y = price,data=x,shape=cut,color=color,geom="line")
+
+qplot(x=price,data=x,geom="freqpoly")
+qplot(x=price,data=x,geom="histogram",fill=color)
+qplot(x=price,data=x,geom="density")
+s=iris[sample(nrow(iris),50),5]
+qplot(x=s,geom="bar",fill=s)
+
+
+```
+
