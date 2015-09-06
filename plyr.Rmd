@@ -1,0 +1,39 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+```{r}
+library(plyr)
+###plyr的運作方式有點像sql
+###讓讀進來的資料不要自動傳換成factor
+options(stringsAsFactors = FALSE)
+ddply(iris, .(Species), summarize, meanSL = mean(Sepal.Length), sdSL = sd(Sepal.Length))
+baby=read.table("c:/Users/TSR/Desktop/data/plyr.txt",header=T,sep=",")
+head(baby)
+###qustion1
+#####要求出每年不同性別中，使用最多的名子
+pp = function(x){
+  x$name[which.max(x$percent)]
+  } 
+
+x=ddply(baby,.(year,sex),pp)
+head(x,n=10)
+
+##qustion2
+####求出個年中，名子字首各佔的比例
+
+firstname=function(x) {
+  substr(x$name,1,1)
+}
+
+x=ddply(baby,.(year,sex,first=firstname(baby)),summarise,sump=sum(percent))
+head(x)
+
+
+
+
+
+```
+

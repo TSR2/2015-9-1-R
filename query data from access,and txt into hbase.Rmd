@@ -1,0 +1,30 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+
+```{r}
+library(sqldf)
+library(RODBC)
+#可看能夠讀那些格式的資料庫
+odbcDataSources()
+#把access的資料庫指定到x
+x=odbcConnectAccess2007("c:/Users/TSR/Desktop/data/Database1.accdb")
+#查詢x資料庫中有那些table
+sqlTables(x)
+#從x中的table:Taq-cat-may20101 查詢資料 
+#欄位6是變樹名稱，因為讀入的時候沒有輸入
+##注意::::table的部分要中括號
+pp=sqlQuery(x,'select * from [Taq-cat-may20101] where 欄位6>2000')
+
+pp
+close(x)
+
+
+
+
+
+```
+
