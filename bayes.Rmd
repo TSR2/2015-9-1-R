@@ -64,9 +64,9 @@ mstep=function(a,b,m,n){
       ###收集每次的實驗結果
       list=c(list,p)
       ###累計該手臂成功的次數
-      if (taget>ru[j]) {scount=scount+1}
+      if (taget>=ru[j]) {scount=scount+1}
         ####使用的手臂在m個以下，而且該次實驗是失敗的，記錄下該次實驗的成功總次數
-        if (taget<=ru[j] & scount<m) {
+        if (taget<ru[j] & length(mtotal)<m) {
           mtotal=c(mtotal,scount)
           break
           }
@@ -75,7 +75,7 @@ mstep=function(a,b,m,n){
   persent=sum(list=="F")/n
   list(list,persent,mtotal)
 }
-mstep(a=1,b=1,m=9,n=100)
+mstep(a=1,b=1,m=4,n=100)
 v=0
 for (i in 1:100){
 aa=mstep(a=1,b=1,m=9,n=100)
@@ -123,7 +123,7 @@ mreducestep(a=1,b=1,m=9,n=100)
 
 
 ##################################### N
-kfail=function(a,b,n,N){
+Nkfail=function(a,b,n,N){
   rb=rbeta(n = n,shape1 = a,shape2 = b)
   list=c()
   p=0;count=0
@@ -143,7 +143,7 @@ kfail=function(a,b,n,N){
   count=sum(list=="F")/n
   list(log=list,persent=count)
 }
-kfail(a=1,b=1,n=100,N=50)
+Nkfail(a=1,b=1,n=100,N=50)
 
 
 #############################計算N值
