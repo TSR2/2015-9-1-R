@@ -1,0 +1,36 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(magrittr)
+x=iris
+names(x)=paste('v',1:5,sep="")
+x %<>% tbl_df()
+x
+subset(x = x,select = c(v1),subset = v1>7)
+filter(x,v1>5,v1<6)
+arrange(x,v1,v2)
+select(x,v1)
+
+kk=x %.%
+  group_by(v5) %.%
+  summarise(total=sum(v1),ss=sum(v2),n=n()) %.%
+  arrange(total)
+is(kk)
+kk %>%
+  filter(total>260) %>%
+  select(v5)
+kk %>%
+  summarise(sum(total))
+
+
+cc=x %>%
+    mutate(v6=v2+v3) %>%
+    select(v1,v5,v6)
+cc
+
+```
+
