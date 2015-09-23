@@ -15,9 +15,7 @@ pp
 ###########
 
 
-#######  1 failure strategies
-a=1;b=1;n=100
-
+#######  1 failure strategies for
 kfail=function(a,b,n){
   rb=rbeta(n = n,shape1 = a,shape2 = b)
   list=c()
@@ -38,7 +36,36 @@ kfail=function(a,b,n){
   count=sum(list=="F")/n
   list(log=list,persent=count)
 }
-kfail(a=1,b=1,n=100)
+v=0
+for (i in 1:100){
+a=kfail(a=1,b=1,n=100)$persent
+v=v+a
+}
+v/100
+########################################## k failrue parllce
+library(magrittr)
+library(dplyr)
+detet=function(x,n=100){
+  ru=runif(n)
+  v=ifelse(x>=ru,"s","f")
+}
+
+park=function(a,b,n){
+  rb=rbeta(n,a,b)
+  total=sapply(rb,FUN = detet)
+}
+
+n=100
+f=park(1,1,100)
+f=t(f)
+dd=which(f=="f",arr.ind = T)
+dd=as.data.frame(dd)
+cc=dd %>% group_by(row) %>% summarise(min=min(col))
+vv=cumsum(cc$min)
+names(vv) <- 1: 100
+mm=names(vv[vv>=100])[1]
+mm=as.numeric(mm)
+(mm-1)/n
 #######################################
 
 ############# m strategies
