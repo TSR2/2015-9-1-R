@@ -104,10 +104,12 @@ mstep=function(a,b,m,n){
 }
 mstep(a=1,b=1,m=31,n=1000)
 v=rep(0,500)
+library(compiler)
+newm=cmpfun(mstep)
+system.time(newm(a=1,b=1,m=31,n=1000))
 for (i in 1:500){
-v[i]=mstep(a=1,b=1,m=31,n=1000)[[2]]  
+v[i]=newm(a=1,b=1,m=31,n=1000)[[2]]  
 }
-
 mean(v)
 totallist[[2]]
 rm(list=ls())
