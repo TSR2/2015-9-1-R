@@ -39,7 +39,7 @@ for (j in 1:4){
   sum=0
   for (i in 1:30){
     for (b in 1:(length(total[[j]][[i]][[1]])-1)){
-      a=total[[j]][[i]][[2]][b]*(total[[j]][[i]][[1]][b+1]-total[[j]][[i]][[1]][b])
+      a=total[[j]][[i]][[2]][b]*(total[[j]][[i]][[1]][b+1]+total[[j]][[i]][[1]][b])
     sum=a+sum
     }
   }
@@ -53,7 +53,7 @@ for (j in 1:4){
   sum=0
   for (i in 1:30){
     b=length(total[[j]][[i]][[1]])-1
-    a=total[[j]][[i]][[2]]*(total[[j]][[i]][[1]][2:(b+1)]-total[[j]][[i]][[1]][1:b])
+    a=total[[j]][[i]][[2]]*(total[[j]][[i]][[1]][2:(b+1)]+total[[j]][[i]][[1]][1:b])
     sum=sum+sum(a)
   }
   mu=c(mu,sum/(2*i))
@@ -64,7 +64,7 @@ mu
 ##################################test
 cal=function(x){
   b=length(x[[1]])-1
-  a=x[[2]]*(x[[1]][2:(b+1)]-x[[1]][1:b])
+  a=x[[2]]*(x[[1]][2:(b+1)]+x[[1]][1:b])
   sum(a)
 }
 n=length(total[[1]])
@@ -76,11 +76,12 @@ for (j in 1:4){
 mu
 
 ##################################var parallel
-
+x=total[[4]][[1]]
+x
 cal=function(x){
   b=length(x[[1]])-1
   #parta=x[[2]]*(x[[1]][2:(b+1)]-x[[1]][1:b])^2
-  parta=x[[2]]*(x[[1]][1:b]^2+x[[1]][1:b]*x[[1]][2:(b+1)]+x[[1]][2:(b+1)]^2)
+  parta=x[[2]]*(x[[1]][1:b]^2  +  x[[1]][1:b]*x[[1]][2:(b+1)]  +  x[[1]][2:(b+1)]^2)
   sum(parta)
 }
 n=length(total[[1]])
