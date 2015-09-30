@@ -1,0 +1,79 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+
+```{r}
+library(MASS)
+data(Insurance)
+xx=Insurance
+dim(xx)
+head(xx,n = 10)
+attributes(xx)
+summary(xx)
+library(Hmisc)
+describe(xx)
+library(fBasics)
+basicStats(xx$Holders)
+library(mice)
+
+row=sample(1:64,10)
+
+col=sample(1:5,10,replace = T)
+
+for (i in 1:10){
+  xx[row[i],col[i]]=NA
+}
+md.pattern(xx)
+
+xx=Insurance
+xx[,6]=1:64
+m=cor(xx[,4:6])
+library(ellipse)
+plotcorr(m,col=rep(c("white","black"),3))
+
+a=sample(1:10,4)
+b=sample(1:10,4)
+
+bb=matrix(0,ncol=10,nrow=10)
+for (i in 1:4){
+  bb[a[i],b[i]]=1
+}
+###找出特定值所在的位置
+n=which(bb==1,arr.ind=T)
+n
+
+hist(xx$Claim)
+hist(xx$Claim,freq=F,col = "blue")
+lines(density(xx$Claim))
+
+
+###apprior
+library(arules)
+data(Groceries)
+xx=Groceries
+summary(xx)
+head(xx,n=2)
+inspect(xx[1:10])
+rule0=apriori(xx,parameter=list(support=0.001,confidence=0.5))
+rule0
+inspect(rule0[1:10])
+#####提高支持度降低關聯數
+rule1=apriori(xx,parameter=list(support=0.005,confidence=0.5))
+rule1
+##提升信心度
+rule2=apriori(xx,parameter=list(support=0.005,confidence=0.6))
+rule2
+
+rule3=apriori(xx,parameter=list(support=0.005,confidence=0.64))
+rule3
+inspect(rule3)
+#########################
+
+
+
+```
+
+

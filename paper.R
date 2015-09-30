@@ -62,7 +62,7 @@ mu
 
 
 ##################################test
-cal=function(x){
+calEX=function(x){
   b=length(x[[1]])-1
   a=x[[2]]*(x[[1]][2:(b+1)]+x[[1]][1:b])
   sum(a)
@@ -70,13 +70,13 @@ cal=function(x){
 n=length(total[[1]])
 mu=c()
 for (j in 1:4){
-  m=sum(sapply(total[[j]],cal))/(2*n)
+  m=sum(sapply(total[[j]],calEX))/(2*n)
   mu=c(mu,m)
 }
 mu
 
 ##################################var parallel
-calEX=function(x){
+calEX2=function(x){
   b=length(x[[1]])-1
   parta=x[[2]]*(x[[1]][1:b]^2  
                 +  x[[1]][1:b]*x[[1]][2:(b+1)]  
@@ -87,7 +87,7 @@ calEX=function(x){
 n=length(total[[1]])
 EX2=c()
 for (j in 1:4){
-  m=sum(sapply(total[[j]],calEX))/(3*n)
+  m=sum(sapply(total[[j]],calEX2))/(3*n)
   EX2=c(EX2,m)
 }
 EX2
@@ -115,9 +115,9 @@ var
 
 cov=matrix(0,ncol=4,nrow=4)
 for (i in 1:4){
-  m1=laply(total[[i]],cal)
+  m1=laply(total[[i]],calEX)
   for (j in 1:4){
-    m2=laply(total[[j]],cal)
+    m2=laply(total[[j]],calEX)
     cov[i,j]=sum(m1*m2)/(4*n)-sum(m1)*sum(m2)/(4*n^2)
   }
 }
