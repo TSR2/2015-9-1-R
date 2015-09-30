@@ -1,0 +1,64 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+```{r}
+library(magrittr)
+library(plyr)
+library(dplyr)
+library(data.table)
+library(lattice)
+library(ggplot2)
+index="c:/Users/tsr/Desktop/上課用檔案/資料視覺化/DoubsFishData"
+c=list.files(index,full.names = T)
+c
+vv=list.files(c[6],full.names = T)
+env=read.csv(file=vv[1],row.names = 1)
+spe=read.csv(file=vv[3],row.names = 1)
+spa=read.csv(file=vv[2],row.names = 1)
+index
+source('c:/Users/tsr/Desktop/上課用檔案/資料視覺化/DoubsFishData/panelutils.R')
+spe[1:5,1:10]
+head(spe,n=2)
+dim(spe)
+colnames(spe)
+summary(spe)
+range(spe)
+ab=table(unlist(spe))
+par(mfrow=c(1,1))
+pp=stack(spe)
+names(pp)=c("v1","v2")
+pp
+boxplot(v1~v2,data=pp)
+
+##計算0的比例
+total0=sum(spe==0)
+total0/(dim(spe)[1]*dim(spe)[2])
+
+####
+plot(spa,asp=1,type="n",main='ll')
+lines(spa,col="blue")
+text(spa,row.names(spa),cex=0.8,col="red")
+text(50,10,labels = "up",cex=1.2,col="red")
+text(30,120,labels = "down",cex = 1.2,col="red")
+par(mfrow=c(1,4))
+plot(spa,asp=1,col="brown",cex=spe$TRU)
+lines(spa,col="blue",lwd=2)
+plot(spa,asp=1,col="brown",cex=spe$OMB)
+lines(spa,col="blue",lwd=2)
+plot(spa,asp=1,col="brown",cex=spe$BAR)
+lines(spa,col="blue",lwd=2)
+plot(spa,asp=1,col="brown",cex=spe$BCO)
+lines(spa,col="blue",lwd=2)
+
+su=apply(spe>0,2,sum)
+sort(su)
+per=100*su/nrow(spe) 
+per %>% sort()
+
+
+```
+
+

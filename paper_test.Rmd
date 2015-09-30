@@ -1,0 +1,77 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+
+```{r}
+library(data.table)
+library(lattice)
+library(readxl)
+library(magrittr)
+library(plyr)
+x=iris
+names(x)=paste('v',1:5,sep="")
+p1=hist(x$v1)
+p2=hist(x$v2)
+p3=hist(x$v3)
+ss=list(list(p1,p2),p3)
+ss=list()
+pp=c(list(p1),list(p2),list(p3))
+ppp=c(list(p1),list(p2),list(p3))
+kk=rep(list(p1),100000)
+kk=cbind(pp,ppp)
+p1$breaks
+total=0
+
+system.time(for (j in 1:2){
+  for(i in  1:3 ){
+    all=sum(kk[[i,j]]$counts/diff(kk[[i,j]]$breaks))
+    total=total+all
+  }
+}
+)
+
+
+
+#################################
+x=iris
+names(x)=paste('v',1:5,sep="")
+p1=hist(x$v1)
+kk=rep(list(p1),500000)
+total=0
+  for(i in  1:500000 ){
+    all=sum(kk[[i]]$counts/diff(kk[[i]]$breaks))
+    total=total+all
+}
+
+
+total=0
+fun1=function(x){
+  all=sum(x$counts/diff(x$breaks))
+    total=total+all
+}
+a=lapply(kk, fun1)
+sum(unlist(a))
+##################################################
+
+pp[[1]]
+fun2=function(x){
+  apply(x, 1,FUN = fun1)
+}
+fun2(pp)
+p1$counts
+vv=apply(kk, 2, FUN=fun2)
+
+total=0
+system.time(
+for (i in 1:6){
+  all=fun1(kk[[i]])
+  total=total+all
+}
+)
+total
+```
+
+
