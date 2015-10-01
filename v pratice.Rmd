@@ -56,7 +56,7 @@ lines(spa,col="blue",lwd=2)
 su=apply(spe>0,2,sum)
 sort(su)
 per=100*su/nrow(spe) 
-per %>% sort()
+per %>% sort() %>% round(.,1)
 
 
 ```
