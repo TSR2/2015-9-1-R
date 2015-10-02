@@ -15,7 +15,7 @@ a=list()
 total=list()
 for (j in 1:4){
   for (i in 1:30){
-    his <- hist(iris[,j])
+    his <- hist(iris[,1])
     his$counts <- his$counts/sum(his$counts)
     a[[i]] <- his
   }
@@ -32,7 +32,7 @@ for (j in 1:4){
 his
 length(total[[1]][[1]][[1]])
 
-#########################ºâ¥­§¡
+#########################ºâ¥­§¡ for
 
 mu=c()
 for (j in 1:4){
@@ -60,40 +60,45 @@ for (j in 1:4){
 }
 mu
 
+##################################mean parallel
 
-##################################test
-calEX=function(x){
-  b=length(x[[1]])-1
-  a=x[[2]]*(x[[1]][2:(b+1)]+x[[1]][1:b])
-  sum(a)
+hcalEX=function(var){
+  n=length(var)
+  calEX=function(x){
+    b=length(x[[1]])-1
+    a=x[[2]]*(x[[1]][2:(b+1)]+x[[1]][1:b])
+    sum(a)
+  }
+  p=length(var[[1]])
+  mu=c()
+  for (j in 1:n){
+    m=sum(sapply(var[[j]],calEX))/(2*p)
+    mu=c(mu,m)
+  }
+  mu
 }
-n=length(total[[1]])
-mu=c()
-for (j in 1:4){
-  m=sum(sapply(total[[j]],calEX))/(2*n)
-  mu=c(mu,m)
-}
-mu
-
 ##################################var parallel
-calEX2=function(x){
-  b=length(x[[1]])-1
-  parta=x[[2]]*(x[[1]][1:b]^2  
-                +  x[[1]][1:b]*x[[1]][2:(b+1)]  
-                +  x[[1]][2:(b+1)]^2
-                )
-  sum(parta)
+hcalvar=function(hisvar){
+  n=length(hisvar)
+  calEX2=function(x){
+    b=length(x[[1]])-1
+    parta=x[[2]]*(x[[1]][1:b]^2  
+                  +  x[[1]][1:b]*x[[1]][2:(b+1)]  
+                  +  x[[1]][2:(b+1)]^2
+                  )
+    sum(parta)
+  }
+  p=length(hisvar[[1]])
+  EX2=c()
+  for (j in 1:n){
+    m=sum(sapply(hisvar[[j]],calEX2))/(3*p)
+    EX2=c(EX2,m)
+  }
+  EX2
+  mu=hcalEX(hisvar)
+  var=EX2-mu^2
+  var
 }
-n=length(total[[1]])
-EX2=c()
-for (j in 1:4){
-  m=sum(sapply(total[[j]],calEX2))/(3*n)
-  EX2=c(EX2,m)
-}
-EX2
-var=EX2-mu^2
-var
-
 
 ################################################ var for
 EX2=c()
@@ -113,15 +118,16 @@ var=EX2-mu^2
 var
 ###############################################covrance
 
-cov=matrix(0,ncol=4,nrow=4)
-for (i in 1:4){
-  m1=laply(total[[i]],calEX)
-  for (j in 1:4){
-    m2=laply(total[[j]],calEX)
-    cov[i,j]=sum(m1*m2)/(4*n)-sum(m1)*sum(m2)/(4*n^2)
+hcalcov=function(x){
+  n=length(x)
+  cov=matrix(0,ncol=n,nrow=n)
+  for (i in 1:n){
+    m1=laply(x[[i]],calEX)
+    for (j in 1:n){
+      m2=laply(x[[j]],calEX)
+      cov[i,j]=sum(m1*m2)/(4*n)-sum(m1)*sum(m2)/(4*n^2)
+    }
   }
+  list(cov,eigen(cov))
 }
-cov
-eigen(cov)
-
 

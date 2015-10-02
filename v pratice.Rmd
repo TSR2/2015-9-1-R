@@ -11,6 +11,7 @@ library(dplyr)
 library(data.table)
 library(lattice)
 library(ggplot2)
+library(readr)
 index="c:/Users/tsr/Desktop/上課用檔案/資料視覺化/DoubsFishData"
 c=list.files(index,full.names = T)
 c
@@ -26,11 +27,13 @@ dim(spe)
 colnames(spe)
 summary(spe)
 range(spe)
+
 ab=table(unlist(spe))
+barplot(ab)
 par(mfrow=c(1,1))
 pp=stack(spe)
 names(pp)=c("v1","v2")
-pp
+head(pp)
 boxplot(v1~v2,data=pp)
 
 ##計算0的比例
@@ -58,7 +61,65 @@ sort(su)
 per=100*su/nrow(spe) 
 per %>% sort() %>% round(.,1)
 
+sit.pres <- apply(spe > 0, 1, sum)
+sort(sit.pres)
+plot(sit.pres,type="s", las=1, col="gray",
+main="Species Richness vs. \n Upstream-Downstream Gradient",
+xlab="Positions of sites along the river", ylab="Species richness")
+text(sit.pres, row.names(spe), cex=.8, col="red")
+barplot(sit.pres)
 
+plot(spa, asp=1, main="Map of Species Richness", pch=21, col="white",
+bg="green", cex=5*sit.pres/max(sit.pres), xlab="x coordinate (km)",
+ylab="y coordinate (km)")
+lines(spa,col="blue")
+
+library(vegan)
+?decostand
+spe[1:5, 2:4]
+spe.pa <- decostand(spe, method="pa")
+
+ee=ifelse(spe>0,1,0)
+
+spe.pa
+spe.scal <- decostand(spe, "max")
+spe.scal[1:5,2:4]
+ee=spe/max(spe)
+ee[1:5,2:4]
+
+spe.relsp <- decostand(spe, "total", MARGIN=2)
+spe.relsp[1:5,2:4]
+ee=spe/sum(spe[,1])
+ee[1:5,2:4]
+
+names(env)
+
+windows(title="Bubble maps", 9, 9)
+par(mfrow=c(3,4))
+for (i in 1:11){
+plot(spa, asp=1, main=names(env)[i], pch=21, col="white",
+bg=i, cex=5*env[,i]/max(env[,i]), xlab="x", ylab="y")
+lines(spa, col="light blue", lwd=2)
+}
+
+pp=read_csv('c:/Users/tsr/Desktop/上課用檔案/資料視覺化/hourly_44201_2014.csv')
+
+head(problems(pp))
+names(pp)
+(names(pp)=make.names(names(pp)))
+memory.size()
+print(object.size(pp),units = "MB")
+
+str(pp)
+pp[1:6,1:5]
+is(pp)
+table(pp$Time.Local)
+pp %>% select(State.Name) %>% unique() %>% nrow()
+select(pp,State.Name) %>% unique() %>% nrow()
+
+select(pp, State.Name) %>% unique %>% nrow
+summary(pp$Sample.Measurement)
+quantile(pp$Sample.Measurement)
 ```
 
 
