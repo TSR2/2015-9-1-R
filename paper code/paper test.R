@@ -20,3 +20,30 @@ plot(b)
 
 b=matrix(c(rep(1:4,)),ncol=2,nrow=4)
 cor(b)
+
+
+
+total=data2
+
+x=data2[[1]][[1]]
+
+#######################################################
+data1=data2
+  p=length(data1)
+  calEX2=function(x){
+    b=length(x$count)
+    parta=x$count*(x$breaks[1:b]^2  
+                  +  x$breaks[1:b]*x$breaks[2:(b+1)]  
+                  +  x$breaks[2:(b+1)]^2)
+    sum(parta)
+  }
+  n=length(data1[[1]])
+  EX2=c()
+  for (j in 1:p){
+    m=sum(sapply(data1[[j]],calEX2))/(3*n)
+    EX2=c(EX2,m)
+  }
+  EX2
+  mu=hcalEX(data1)
+  var=EX2-mu^2
+  var

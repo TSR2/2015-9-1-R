@@ -5,9 +5,9 @@ b1=c(0,4,7,10,13,16,19)
 b2=c(4.0833,8.2672,5.1251,3.5680,1.6564,0.3)
 c1=c(0,1,2,3,4,5)
 c2=c(5.25,9.8,4.2167,2.9,0.8333)
-a2=a2/sum(a2)
-b2=b2/sum(b2)
-c2=c2/sum(c2)
+a2=round(a2/sum(a2),digits = 4)
+b2=round(b2/sum(b2),4)
+c2=round(c2/sum(c2),4)
 
 data1=list()
 aa=bb=cc=list()
@@ -27,7 +27,7 @@ data1
 hcalEX(data1)
 hcalvar(data1)
 hcalcov(data1)
-
+total=data1
 ####################################data2
 a1=c(60,75,90,105,120,135,150,165,180,190,210)
 a2=c(0.00714,0.04286,0.24179,0.72488,1.27470,1.67364,1.97500,0.885,0.135,0.04)
@@ -41,3 +41,17 @@ data2
 hcalEX(data2)
 hcalvar(data2)
 hcalcov(data2)
+#############################
+a1=seq(60,210,15)
+a2=c(0.00714,0.04286,0.24179,0.72488,1.2747,1.67364,1.975,0.885,0.135,0.04)
+#a1=c(0,1,2)
+#a2=rep(1,2)
+a2=a2/sum(a2)
+a=list(breaks=a1,count=a2)
+class(a)="histogram"
+a
+data2=list()
+data2[[1]]=list(a)
+data2
+hcalEX(data2)
+hcalvar(data2)
