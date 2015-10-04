@@ -63,16 +63,16 @@ mu
 ##################################mean parallel
 
 hcalEX=function(var){
-  n=length(var)
+  p=length(var)
   calEX=function(x){
-    b=length(x[[1]])-1
+    b=length(x[[2]])
     a=x[[2]]*(x[[1]][2:(b+1)]+x[[1]][1:b])
     sum(a)
   }
-  p=length(var[[1]])
+  n=length(var[[1]])
   mu=c()
-  for (j in 1:n){
-    m=sum(sapply(var[[j]],calEX))/(2*p)
+  for (j in 1:p){
+    m=sum(sapply(var[[j]],calEX))/(2*n)
     mu=c(mu,m)
   }
   mu

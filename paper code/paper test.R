@@ -47,3 +47,6 @@ data1=data2
   mu=hcalEX(data1)
   var=EX2-mu^2
   var
+
+  
+  
