@@ -50,3 +50,14 @@ data1=data2
 
   
   
+  a1=b1
+  a2=b2
+  
+  pp=c(0,cumsum(a2))
+  
+  library(HistDAWass)
+  mydist<-distributionH(x=a1, p=pp)
+  meanH(mydist)
+  stdH(mydist)
+  
+  

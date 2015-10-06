@@ -62,6 +62,7 @@ data2[[1]]=list(a)
 data2
 hcalEX(data2)
 hcalvar(data2)
+sqrt(hcalvar(data2))
 
 
 n=p=1
