@@ -14,10 +14,28 @@ pp=uniroot(f1,c(-10,10),a=a,b=b,tol=0.00001)
 pp
 ###########
 
+createbeta=function(n=200,v=0.1){
+  ff=function(x,v,uni){x^v*(2-x)^v-uni}
+  bb=0
+  uu=0
+  for (i in 1:n){
+  uni=runif(1)
+  uu[i]=uni
+  pp=uniroot(ff,c(0,1),v=v,uni=uni,tol=0.00000000000000000000001)
+  bb[i]=pp[[1]]
+  }
+  rb=bb
+}
+rb=createbeta(200,0.1)
+ff(x=rb,v=0.1,uni=uu)
 
+
+
+plot(rb)
 #######  1 failure strategies for
-kfail=function(a,b,n){
-  rb=rbeta(n = n,shape1 = a,shape2 = b)
+kfail=function(a,b,n,t){
+  #rb=ifelse(test=t==1,createbeta(n),rbeta(n = n,shape1 = a,shape2 = b))
+  #rb=rbeta(n = n,shape1 = a,shape2 = b)
   list=c()
   p=0
   count=0
@@ -37,11 +55,11 @@ kfail=function(a,b,n){
   list(log=list,persent=count)
 }
 v=0
-for (i in 1:100){
-a=kfail(a=1,b=1,n=100)$persent
+for (i in 1:1000){
+a=kfail(a=1,b=1,n=200,t=1)$persent
 v=v+a
 }
-v/100
+v/1000
 ########################################## k failrue parllce
 library(magrittr)
 library(dplyr)
@@ -102,15 +120,14 @@ mstep=function(a,b,m,n){
   persent=sum(list=="F")/n
   list(list,persent,mtotal)
 }
-mstep(a=1,b=1,m=31,n=1000)
+mstep(a=1,b=1,m=9,n=100)
 v=rep(0,500)
-library(compiler)
-newm=cmpfun(mstep)
-system.time(newm(a=1,b=1,m=31,n=1000))
-for (i in 1:500){
-v[i]=newm(a=1,b=1,m=31,n=1000)[[2]]  
+
+for (i in 1:1000){
+v[i]=mstep(a=1,b=1,m=9,n=100)[[2]]  
 }
 mean(v)
+
 totallist[[2]]
 rm(list=ls())
 #################################### reduce m run
@@ -178,6 +195,45 @@ Nkfail(a=1,b=1,n=100,N=50)
 a=1;b=1;n=100;total=0;m=9;
 bb=beta(a=a+(0:(n-1)),b=b)
 N=(sum(bb)*m)/beta(a,b)
+
+
+###403頁
+###1.m-run
+###2.N-learning
+###3.non recalling m-run (un=m)
+####表格裡的mn是我要用的m值
+
+##############################################
+
+bw=function(a,b,x,u){
+   expression( x^(a-1)*(1-x)^(b-1))
+}
+bw
+?integrate
+
+beint=function(a=0.1,b=1,u=1/2){
+  integrate(f= function(x) x^(a-1)*(1-x)^(b-1) ,lower=0,upper=u)
+}
+
+EX=1-4^a*(gamma(1+a)^2/gamma(2+2*a))
+EX
+
+
+EXJ=function(j=2,a=0.1){
+EXJ=2^(j+2*a)*a*(beint(a=j+a,b=a,u=1/2)[[1]]-2*beint(a=1+j+a,b=a,u=1/2)[[1]])
+}
+x=EXJ()
+x
+
+
+
+integrand <- function(x) {1/((x+1)*sqrt(x))}
+integrate(integrand, lower = 0, upper = Inf)
+
+ex=function()
+
+?integrate
+
 
 list=list(1:10)
 list
