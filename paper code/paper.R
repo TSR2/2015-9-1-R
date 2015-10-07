@@ -65,8 +65,8 @@ mu
 hcalEX=function(var){
   p=length(var)
   calEX=function(x){
-    b=length(x[[2]])
-    a=x[[2]]*(x[[1]][2:(b+1)]+x[[1]][1:b])
+    b=length(x$count)
+    a=x$count*(x$breaks[2:(b+1)]+x$breaks[1:b])
     sum(a)
   }
   n=length(var[[1]])
@@ -79,19 +79,19 @@ hcalEX=function(var){
 }
 ##################################var parallel
 hcalvar=function(hisvar){
-  n=length(hisvar)
+  p=length(hisvar)
   calEX2=function(x){
-    b=length(x[[1]])-1
-    parta=x[[2]]*(x[[1]][1:b]^2  
-                  +  x[[1]][1:b]*x[[1]][2:(b+1)]  
-                  +  x[[1]][2:(b+1)]^2
+    b=length(x$count)
+    parta=x$count*(x$breaks[1:b]^2  
+                  +  x$breaks[1:b]*x[[1]][2:(b+1)]  
+                  +  x$breaks[2:(b+1)]^2
                   )
     sum(parta)
   }
-  p=length(hisvar[[1]])
+  n=length(hisvar[[1]])
   EX2=c()
-  for (j in 1:n){
-    m=sum(sapply(hisvar[[j]],calEX2))/(3*p)
+  for (j in 1:p){
+    m=sum(sapply(hisvar[[j]],calEX2))/(3*n)
     EX2=c(EX2,m)
   }
   EX2
@@ -119,13 +119,13 @@ var
 ###############################################covrance
 
 hcalcov=function(x){
-  n=length(x)
-  cov=matrix(0,ncol=n,nrow=n)
-  for (i in 1:n){
+  p=length(x)
+  cov=matrix(0,ncol=p,nrow=p)
+  for (i in 1:p){
     m1=laply(x[[i]],calEX)
-    for (j in 1:n){
+    for (j in 1:p){
       m2=laply(x[[j]],calEX)
-      cov[i,j]=sum(m1*m2)/(4*n)-sum(m1)*sum(m2)/(4*n^2)
+      cov[i,j]=sum(m1*m2)/(4*p)-sum(m1)*sum(m2)/(4*p^2)
     }
   }
   list(cov,eigen(cov))

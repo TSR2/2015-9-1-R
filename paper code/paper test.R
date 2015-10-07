@@ -17,47 +17,58 @@ plot(b)
 
 (x$counts/diff(x$breaks))/sum(x$counts)
 
-
-b=matrix(c(rep(1:4,)),ncol=2,nrow=4)
-cor(b)
-
-
-
 total=data2
 
 x=data2[[1]][[1]]
 
-#######################################################
-data1=data2
-  p=length(data1)
-  calEX2=function(x){
-    b=length(x$count)
-    parta=x$count*(x$breaks[1:b]^2  
-                  +  x$breaks[1:b]*x$breaks[2:(b+1)]  
-                  +  x$breaks[2:(b+1)]^2)
-    sum(parta)
-  }
-  n=length(data1[[1]])
-  EX2=c()
-  for (j in 1:p){
-    m=sum(sapply(data1[[j]],calEX2))/(3*n)
-    EX2=c(EX2,m)
-  }
-  EX2
-  mu=hcalEX(data1)
-  var=EX2-mu^2
-  var
+####################################################### me
 
+
+hcalEX(data2)
+hcalvar(data2)
+sqrt(hcalvar(data2))
   
-  
-  a1=b1
-  a2=b2
-  
-  pp=c(0,cumsum(a2))
-  
-  library(HistDAWass)
-  mydist<-distributionH(x=a1, p=pp)
-  meanH(mydist)
-  stdH(mydist)
-  
-  
+#########################################package test
+pp=c(0,cumsum(a2))
+library(HistDAWass)
+mydist<-distributionH(x=a1, p=pp)
+meanH(mydist)
+stdH(mydist)
+
+
+#############################################teacher code
+n=p=1
+Bij=8
+mu <- numeric(p)
+for(j in 1: p){
+  for(i in 1:n){                                            
+    px <- sum(a2*(a1[1:Bij]+
+                    a1[2:(Bij+1)]))
+    mu[j] <- mu[j] + px
+  }         
+  mu[j] <- mu[j]/(2*n)
+}
+mu
+
+
+mu <- numeric(p)
+s2 <- numeric(p)
+for(j in 1: p){
+  for(i in 1:n){                            
+    ## mean            
+    px <- sum(a2*(a1[1:Bij]+
+                    a1[2:(Bij+1)]))
+    mu[j] <- mu[j] + px
+    
+    ## var
+    px <- sum(a2*(a1[1:Bij]^2+
+                    a1[2:(Bij+1)]^2+
+                    a1[1:Bij]*
+                    a1[2:(Bij+1)]))            
+    s2[j] <- s2[j] + px
+  }         
+  mu[j] <- mu[j]/(2*n)
+  s2[j] <- s2[j]/(3*n)-mu[j]^2
+}
+
+list(mu=mu, s2=s2)
