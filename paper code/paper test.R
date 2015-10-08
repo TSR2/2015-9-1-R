@@ -38,7 +38,7 @@ stdH(mydist)
 
 #############################################teacher code
 n=p=1
-Bij=8
+Bij=10
 mu <- numeric(p)
 for(j in 1: p){
   for(i in 1:n){                                            
