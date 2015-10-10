@@ -35,7 +35,7 @@ mydist<-distributionH(x=a1, p=pp)
 meanH(mydist)
 stdH(mydist)
 
-
+meanH(hist(iris[,1]))
 #############################################teacher code
 n=p=1
 Bij=10
@@ -72,3 +72,8 @@ for(j in 1: p){
 }
 
 list(mu=mu, s2=s2)
+#####################################################
+
+
+
+library(gregmisc)
