@@ -50,3 +50,6 @@ hcalcov=function(x){
   }
   list(cov,eigen(cov))
 }
+
+
+
