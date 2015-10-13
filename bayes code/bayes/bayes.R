@@ -1,11 +1,3 @@
----
-title: "Untitled"
-output: html_document
----
-
-
-```{r}
-
 ########################測試速度用
 Rprof()
 invisible(  mstep(a=1,b=1,m=31,n=1000)  )
@@ -27,10 +19,10 @@ createbeta=function(n=200,v=0.1){
   bb=0
   uu=0
   for (i in 1:n){
-  uni=runif(1)
-  uu[i]=uni
-  pp=uniroot(ff,c(0,1),v=v,uni=uni,tol=0.00000000000000000000001)
-  bb[i]=pp[[1]]
+    uni=runif(1)
+    uu[i]=uni
+    pp=uniroot(ff,c(0,1),v=v,uni=uni,tol=0.00000000000000000000001)
+    bb[i]=pp[[1]]
   }
   rb=bb
 }
@@ -65,8 +57,8 @@ kfail=function(a=1,b=1,n=100,alpha=0.1,t=1){
 }
 v=0
 for (i in 1:100){
-a=kfail(a=1,b=1,n=200,t=0)$persent
-v=v+a
+  a=kfail(a=1,b=1,n=200,t=0)$persent
+  v=v+a
 }
 v/100
 ########################################## k failrue parllce
@@ -120,11 +112,11 @@ mstep=function(a,b,m,n){
       list=c(list,p)
       ###累計該手臂成功的次數
       if (taget>=ru[j]) {scount=scount+1}
-        ####使用的手臂在m個以下，而且該次實驗是失敗的，記錄下該次實驗的成功總次數
-        if (taget<ru[j] & length(mtotal)<m) {
-          mtotal=c(mtotal,scount)
-          break
-          }
+      ####使用的手臂在m個以下，而且該次實驗是失敗的，記錄下該次實驗的成功總次數
+      if (taget<ru[j] & length(mtotal)<m) {
+        mtotal=c(mtotal,scount)
+        break
+      }
     }
   }
   persent=sum(list=="F")/n
@@ -134,7 +126,7 @@ mstep=function(a,b,m,n){
 
 v=rep(0,1000)
 for (i in 1:1000){
-v[i]=mstep(a=1,b=1,m=31,n=1000)[[2]]  
+  v[i]=mstep(a=1,b=1,m=31,n=1000)[[2]]  
 }
 mean(v)
 
@@ -162,12 +154,12 @@ mreducestep=function(a,b,m,n){
       ###累計該手臂成功的次數
       if (taget>ru[j]) {
         scount=scount+1
-        }else{
+      }else{
         ####使用的手臂在m個以下，而且該次實驗是失敗的，記錄下該次實驗的成功總次數
         mtotal=c(mtotal,scount)
         ######手臂成功數不足m，換手臂
         if (scount<m) break
-        }
+      }
     }
   }
   persent=sum(list=="F")/n
@@ -179,7 +171,7 @@ mreducestep(a=1,b=1,m=9,n=100)
 
 v=rep(0,1000)
 for (i in 1:1000){
-v[i]=mreducestep(a=1,b=1,m=9,n=100)[[2]]  
+  v[i]=mreducestep(a=1,b=1,m=9,n=100)[[2]]  
 }
 mean(v)
 
@@ -210,7 +202,7 @@ Nkfail(a=1,b=1,n=100,N=50)
 
 v=rep(0,1000)
 for (i in 1:1000){
-v[i]=Nkfail(a=1,b=1,n=100,N=50)[[2]]  
+  v[i]=Nkfail(a=1,b=1,n=100,N=50)[[2]]  
 }
 mean(v)
 ###################################### new N
@@ -253,7 +245,7 @@ Nkfail(a=1,b=1,n=100,N=50)
 
 v=rep(0,1000)
 for (i in 1:1000){
-v[i]=Nkfail(a=1,b=1,n=100,N=50)[[2]]  
+  v[i]=Nkfail(a=1,b=1,n=100,N=50)[[2]]  
 }
 mean(v)
 
@@ -276,7 +268,7 @@ calculateN=function(a,b,n,m){
 ##############################################
 
 bw=function(a,b,x,u){
-   expression( x^(a-1)*(1-x)^(b-1))
+  expression( x^(a-1)*(1-x)^(b-1))
 }
 bw
 ?integrate
@@ -290,7 +282,7 @@ EX
 
 
 EXJ=function(j=2,a=0.1){
-EXJ=2^(j+2*a)*a*(beint(a=j+a,b=a,u=1/2)[[1]]-2*beint(a=1+j+a,b=a,u=1/2)[[1]])
+  EXJ=2^(j+2*a)*a*(beint(a=j+a,b=a,u=1/2)[[1]]-2*beint(a=1+j+a,b=a,u=1/2)[[1]])
 }
 x=EXJ()
 x
@@ -301,8 +293,8 @@ integrand <- function(x) {1/((x+1)*sqrt(x))}
 integrate(integrand, lower = 0, upper = Inf)
 
 ex=function()
-
-?integrate
+  
+  ?integrate
 
 
 
@@ -326,7 +318,3 @@ lm(y~x-1)
 
 plot(dnorm(seq(-3,3,by=0.1)),type="l",axes = F)
 axis(1,at=seq(1,61,by=10),label=seq(-3,3,by=1))
-
-```
-
-
