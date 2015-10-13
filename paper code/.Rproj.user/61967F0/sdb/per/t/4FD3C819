@@ -1,12 +1,12 @@
 {
-    "contents" : "\nlibrary(plyr)\n############################### mean parallel \nhcalEX=function(var){\n  p=length(var)\n  calEX=function(x){\n    b=length(x$count)\n    a=x$count*(x$breaks[2:(b+1)]+x$breaks[1:b])\n    sum(a)\n  }\n  n=length(var[[1]])\n  mu=c()\n  for (j in 1:p){\n    m=sum(sapply(var[[j]],calEX))/(2*n)\n    mu=c(mu,m)\n  }\n  mu\n}\n##################################var parallel\nhcalvar=function(hisvar){\n  p=length(hisvar)\n  calEX2=function(x){\n    b=length(x$count)\n    parta=x$count*(x$breaks[1:b]^2  \n                   +  x$breaks[1:b]*x[[1]][2:(b+1)]  \n                   +  x$breaks[2:(b+1)]^2\n    )\n    sum(parta)\n  }\n  n=length(hisvar[[1]])\n  EX2=c()\n  for (j in 1:p){\n    m=sum(sapply(hisvar[[j]],calEX2))/(3*n)\n    EX2=c(EX2,m)\n  }\n  mu=hcalEX(hisvar)\n  var=EX2-mu^2\n  var\n}\n#########################################calculate covance matrix\nhcalcov=function(x){\n  p=length(x)\n  cov=matrix(0,ncol=p,nrow=p)\n  for (i in 1:p){\n    m1=laply(x[[i]],calEX)\n    for (j in 1:p){\n      m2=laply(x[[j]],calEX)\n      cov[i,j]=sum(m1*m2)/(4*p)-sum(m1)*sum(m2)/(4*p^2)\n    }\n  }\n  list(cov,eigen(cov))\n}",
+    "contents" : "\nlibrary(plyr)\n############################### mean parallel \nhcalEX=function(var){\n  p=length(var)\n  calEX=function(x){\n    b=length(x$count)\n    a=x$count*(x$breaks[2:(b+1)]+x$breaks[1:b])\n    sum(a)\n  }\n  n=length(var[[1]])\n  mu=c()\n  for (j in 1:p){\n    m=sum(sapply(var[[j]],calEX))/(2*n)\n    mu=c(mu,m)\n  }\n  mu\n}\n##################################var parallel\nhcalvar=function(hisvar){\n  p=length(hisvar)\n  calEX2=function(x){\n    b=length(x$count)\n    parta=x$count*(x$breaks[1:b]^2  \n                   +  x$breaks[1:b]*x[[1]][2:(b+1)]  \n                   +  x$breaks[2:(b+1)]^2\n    )\n    sum(parta)\n  }\n  n=length(hisvar[[1]])\n  EX2=c()\n  for (j in 1:p){\n    m=sum(sapply(hisvar[[j]],calEX2))/(3*n)\n    EX2=c(EX2,m)\n  }\n  mu=hcalEX(hisvar)\n  var=EX2-mu^2\n  var\n}\n#########################################calculate covance matrix\nhcalcov=function(x){\n  calEX=function(x){\n    b=length(x$count)\n    a=x$count*(x$breaks[2:(b+1)]+x$breaks[1:b])\n    sum(a)\n  }\n  p=length(x)\n  cov=matrix(0,ncol=p,nrow=p)\n  for (i in 1:p){\n    m1=laply(x[[i]],calEX)\n    for (j in 1:p){\n      m2=laply(x[[j]],calEX)\n      cov[i,j]=sum(m1*m2)/(4*p)-sum(m1)*sum(m2)/(4*p^2)\n    }\n  }\n  list(cov,eigen(cov))\n}\n\n\n\n",
     "created" : 1444313051684.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3418065328",
+    "hash" : "1155689007",
     "id" : "4FD3C819",
-    "lastKnownWriteTime" : 1444229130,
+    "lastKnownWriteTime" : 1444750543,
     "path" : "~/GitHub/2015-9-1-R/paper code/paperfuction.R",
     "project_path" : "paperfuction.R",
     "properties" : {

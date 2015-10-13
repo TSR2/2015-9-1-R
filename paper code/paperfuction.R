@@ -39,6 +39,11 @@ hcalvar=function(hisvar){
 }
 #########################################calculate covance matrix
 hcalcov=function(x){
+  calEX=function(x){
+    b=length(x$count)
+    a=x$count*(x$breaks[2:(b+1)]+x$breaks[1:b])
+    sum(a)
+  }
   p=length(x)
   cov=matrix(0,ncol=p,nrow=p)
   for (i in 1:p){

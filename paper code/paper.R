@@ -1,4 +1,6 @@
 library(plyr)
+library(dplyr)
+library(magrittr)
 #####################?H?????ͪ????ϸ???
 a=list()
 total=list()
@@ -131,3 +133,47 @@ hcalcov=function(x){
   list(cov,eigen(cov))
 }
 
+
+########################################
+##linear combin
+
+data1
+bij=numeric(3)
+for (j in 1:3){
+  bij[j]=length(data1[[j]][[1]]$count)
+}
+bij
+#造所有區間的組合
+exp=expand.grid(1:bij[1],1:bij[2],1:bij[3])
+#把區間最小值和最大值分別放在不同矩陣(此時只是index)
+minI=matrix(0,ncol=3,nrow=dim(exp)[1])
+maxI=matrix(0,ncol=3,nrow=dim(exp)[1])
+#放入正確的數值
+for (j in 1:3){
+  x=data1[[j]][[1]]$breaks
+  minI[,j]=x[exp[,j]]
+  maxI[,j]=x[exp[,j]+1]
+}
+#獲得主成分的係數向量
+ver=hcalcov(data1)[[2]]$vectors
+
+minI
+maxI
+#判定細數是否小於0，如果小於0，該系數的區間交換大小位置
+for (i in 1:3){
+  if (ver[1,i]<0) {
+    p=minI[,i]
+    minI[,i]=maxI[,i]
+    maxI[,i]=p
+  }
+}
+
+#計算線性組合後的區間
+linmin=minI %*% ver[1,]
+linmax=maxI %*% ver[1,]
+m=cbind(linmin[,1],linmax[,1])
+
+p=as.data.frame(m)
+names(p)=c("Imin","Imax")
+#找出合併後直方圖的range
+his=p %>% summarise(hmin=min(Imin),hmax=max(Imax))
