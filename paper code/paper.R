@@ -138,29 +138,34 @@ hcalcov=function(x){
 ##linear combin
 
 data1
-bij=numeric(3)
-for (j in 1:3){
+p=6
+bij=numeric(p)
+for (j in 1:p){
   bij[j]=length(data1[[j]][[1]]$count)
 }
 bij
 #造所有區間的組合
-exp=expand.grid(1:bij[1],1:bij[2],1:bij[3])
+exp=expand.grid(1:bij[1],1:bij[2],1:bij[3],1:bij[4],1:bij[5],1:bij[6])
 #把區間最小值和最大值分別放在不同矩陣(此時只是index)
-minI=matrix(0,ncol=3,nrow=dim(exp)[1])
-maxI=matrix(0,ncol=3,nrow=dim(exp)[1])
+minI=matrix(0,ncol=p,nrow=dim(exp)[1])
+maxI=matrix(0,ncol=p,nrow=dim(exp)[1])
+#收集每個區間機率容器
+pro=rep(1,dim(exp)[1])
 #放入正確的數值
-for (j in 1:3){
+for (j in 1:p){
   x=data1[[j]][[1]]$breaks
+  count=data1[[j]][[1]]$count
   minI[,j]=x[exp[,j]]
   maxI[,j]=x[exp[,j]+1]
+  pro=pro*count
 }
 #獲得主成分的係數向量
 ver=hcalcov(data1)[[2]]$vectors
-
+pro
 minI
 maxI
 #判定細數是否小於0，如果小於0，該系數的區間交換大小位置
-for (i in 1:3){
+for (i in 1:p){
   if (ver[1,i]<0) {
     p=minI[,i]
     minI[,i]=maxI[,i]
@@ -173,7 +178,41 @@ linmin=minI %*% ver[1,]
 linmax=maxI %*% ver[1,]
 m=cbind(linmin[,1],linmax[,1])
 
-p=as.data.frame(m)
-names(p)=c("Imin","Imax")
+np=as.data.frame(m)
+names(np)=c("Imin","Imax")
 #找出合併後直方圖的range
-his=p %>% summarise(hmin=min(Imin),hmax=max(Imax))
+his=np %>% summarise(hmin=min(Imin),hmax=max(Imax))
+Bi=max(bij)
+his=seq(from=his$hmin,to=his$hmax,length.out=Bi+1)
+
+testm=cbind(linmin,linmax,his[1],his[2])
+###判定是否有重疊
+kkk=testm[,2]>testm[,3] & testm[,1]<testm[,4]
+sum(kkk)
+#########篩選出完全包含的
+jjj=(testm[,2]<=testm[,4] & testm[,1]>=testm[,3]) |
+  (testm[,2]>=testm[,4] & testm[,1]<=testm[,3])
+allcover=testm[jjj,]
+len=cbind(testm[,2]-testm[,3],testm[,4]-testm[,1])
+####算出重疊的長度
+apply(len,1,FUN = min)
+################其他
+kindex=which(testm[,2]>testm[,3] & testm[,1]<testm[,4])
+##########有相交的index
+kindex
+jindex=which((testm[,2]<=testm[,4] & testm[,1]>=testm[,3]) |
+  (testm[,2]>=testm[,4] & testm[,1]<=testm[,3]))
+
+#########完全包含的imdex 
+jindex
+#######找出有相交，但是不是完全包含的
+out=kindex %in% jindex
+#######找出有相交，但是不是完全包含的index
+kindex[!out]
+length(kindex[!out])
+
+
+
+merge(c(1,2,3),c(2,3,4),all.x=T)
+
+

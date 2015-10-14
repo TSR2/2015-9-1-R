@@ -1,0 +1,18 @@
+{
+    "contents" : "ff=function(x,y){\n  sqrt(1-x^2-y^2)\n}\nfff=function(x,y){\n  -sqrt(1-x^2-y^2)\n}\n\nlibrary(rgl)\npersp3d(ff,xlim=c(-1,1),ylim=c(-1,1),zlim=c(-1,1))\npersp3d(fff,xlim=c(-1,1),ylim=c(-1,1),zlim=c(-1,1))\nlibrary(plotrix)\nplotrix(ff)\n\n\n",
+    "created" : 1444802850918.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "1638035369",
+    "id" : "1BA9C18D",
+    "lastKnownWriteTime" : 142387680,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

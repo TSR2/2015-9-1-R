@@ -24,6 +24,9 @@ cc[[1]]=c
 data1[[1]]=aa
 data1[[2]]=bb
 data1[[3]]=cc
+data1[[4]]=aa
+data1[[5]]=bb
+data1[[6]]=cc
 data1
 hcalEX(data1)
 hcalvar(data1)
