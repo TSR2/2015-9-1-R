@@ -185,34 +185,38 @@ his=np %>% summarise(hmin=min(Imin),hmax=max(Imax))
 Bi=max(bij)
 his=seq(from=his$hmin,to=his$hmax,length.out=Bi+1)
 
-testm=cbind(linmin,linmax,his[1],his[2])
-###判定是否有重疊
-kkk=testm[,2]>testm[,3] & testm[,1]<testm[,4]
-sum(kkk)
+######################################################################
+#以下先進行對一個區間重疊的計算
+b=5
+testm=cbind(linmin,linmax,his[b],his[b+1])
+
+#########完全包含的index  有時候會是空的，沒有任何全包含
+allcoverindex=which((testm[,2]<=testm[,4] & testm[,1]>=testm[,3]) |
+                      (testm[,2]>=testm[,4] & testm[,1]<=testm[,3]))
 #########篩選出完全包含的
-jjj=(testm[,2]<=testm[,4] & testm[,1]>=testm[,3]) |
-  (testm[,2]>=testm[,4] & testm[,1]<=testm[,3])
-allcover=testm[jjj,]
-len=cbind(testm[,2]-testm[,3],testm[,4]-testm[,1])
-####算出重疊的長度
-apply(len,1,FUN = min)
-################其他
-kindex=which(testm[,2]>testm[,3] & testm[,1]<testm[,4])
-##########有相交的index
-kindex
-jindex=which((testm[,2]<=testm[,4] & testm[,1]>=testm[,3]) |
-  (testm[,2]>=testm[,4] & testm[,1]<=testm[,3]))
 
-#########完全包含的imdex 
-jindex
+allcover=testm[allcoverindex,]
+
+#計算完全包含的p值
+ratio1=min(abs(allcover[,4]-allcover[,3]),abs(allcover[,2]-allcover[,1]))/abs(allcover[,2]-allcover[,1])
+p1=sum(ratio1*pro[allcoverindex])
+
+################判斷有重疊的index
+coverindex=which(testm[,2]>testm[,3] & testm[,1]<testm[,4])
+
+
+#######找出有相交，但不是完全包含的index
+out=coverindex %in% allcoverindex
 #######找出有相交，但是不是完全包含的
-out=kindex %in% jindex
-#######找出有相交，但是不是完全包含的index
-kindex[!out]
-length(kindex[!out])
+takeindex=coverindex[!out]
+takem=testm[takeindex,]
+####算出有take重疊的長度
+gg=cbind(takem[,2]-takem[,3],takem[,4]-takem[,1])
+takelen=apply(abs(gg),1,FUN = min)
 
-
-
-merge(c(1,2,3),c(2,3,4),all.x=T)
+ratio2=takelen/abs(takem[,2]-takem[,1])
+p2=sum(ratio2*pro[takeindex])
+p1
+p2
 
 
