@@ -1,10 +1,10 @@
 {
-    "contents" : "",
+    "contents" : "library(readxl)\nx=read.csv(\"c:/Users/TSR/Desktop/1041-微積分-20151002.csv\")\nhead(x)\nx[,3]=as.character(x[,3])\ndim(x)\nx[,5]=substr(x[,3],start = 7,stop = 8)\nx[,5]\n",
     "created" : 1444918614379.000,
-    "dirty" : false,
+    "dirty" : true,
     "encoding" : "",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "1716215100",
     "id" : "689FE82F",
     "lastKnownWriteTime" : 7011605692497750387,
     "path" : null,
