@@ -120,6 +120,40 @@ select(pp,State.Name) %>% unique() %>% nrow()
 select(pp, State.Name) %>% unique %>% nrow
 summary(pp$Sample.Measurement)
 quantile(pp$Sample.Measurement)
+quantile(pp$Sample.Measurement,seq(0,1,0.1))
+
+ranking=group_by(pp,State.Name,County.Name) %>%
+        summarise(ozone=mean(Sample.Measurement)) %>%
+        as.data.frame %>%
+        arrange(desc(ozone))
+head(ranking)
+dim(ranking)
+filter(pp,State.Name == "California" & County.Name == "Mariposa") %>% nrow
+pp=mutate(pp, Date.Local = as.Date(Date.Local))
+
+filter(pp, State.Name == "California" & County.Name == "Mariposa") %>%
+mutate(month = months(Date.Local)) %>%
+group_by(month) %>%
+summarize(ozone=mean(Sample.Measurement))
+
+?month.name
+
+
+
+(today <- Sys.Date())
+format(today, "%d %Y %Y")  # with month as a word
+(tenweeks <- seq(today, length.out=10, by="1 week")) # next ten weeks
+weekdays(today)
+
+
+
+oo=Sys.Date()
+
+class(oo)
+str(oo)
+attributes(oo)
+summary(oo,digits = 12)
+
 ```
 
 
