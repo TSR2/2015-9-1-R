@@ -1,0 +1,4 @@
+sample.interval=20000
+"mstep" 
+".External" "runif" "mstep" 
+"c" "mstep" 

@@ -1,13 +1,12 @@
-########################´ú¸Õ³t«×¥Î
+########################???Õ³t?×¥?
 Rprof()
 invisible(  mstep(a=1,b=1,m=31,n=1000)  )
 Rprof(NULL)
 summaryRprof()
-###############################################£¾
+###############################################??
 
 
-######¤@¤¸¤èµ{¨D¸Ñ
-f1=function(x,a,b) {a+b*x}
+######uniroot example
 a=5
 b=10
 pp=uniroot(f1,c(-10,10),a=a,b=b,tol=0.00001)
@@ -27,10 +26,7 @@ createbeta=function(n=200,v=0.1){
   rb=bb
 }
 rb=createbeta(200,0.1)
-ff(x=rb,v=0.1,uni=uu)
 
-
-plot(rb)
 #######  1 failure strategies for
 ######### t=1 is TL disbution
 ######### t=0 is beta disbution
@@ -57,7 +53,7 @@ kfail=function(a=1,b=1,n=100,alpha=0.1,t=1){
 }
 v=0
 for (i in 1:100){
-  a=kfail(a=1,b=1,n=200,t=0)$persent
+  a=kfail(a=1,b=1,n=200,t=1)$persent
   v=v+a
 }
 v/100
@@ -90,8 +86,9 @@ mm=as.numeric(mm)
 ############# m strategies
 
 a=1;b=1;m=3;n=100
-mstep=function(a,b,m,n){
-  rb=rbeta(n = n,shape1 = a,shape2 = b)
+mstep=function(a,b,m,n,alpha=0.1,t=1){
+  if (t==1){rb=createbeta(n,alpha)}
+  else {rb=rbeta(n = n,shape1 = a,shape2 = b)}
   list=c()
   mtotal=c()
   p=0
@@ -102,17 +99,17 @@ mstep=function(a,b,m,n){
     if (length(list)>=n){break}
     for (j in 1:n){
       if (length(list)>=n){break}
-      ###¦pªG´«¤âÁuªº¦¸¼Æ¤j©óm,«h§ä¥X¦¨¥\²v³Ì°ªªº°µ¤U¥h
+      ###?p?G?????u?????Æ¤j??m,?h???X???\?v?Ì°??????U?h
       if (length(mtotal)==m) {taget=rb[which.max(mtotal)]} 
       ru=runif(n)
-      ###±qbeta¤À°t©â¥X¨Óªº¦pªG¤ñuniform¤j¡A«hµ¹S,¤Ï¤§µ¹F
+      ###?qbeta?ï¿½ï¿½t???X?Óª??p?G??uniform?j?A?h??S,?Ï¤???F
       if (taget>=ru[j]) p="S"
       else p="F"
-      ###¦¬¶°¨C¦¸ªº¹êÅçµ²ªG
+      ###?????C???????çµ²?G
       list=c(list,p)
-      ###²Ö­p¸Ó¤âÁu¦¨¥\ªº¦¸¼Æ
+      ###?Ö­p?Ó¤??u???\??????
       if (taget>=ru[j]) {scount=scount+1}
-      ####¨Ï¥Îªº¤âÁu¦bm­Ó¥H¤U¡A¦Ó¥B¸Ó¦¸¹êÅç¬O¥¢±Ñªº¡A°O¿ý¤U¸Ó¦¸¹êÅçªº¦¨¥\Á`¦¸¼Æ
+      ####?Ï¥Îª????u?bm?Ó¥H?U?A?Ó¥B?Ó¦??????O???Ñª??A?O???U?Ó¦????çªº???\?`????
       if (taget<ru[j] & length(mtotal)<m) {
         mtotal=c(mtotal,scount)
         break
@@ -126,16 +123,17 @@ mstep=function(a,b,m,n){
 
 v=rep(0,1000)
 for (i in 1:1000){
-  v[i]=mstep(a=1,b=1,m=31,n=1000)[[2]]  
+  v[i]=mstep(a=1,b=1,m=44,t=1,n=200)[[2]]  
 }
 mean(v)
 
 totallist[[2]]
-rm(list=ls())
+
 #################################### reduce m run
 
-mreducestep=function(a,b,m,n){
-  rb=rbeta(n = n,shape1 = a,shape2 = b)
+mreducestep=function(a,b,m,n,alpha=0.1,t=1){
+  if (t==1){rb=createbeta(n,alpha)}
+  else {rb=rbeta(n = n,shape1 = a,shape2 = b)}
   list=c()
   mtotal=c()
   p=0
@@ -147,17 +145,17 @@ mreducestep=function(a,b,m,n){
     for (j in 1:n){
       if (length(list)>=n){break}
       ru=runif(n)
-      ###±qbeta¤À°t©â¥X¨Óªº¦pªG¤ñuniform¤j¡A«hµ¹S,¤Ï¤§µ¹F
+      ###?qbeta?ï¿½ï¿½t???X?Óª??p?G??uniform?j?A?h??S,?Ï¤???F
       p=ifelse(test = taget>=ru[j],"S","F")
-      ###¦¬¶°¨C¦¸ªº¹êÅçµ²ªG
+      ###?????C???????çµ²?G
       list=c(list,p)
-      ###²Ö­p¸Ó¤âÁu¦¨¥\ªº¦¸¼Æ
+      ###?Ö­p?Ó¤??u???\??????
       if (taget>ru[j]) {
         scount=scount+1
       }else{
-        ####¨Ï¥Îªº¤âÁu¦bm­Ó¥H¤U¡A¦Ó¥B¸Ó¦¸¹êÅç¬O¥¢±Ñªº¡A°O¿ý¤U¸Ó¦¸¹êÅçªº¦¨¥\Á`¦¸¼Æ
+        ####?Ï¥Îª????u?bm?Ó¥H?U?A?Ó¥B?Ó¦??????O???Ñª??A?O???U?Ó¦????çªº???\?`????
         mtotal=c(mtotal,scount)
-        ######¤âÁu¦¨¥\¼Æ¤£¨¬m¡A´«¤âÁu
+        ######???u???\?Æ¤???m?A?????u
         if (scount<m) break
       }
     }
@@ -171,15 +169,31 @@ mreducestep(a=1,b=1,m=9,n=100)
 
 v=rep(0,1000)
 for (i in 1:1000){
-  v[i]=mreducestep(a=1,b=1,m=9,n=100)[[2]]  
+  v[i]=mreducestep(a=1,b=1,t=1,m=4,n=200)[[2]]  
 }
 mean(v)
 
 
+#è·‘å¤šæ¬¡
+###############################################################
+
+ttest=list(c(200,4),c(500,5),c(1000,6))
+ttest=list(c(100,4),c(100,5),c(100,6))
+bb=c()
+run=100
+v=rep(0,run)
+for (j in ttest){  
+  for (i in 1:run){
+    v[i]=mreducestep(a=1,b=1,t=1,m=j[2],n=j[1])[[2]]  
+  }
+  bb=c(bb,mean(v))
+}
+bb
 
 ##################################### N
-Nkfail=function(a,b,n,N){
-  rb=rbeta(n = n,shape1 = a,shape2 = b)
+Nkfail=function(a,b,n,N,alpha=0.1,t=1){
+  if (t==1){rb=createbeta(n,alpha)}
+  else {rb=rbeta(n = n,shape1 = a,shape2 = b)}
   list=c()
   p=0;count=0
   for (i in 1:n){
@@ -200,19 +214,26 @@ Nkfail=function(a,b,n,N){
 }
 Nkfail(a=1,b=1,n=100,N=50)
 
-v=rep(0,1000)
-for (i in 1:1000){
-  v[i]=Nkfail(a=1,b=1,n=100,N=50)[[2]]  
+v=rep(0,500)
+for (i in 1:500){
+  v[i]=Nkfail(a=1,b=1,n=1000,N=31,t=0)[[2]]  
 }
 mean(v)
+
+
+
+
+
+
 ###################################### new N
-Nkfail=function(a,b,n,N){
-  rb=rbeta(n = n,shape1 = a,shape2 = b)
+Nkfail=function(a,b,n,N,alpha=0.1,t=1){
+  if (t==1){rb=createbeta(n,alpha)}
+  else {rb=rbeta(n = n,shape1 = a,shape2 = b)}
   list=c()
   mtotal=c()
   p=0
   count=0
-  #####x=1¬O¥NªíÁÙ¥¼§ä¨ì°µ¨ì©³ªº¤âÁu,x=0¬O¥Nªí§ä¨ì¤F
+  #####x=1?O?N???Ù¥????ì°µ?ì©³?????u,x=0?O?N???????F
   x=1
   for (i in 1:n){
     taget=rb[i]
@@ -220,16 +241,16 @@ Nkfail=function(a,b,n,N){
     if (length(list)>=n){break}
     for (j in 1:n){
       if (length(list)>=n){break}
-      #####¦b¤j©óN¥H«á¡A²Ä¤@¦¸¥X²{F¡A§PÂ_¦¨¥\²v³Ì°ªªº¤âÁu
+      #####?b?j??N?H???A?Ä¤@???X?{F?A?P?_???\?v?Ì°??????u
       if (length(mtotal)>=N & p=="F" & x==1) {taget=rb[which.max(mtotal)];x=0}
       ru=runif(n)
-      ###±qbeta¤À°t©â¥X¨Óªº¦pªG¤ñuniform¤j¡A«hµ¹S,¤Ï¤§µ¹F
+      ###?qbeta?ï¿½ï¿½t???X?Óª??p?G??uniform?j?A?h??S,?Ï¤???F
       if (taget>=ru[j]) {
         p="S"
         scount=scount+1
       }
       else p="F"
-      ###¦¬¶°¨C¦¸ªº¹êÅçµ²ªG
+      ###?????C???????çµ²?G
       list=c(list,p)
       if (taget<ru[j] & x==1) {
         mtotal=c(mtotal,scount)
@@ -243,26 +264,40 @@ Nkfail=function(a,b,n,N){
 
 Nkfail(a=1,b=1,n=100,N=50)
 
-v=rep(0,1000)
-for (i in 1:1000){
-  v[i]=Nkfail(a=1,b=1,n=100,N=50)[[2]]  
+g=calculateN(1,1,100,9)
+v=rep(0,500)
+for (i in 1:500){
+  v[i]=Nkfail(a=1,b=1,n=1000,alpha = 0.9,N=31,t=0)[[2]]  
 }
 mean(v)
 
 
+#########################################run function
+runs=function(run,fun,...){
+  v=rep(0,run)
+  for (i in 1:run){
+    v[i]=fun(...)[[2]]  
+  }
+  mean(v)
+}
+runs(100,fun=Nkfail,a=1,b=1,n=1000,N=31,t=0)
 
-#############################­pºâN­È
+
+
+#############################?p??N??
 a=1;b=1;n=100;m=9;
 calculateN=function(a,b,n,m){
   bb=beta(a=a+(0:(n-1)),b=b)
   N=(sum(bb)*m)/beta(a,b)
 }
 
-###403­¶
+g=calculateN(1,1,100,9)
+
+###403??
 ###1.m-run
 ###2.N-learning
 ###3.non recalling m-run (un=m)
-####ªí®æ¸Ìªºmn¬O§Ú­n¥Îªºm­È
+####?????Ìª?mn?O?Ú­n?Îª?m??
 ####Kn=m
 
 ##############################################
@@ -287,8 +322,6 @@ EXJ=function(j=2,a=0.1){
 x=EXJ()
 x
 
-
-
 integrand <- function(x) {1/((x+1)*sqrt(x))}
 integrate(integrand, lower = 0, upper = Inf)
 
@@ -305,7 +338,6 @@ list
 
 list=c(list,list(1:20))
 list
-
 
 y=c(10,11,14,13)
 x=cbind(rep(1,4),1:4)
