@@ -1,0 +1,83 @@
+##linear combin
+
+data1
+p=6
+bij=numeric(p)
+for (j in 1:p){
+  bij[j]=length(data1[[j]][[1]]$count)
+}
+bij
+#造所有區間的組合
+exp=expand.grid(1:bij[1],1:bij[2],1:bij[3],1:bij[4],1:bij[5],1:bij[6])
+#把區間最小值和最大值分別放在不同矩陣(此時只是index)
+minI=matrix(0,ncol=p,nrow=dim(exp)[1])
+maxI=matrix(0,ncol=p,nrow=dim(exp)[1])
+#收集每個區間機率容器
+pro=rep(1,dim(exp)[1])
+#放入正確的數值
+for (j in 1:p){
+  x=data1[[j]][[1]]$breaks
+  count=data1[[j]][[1]]$count
+  minI[,j]=x[exp[,j]]
+  maxI[,j]=x[exp[,j]+1]
+  pro=pro*count
+}
+#獲得主成分的係數向量
+coef=hcalcov(data1)[[2]]$vectors
+pro
+minI
+maxI
+#判定細數是否小於0，如果小於0，該系數的區間交換大小位置
+for (i in 1:p){
+  if (ver[1,i]<0) {
+    p=minI[,i]
+    minI[,i]=maxI[,i]
+    maxI[,i]=p
+  }
+}
+
+#計算線性組合後的區間
+linmin=minI %*% coef[1,]
+linmax=maxI %*% coef[1,]
+m=cbind(linmin[,1],linmax[,1])
+
+np=as.data.frame(m)
+names(np)=c("Imin","Imax")
+#找出合併後直方圖的range
+his=np %>% summarise(hmin=min(Imin),hmax=max(Imax))
+Bi=max(bij)
+his=seq(from=his$hmin,to=his$hmax,length.out=Bi+1)
+
+######################################################################
+#以下先進行對一個區間重疊的計算
+b=5
+testm=cbind(linmin,linmax,his[b],his[b+1])
+
+#########完全包含的index  有時候會是空的，沒有任何全包含
+allcoverindex=which((testm[,2]<=testm[,4] & testm[,1]>=testm[,3]) |
+                      (testm[,2]>=testm[,4] & testm[,1]<=testm[,3]))
+#########篩選出完全包含的
+
+allcover=testm[allcoverindex,]
+
+#計算完全包含的p值
+ratio1=min(abs(allcover[,4]-allcover[,3]),abs(allcover[,2]-allcover[,1]))/abs(allcover[,2]-allcover[,1])
+p1=sum(ratio1*pro[allcoverindex])
+
+################判斷有重疊的index
+coverindex=which(testm[,2]>testm[,3] & testm[,1]<testm[,4])
+
+
+#######找出有相交，但不是完全包含的index
+out=coverindex %in% allcoverindex
+#######找出有相交，但是不是完全包含的
+takeindex=coverindex[!out]
+takem=testm[takeindex,]
+####算出有take重疊的長度
+gg=cbind(takem[,2]-takem[,3],takem[,4]-takem[,1])
+takelen=apply(abs(gg),1,FUN = min)
+
+ratio2=takelen/abs(takem[,2]-takem[,1])
+p2=sum(ratio2*pro[takeindex])
+p1
+p2
