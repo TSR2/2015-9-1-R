@@ -4,9 +4,9 @@ library(magrittr)
 #####################?H?????ͪ????ϸ???
 a=list()
 total=list()
-for (j in 1:7){
+for (j in 1:4){
   for (i in 1:30){
-    his <- hist(iris[sample(x=1:150,50),1])
+    his <- hist(iris[sample(x=1:150,50),j])
     his$counts <- his$counts/sum(his$counts)
     a[[i]] <- his
   }
@@ -138,7 +138,7 @@ hcalcov=function(x){
 ##linear combin
 ppp=list()
 data1=total
-p=7
+p=4
 n=30
 for (i in 1:30){
   bij=c()
@@ -147,7 +147,7 @@ for (i in 1:30){
   }
   bij
   #造所有區間的組合
-  exp=expand.grid(1:bij[1],1:bij[2],1:bij[3],1:bij[4],1:bij[5],1:bij[6],1:bij[7])
+  exp=expand.grid(1:bij[1],1:bij[2],1:bij[3],1:bij[4])
   #把區間最小值和最大值分別放在不同矩陣(此時只是index)
   minI=matrix(0,ncol=p,nrow=dim(exp)[1])
   maxI=matrix(0,ncol=p,nrow=dim(exp)[1])

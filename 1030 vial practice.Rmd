@@ -1,0 +1,36 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+
+
+```{r}
+library(magrittr)
+hist(iris[,1])
+x=iris[,1]
+sx=(x-mean(x))/sd(x)
+hist(sx)
+ch=rchisq(100,1)
+hist(ch)
+ch %>% log %>% hist 
+ch %>% sqrt %>% log %>% hist
+par(mfrow=c(4,1),mai=c(0,0,0,0))
+for (i in 1:4){
+  hist(iris[,i],xlim=c(0,8),ylim=c(0,40),main="")
+}
+
+y=1:10
+y %>% -mean(y) %>% divide_by(y %>% sd) 
+
+y %>% '/'(3)
+library(plyr)
+boxplot(iris[,1]~iris[,5])
+hh=split(iris,f = iris[,5])
+attributes(hh)
+laply(hh, hist())
+is(hh)
+hh[2]
+char
+```
+
