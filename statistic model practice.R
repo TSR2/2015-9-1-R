@@ -44,3 +44,26 @@ names(x)=paste("v",1:5,sep="")
 mo=x %>% group_by(v5) %>% do(m=boxplot(v1~v2,data=.))
 mo$m[1]
 
+######H0=兩者無相關
+cor.test(~v1+v2,data=x)
+cor.test(~v1+v3,data=x)
+
+
+for (i in 1:30){
+  if (i<=10) {p=1}
+  else if (10<i & i<=20){p=2}
+  else p=3
+  lines(1:4,x[i,],col=p)
+}
+
+
+x=iris[c(1:10,51:60,101:110),1:4]
+pp=1:30
+x$p=ifelse(pp<=10,1,ifelse(pp>20,3,2))
+plot(c(1,4),y=c(min(x),max(x)),type="n")
+
+x %>% rowwise %>% do(m=lines(1:4,.[1:4]))
+
+#################
+x=iris[c(1:10,51:60,101:110),1:4]
+stars(x,labels = names(x))
