@@ -93,3 +93,16 @@ f2=function(x) (x[1]^2+3*x[2])^2
 nlm(f2,c(1,2))
 optim(c(1,2),f2)
 
+###################檢定平均數
+x=rnorm(100)
+t.test(x,alternative = "greater")
+t.test(x,alternative = "less",mu=3)
+t.test(x,m=3)
+y=rnorm(100)
+t.test(x,y)
+t.test(x,y,paired = T)
+
+#################檢定變異數
+var.test(x,y)
+var.test(x,y,ratio = 2)
+var.test(x,y,conf.level = 0.99,alternative = "greater")
