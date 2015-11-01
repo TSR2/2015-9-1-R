@@ -64,6 +64,32 @@ plot(c(1,4),y=c(min(x),max(x)),type="n")
 
 x %>% rowwise %>% do(m=lines(1:4,.[1:4]))
 
-#################
+#################星圖
 x=iris[c(1:10,51:60,101:110),1:4]
 stars(x,labels = names(x))
+
+##########求導數(表達示)
+v=deriv(expression(x^3+y),'x')
+is(v)
+v
+y=1
+x=1
+eval(v)
+#########求導數(函數)
+v=deriv(expression(x^3),"x",function.arg = T)
+p=v(4)
+p
+
+###########一元求解
+f=function(x) x^2+3*x
+uniroot(f,c(-4,-1)) #####注意好像要符合中間值定理
+f2=function(x) (x^2+3*x)^2
+optimize(f2,c(-4,-1))
+nlm(f2,1)
+
+
+###############2元求解
+f2=function(x) (x[1]^2+3*x[2])^2
+nlm(f2,c(1,2))
+optim(c(1,2),f2)
+
