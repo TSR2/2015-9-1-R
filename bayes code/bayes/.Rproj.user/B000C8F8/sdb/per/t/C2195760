@@ -1,0 +1,17 @@
+{
+    "contents" : "library(magrittr)\nlibrary(plyr)\nlibrary(dplyr)\nx=seq(0,0.8,0.2)\ny=c(1,4,6,2,5)\nxx=lsfit(x,y)\nfitted(xx,x=0)\nn=data.frame(x=c(2,3))\nxx=lm(y~x)\npredict(object=xx,newdata = n)\nfitted(xx,2)\nls.diag(xx)\nlibrary(foreign)\n\n######讀取spss資料\nvv=read.spss(\"C:\\\\Users\\\\tsr\\\\Desktop\\\\上課用檔案\\\\統計諮詢\\\\BW.sav\"\n             ,to.data.frame=T)\nvv\npar(mfrow=c(1,1),mai=rep(1,4))\n#######估計pdf\ndd=density(iris[,1])\nhist(iris[,1],probability = T)\nlines(dd)\n\n####估計cdf\nee=ecdf(iris[,1])\nplot(ee,verticals = T,do.p=F)\n####用qqplot比較兩組分布是否相同\nqqplot(rnorm(100,0,1),rnorm(100,10,1))\nqqline(rnorm(100,10,1))\nqqline()\nplot(1:10)\n####畫盒狀圖\nboxplot(iris[,1],iris[,2],iris[,3],names=letters[1:3],notch=T)\nboxplot(iris[,1]~iris[,5])\n\n####常態性檢定\nshapiro.test(1:100)\n\n######plot\ncoplot(iris[,1]~iris[,2] |iris[,5])\nx=iris\nnames(x)=paste(\"v\",1:5,sep=\"\")\nmo=x %>% group_by(v5) %>% do(m=boxplot(v1~v2,data=.))\nmo$m[1]\n\n######H0=兩者無相關\ncor.test(~v1+v2,data=x)\ncor.test(~v1+v3,data=x)\n\n\nfor (i in 1:30){\n  if (i<=10) {p=1}\n  else if (10<i & i<=20){p=2}\n  else p=3\n  lines(1:4,x[i,],col=p)\n}\n\n\nx=iris[c(1:10,51:60,101:110),1:4]\npp=1:30\nx$p=ifelse(pp<=10,1,ifelse(pp>20,3,2))\nplot(c(1,4),y=c(min(x),max(x)),type=\"n\")\n\nx %>% rowwise %>% do(m=lines(1:4,.[1:4]))\n\n#################星圖\nx=iris[c(1:10,51:60,101:110),1:4]\nstars(x,labels = names(x))\n\n##########求導數(表達示)\nv=deriv(expression(x^3+y),'x')\nis(v)\nv\ny=1\nx=1\neval(v)\n#########求導數(函數)\nv=deriv(expression(x^3),\"x\",function.arg = T)\np=v(4)\np\n\n###########一元求解\nf=function(x) x^2+3*x\nuniroot(f,c(-4,-1)) #####注意好像要符合中間值定理\nf2=function(x) (x^2+3*x)^2\noptimize(f2,c(-4,-1))\nnlm(f2,1)\n\n\n###############2元求解\nf2=function(x) (x[1]^2+3*x[2])^2\nnlm(f2,c(1,2))\noptim(c(1,2),f2)\n\n###################檢定平均數\nx=rnorm(100)\nt.test(x,alternative = \"greater\")\nt.test(x,alternative = \"less\",mu=3)\nt.test(x,m=3)\ny=rnorm(100)\nt.test(x,y)\nt.test(x,y,paired = T)\n\n#################檢定變異數\nvar.test(x,y)\nvar.test(x,y,ratio = 2)\nvar.test(x,y,conf.level = 0.99,alternative = \"greater\")\n",
+    "created" : 1446516800198.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4048103011",
+    "id" : "C2195760",
+    "lastKnownWriteTime" : 1446382015,
+    "path" : "C:/Users/tsr/Desktop/2015-9-1-R/statistic model practice.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

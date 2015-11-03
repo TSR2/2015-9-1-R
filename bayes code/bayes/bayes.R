@@ -5,14 +5,6 @@ Rprof(NULL)
 summaryRprof()
 ###############################################??
 
-
-######uniroot example
-a=5
-b=10
-pp=uniroot(f1,c(-10,10),a=a,b=b,tol=0.00001)
-pp
-###########
-
 createbeta=function(n=200,v=0.1){
   ff=function(x,v,uni){x^v*(2-x)^v-uni}
   bb=0
@@ -105,11 +97,11 @@ mstep=function(a,b,m,n,alpha=0.1,t=1){
       ###?qbeta?��t???X?Ӫ??p?G??uniform?j?A?h??S,?Ϥ???F
       if (taget>=ru[j]) p="S"
       else p="F"
-      ###?????C???????�??G
+      ###?????C???????????G
       list=c(list,p)
       ###?֭p?Ӥ??u???\??????
       if (taget>=ru[j]) {scount=scount+1}
-      ####?ϥΪ????u?bm?ӥH?U?A?ӥB?Ӧ??????O???Ѫ??A?O???U?Ӧ????�????\?`????
+      ####?ϥΪ????u?bm?ӥH?U?A?ӥB?Ӧ??????O???Ѫ??A?O???U?Ӧ??????????\?`????
       if (taget<ru[j] & length(mtotal)<m) {
         mtotal=c(mtotal,scount)
         break
@@ -147,13 +139,13 @@ mreducestep=function(a,b,m,n,alpha=0.1,t=1){
       ru=runif(n)
       ###?qbeta?��t???X?Ӫ??p?G??uniform?j?A?h??S,?Ϥ???F
       p=ifelse(test = taget>=ru[j],"S","F")
-      ###?????C???????�??G
+      ###?????C???????????G
       list=c(list,p)
       ###?֭p?Ӥ??u???\??????
       if (taget>ru[j]) {
         scount=scount+1
       }else{
-        ####?ϥΪ????u?bm?ӥH?U?A?ӥB?Ӧ??????O???Ѫ??A?O???U?Ӧ????�????\?`????
+        ####?ϥΪ????u?bm?ӥH?U?A?ӥB?Ӧ??????O???Ѫ??A?O???U?Ӧ??????????\?`????
         mtotal=c(mtotal,scount)
         ######???u???\?Ƥ???m?A?????u
         if (scount<m) break
@@ -174,7 +166,7 @@ for (i in 1:1000){
 mean(v)
 
 
-#跑�?�次
+#跑???次
 ###############################################################
 
 ttest=list(c(200,4),c(500,5),c(1000,6))
@@ -233,7 +225,7 @@ Nkfail=function(a,b,n,N,alpha=0.1,t=1){
   mtotal=c()
   p=0
   count=0
-  #####x=1?O?N???٥????�??�??????u,x=0?O?N???????F
+  #####x=1?O?N???٥????????????????u,x=0?O?N???????F
   x=1
   for (i in 1:n){
     taget=rb[i]
@@ -250,7 +242,7 @@ Nkfail=function(a,b,n,N,alpha=0.1,t=1){
         scount=scount+1
       }
       else p="F"
-      ###?????C???????�??G
+      ###?????C???????????G
       list=c(list,p)
       if (taget<ru[j] & x==1) {
         mtotal=c(mtotal,scount)
@@ -310,18 +302,19 @@ bw
 beint=function(a=0.1,b=1,u=1/2){
   integrate(f= function(x) x^(a-1)*(1-x)^(b-1) ,lower=0,upper=u)
 }
-#################################################calculate TL
+############################calculate TL rn,kn,Nn
 EX=function(a){
   1-4^a*(gamma(1+a)^2/gamma(2+2*a))
 }
 EX2=function(a){
   (2+a/1+a)-2^(1+2*a)*(gamma(1+a)^2/gamma(2+2*a))
 }
-EX(0.9)
 betamean=function(a,b){
   a/(a+b)
 }
-
+betavar=function(a,b){
+  (a*b)/((a+b)^2*(a+b+1))
+}
 sol=function(a,b,aphla){
   betamean(a,b)-EX(aphla)
 }
@@ -352,25 +345,50 @@ x
 integrand <- function(x) {1/((x+1)*sqrt(x))}
 integrate(integrand, lower = 0, upper = Inf)
 
-#############################################################
-
-
-
 ################################################################
-list=list(1:10)
-list
+k=ifail(a=1,b=1,n=100)
+runs(run = 500,fun = ifail,a=1,b=1,n=100)
 
-list=c(list,list(1:20))
-list
+f=createbeta(n = 200,v = 0.9)
+mf=mean(f)
+vf=var(f)
+######求 meanTL=meanBETA ,varTL=varBETA 時的 a,b
+ff=function(z){
+  x=z[1]
+  y=z[2]
+  (x/(x+y)-mf)^2+((x*y)/((x+y)^2*(x+y+1))-vf)^2
+}
+ll=nlm(ff,p = c(1,2),gradtol = 1e-20)
+jj=optim(c(1,2),ff)
+b1=ll[[2]][1]
+b2=ll[[2]][2]
+mf
+b1/(b1+b2)
+vf
+(b1*b2)/((b1+b2)^2*(b1+b2+1))
+###meanTL=meanBETA ,varTL=varBETA
+runs(run = 200,fun = mstep,a=b1,b=b2,m=kn,n=500)
+runs(run = 200,fun = mstep,alpha=0.9,m=kn,n=500,t=1)
 
-y=c(10,11,14,13)
-x=cbind(rep(1,4),1:4)
-b=solve(t(x) %*% x) %*% t(x) %*%y
-x-1
-b
-x
-lm(y~x)
-lm(y~x-1)
 
-plot(dnorm(seq(-3,3,by=0.1)),type="l",axes = F)
-axis(1,at=seq(1,61,by=10),label=seq(-3,3,by=1))
+bb=function(a,b){
+  a/(a+b)-mf
+}
+a=0.5
+mm=uniroot(bb,c(0,10),a=a)
+mm$root
+betavar(a,mm$root)
+vf
+##varTL<varBETA
+runs(run = 200,fun = mstep,a=0.5,b=mm$root,m=kn,n=500)
+runs(run = 200,fun = mstep,alpha=0.9,m=kn,n=500,t=1)
+
+##varTL>varBETA
+a=2
+mm=uniroot(bb,c(0,10),a=a)
+mm$root
+betavar(a,mm$root)
+vf
+
+runs(run = 200,fun = mstep,a=a,b=mm$root,m=kn,n=500)
+runs(run = 200,fun = mstep,alpha=0.9,m=kn,n=500,t=1)

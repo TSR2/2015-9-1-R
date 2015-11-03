@@ -142,6 +142,36 @@ Nkfail=function(a,b,n,N,alpha=0.1,t=0){
 }
 
 ###########################################
+ifail=function(a=1,b=1,n=100,alpha=0.1,t=0){
+  if (t==1){rb=createbeta(n,alpha)}
+  else {rb=rbeta(n = n,shape1 = a,shape2 = b)}
+  list=c()
+  mtotal=c()
+  p=0
+  count=0
+  for (i in 1:n){
+    taget=rb[i]
+    scount=0
+    if (length(list)>=n){break}
+    for (j in 1:n){
+      if (length(list)>=n){break}
+      ru=runif(n)
+      p=ifelse(test = taget>=ru[j],"S","F")
+      list=c(list,p)
+      if (taget>=ru[j]) {
+        scount=scount+1
+      }else{
+        mtotal=c(mtotal,scount)
+        if ((j-scount)>i) break
+      }
+    }
+  }
+  persent=sum(list=="F")/n
+  list(list,persent,mtotal)
+}
+
+
+##########################################
 runs=function(run,fun,...){
   v=rep(0,run)
   for (i in 1:run){

@@ -1,4 +1,4 @@
 sample.interval=20000
-"mstep" 
 ".External" "runif" "mstep" 
-"c" "mstep" 
+".External" "runif" "mstep" 
+".External" "runif" "mstep" 
