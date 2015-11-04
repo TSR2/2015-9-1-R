@@ -18,15 +18,21 @@ sq(c(3,4))
 sq=function(y,f=expression(x^2-y),tol=10^-10){
   x=1;s=100
   fp=D(f,"x")
-  while (all(s>tol)){
+  while (all(abs(s)>tol)){
     x=x-eval(f)/eval(fp)
     s=eval(f)
   }
   x
 }
-sq(c(3,4))
 
+ff=sq(c(3,11))
+format(ff,digits = 20)
+options(digits = 10)
+gg=sqrt(c(3,11))
+format(gg,digits = 20)
 ################
+
+
 a=c(expression(x^2-y),expression(x^2-y^2))
 a[2]
 ta=c("x","y")
@@ -45,3 +51,24 @@ sqq=function(ex=a){
   m
 }
 sqq()
+
+
+################################ deci tree
+library(rpart)
+library(maptree)
+pp=rpart(Species~.,data=iris)
+draw.tree(pp)
+
+#######################svm
+library(e1071)
+x=iris
+r=sample(1:150,130)
+train=x[r,]
+test=x[-r,]
+
+ss=svm(Species~.,data=train)
+aa=predict(ss,test[,1:4])
+table(test[,5],aa)
+
+#######################
+library(neuralnet)
