@@ -1,5 +1,7 @@
-
 library(plyr)
+library(dplyr)
+library(magrittr)
+
 ############################### mean parallel 
 hcalEX=function(var){
   p=length(var)

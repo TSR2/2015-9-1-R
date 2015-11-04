@@ -236,7 +236,8 @@ createh=function(data1,com){
 kk=hist(iris[,1])
 
 par(mfcol=c(30,2),mai=c(0,0,0,0))
-dda=createh(data1=total,com=2)
+dda2=createh(data1=total,com=1)
+
 
 tt=laply(dda[[1]],max)
 bma=max(tt)
@@ -253,6 +254,25 @@ for (i in 1:30){
 }
 
 
+
+dd=c(dda1,dda2)
+xx=-2:6
+yy=-2:6
+
+for (i in 1:30){  
+  b1=dd[[1]][[1]]
+  p1=dd[[2]][[1]]
+  b2=dd[[3]][[1]]
+  p2=dd[[4]][[1]]
+  mm=outer(p1,p2)
+  expand.grid(xx,yy)
+  for (i in 1:(length(b1)-1)){
+    for (j in 1:){
+      
+    }
+  }
+  image(mm)
+}
 g=matrix(1:25,ncol=5)
 image(g,col = heat.colors(12))
 points(x=0:100,y=rep(1,101),col=heat.colors(101),pch=15,cex=2) 
