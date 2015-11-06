@@ -233,26 +233,29 @@ createh=function(data1,com){
   list(hhh,ppp)
 }
 
-kk=hist(iris[,1])
-
-par(mfcol=c(30,2),mai=c(0,0,0,0))
-dda2=createh(data1=total,com=1)
 
 
-tt=laply(dda[[1]],max)
-bma=max(tt)
-tt=laply(dda[[1]],min)
-bmi=min(tt)
-tt=laply(dda[[2]],max)
-pma=max(tt)
-tt=laply(dda[[2]],min)
-pmi=min(tt)
-for (i in 1:30){
-  kk$breaks=dda[[1]][[i]]
-  kk$counts=dda[[2]][[i]]
-  plot(kk,xlim=c(bmi-2,bma+1),ylim=c(0,pma),main="",col="blue",ylab = "")
+
+for (j in 1:2){
+  if(j==1) {
+    par(mfcol=c(30,2),mai=c(0,0,0,0))
+    kk=hist(iris[,1],plot=F)
+  }
+  dda=createh(data1=total,com=j)
+  tt=laply(dda[[1]],max)
+  bma=max(tt)
+  tt=laply(dda[[1]],min)
+  bmi=min(tt)
+  tt=laply(dda[[2]],max)
+  pma=max(tt)
+  tt=laply(dda[[2]],min)
+  pmi=min(tt)
+  for (i in 1:30){
+    kk$breaks=dda[[1]][[i]]
+    kk$counts=dda[[2]][[i]]
+    plot(kk,xlim=c(bmi-2,bma+1),ylim=c(0,pma),main="",col="blue",ylab = "")
+  }
 }
-
 
 
 dd=c(dda1,dda2)

@@ -106,3 +106,54 @@ t.test(x,y,paired = T)
 var.test(x,y)
 var.test(x,y,ratio = 2)
 var.test(x,y,conf.level = 0.99,alternative = "greater")
+
+
+#######################分組
+v=sample(0:100,20,replace = T)
+o=cut(v,breaks = c(0,40,50,70,100))
+o
+as.numeric(o)
+table(o)
+dnorm(c(0,1,2,3))
+
+######################chisq test
+###檢定比例
+chisq.test(c(335,125,160),p=c(9,3,4)/16)
+
+####檢定poisson
+x=0:6
+y=c(7,10,12,8,3,2,0)
+p=dpois(x,lambda = mean(rep(x,y)))
+p
+chisq.test(y,p=p/sum(p))
+###列聯表(獨立性,齊一性)
+m=matrix(c(60,3,32,11),ncol=2)
+###不做連續性修正
+chisq.test(m,correct = F)
+###做連續性修正
+chisq.test(m)
+
+#####當不滿足卡方檢定時，要用fisher
+m=matrix(c(4,5,18,6),ncol=2)
+fisher.test(m)
+
+#########檢驗想同個體上的兩次檢驗，看前後分部有無變化
+mcnemar.test(m)
+
+################符號檢定  H0:M>=90 ,H1:M<90
+x=sample(1:150,100,replace = T)
+
+binom.test(sum(x>=90),n = length(x),alternative = "l")
+
+###################rank test nonparameter
+x=sample(1:150,100,replace = T)
+y=sample(1:100,100,replace = T)
+cor.test(rank(x),rank(y),method = "pearson")
+###kendall H0:無相關
+cor.test(x,y,method = "kendall")
+############################符號檢定(有利用差距)
+wilcox.test(x,mu = 90)
+##看前後有無差異變化(類似pair t)
+wilcox.test(y,x,paired = T,alternative = "l")
+####兩組比較有無相關
+wilcox.test(y,x,alternative = "l")
