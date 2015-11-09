@@ -1,0 +1,18 @@
+{
+    "contents" : "x=3\n",
+    "created" : 1447087680404.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3082988930",
+    "id" : "2DFD8F6C",
+    "lastKnownWriteTime" : 1447088159,
+    "path" : "C:/Users/TSR/Desktop/111.py",
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "python"
+}
