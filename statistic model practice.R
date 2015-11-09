@@ -157,3 +157,6 @@ wilcox.test(x,mu = 90)
 wilcox.test(y,x,paired = T,alternative = "l")
 ####兩組比較有無相關
 wilcox.test(y,x,alternative = "l")
+ 
+
+#####回歸
