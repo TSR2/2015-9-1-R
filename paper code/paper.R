@@ -17,7 +17,7 @@ for (j in 1:4){
 ######################################?ۦP??????
 a=list()
 total=list()
-for (j in 1:4){
+for (j in 1:7){
   for (i in 1:30){
     his <- hist(iris[,1])
     his$counts <- his$counts/sum(his$counts)
@@ -25,6 +25,9 @@ for (j in 1:4){
   }
   total[[j]] <- a
 }
+tt=proc.time()
+dda=createh(data1=total,com=j)
+proc.time()-tt
 
 ##################?e??????
 par(mfrow=c(6,4),mai=c(0,0,0,0))
@@ -232,6 +235,9 @@ createh=function(data1,com){
   }
   list(hhh,ppp)
 }
+
+
+
 
 
 

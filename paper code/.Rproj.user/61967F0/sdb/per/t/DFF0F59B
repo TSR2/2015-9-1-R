@@ -1,0 +1,17 @@
+{
+    "contents" : "x=hist(iris[,1])\nx\nclass(x)\nb=list()\nb[[1]]=1:9\nb[[2]]=1:8\nb[[3]]=(b$counts/diff(b$breaks))/sum(b$counts)\nb[[4]]=(b$breaks[1:8]+b$breaks[2:9])/2\nnames(b)=c(\"a\",\"b\")\nname=names(x)\nnames(b)=name[1]\nnames(b)=name[1:2]\nnames(b)=name[1:3]\nnames(b)=name[1:4]\nclass(b)=\"histogram\"\nplot(b)\n\n(x$counts/diff(x$breaks))/sum(x$counts)\n\ntotal=data2\n\nx=data2[[1]][[1]]\n\n####################################################### me\n\n\nhcalEX(data2)\nhcalvar(data2)\nsqrt(hcalvar(data2))\n  \n#########################################package test\npp=c(0,cumsum(a2))\nlibrary(HistDAWass)\nmydist<-distributionH(x=a1, p=pp)\nmeanH(mydist)\nstdH(mydist)\n\nmeanH(hist(iris[,1]))\n#############################################teacher code\nn=p=1\nBij=10\nmu <- numeric(p)\nfor(j in 1: p){\n  for(i in 1:n){                                            \n    px <- sum(a2*(a1[1:Bij]+\n                    a1[2:(Bij+1)]))\n    mu[j] <- mu[j] + px\n  }         \n  mu[j] <- mu[j]/(2*n)\n}\nmu\n\n\nmu <- numeric(p)\ns2 <- numeric(p)\nfor(j in 1: p){\n  for(i in 1:n){                            \n    ## mean            \n    px <- sum(a2*(a1[1:Bij]+\n                    a1[2:(Bij+1)]))\n    mu[j] <- mu[j] + px\n    \n    ## var\n    px <- sum(a2*(a1[1:Bij]^2+\n                    a1[2:(Bij+1)]^2+\n                    a1[1:Bij]*\n                    a1[2:(Bij+1)]))            \n    s2[j] <- s2[j] + px\n  }         \n  mu[j] <- mu[j]/(2*n)\n  s2[j] <- s2[j]/(3*n)-mu[j]^2\n}\n\nlist(mu=mu, s2=s2)\n#####################################################\n\n\n",
+    "created" : 1447172336360.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2850874055",
+    "id" : "DFF0F59B",
+    "lastKnownWriteTime" : 1446652014,
+    "path" : "~/GitHub/2015-9-1-R/paper code/paper test.R",
+    "project_path" : "paper test.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
