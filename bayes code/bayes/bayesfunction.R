@@ -16,21 +16,16 @@ createbeta=function(n=200,v=0.1){
 kfail=function(a=1,b=1,n=100,alpha=0.1,t=0){
   if (t==1){rb=createbeta(n,alpha)}
   else {rb=rbeta(n = n,shape1 = a,shape2 = b)}
-  list=c()
-  p=0
-  count=0
-  for (i in 1:n){
-    taget=rb[i]
-    if (length(list)>=n){break}
+  list=character(n)
+  p=0;d=0;i=1;count=0;ru=runif(n)
     for (j in 1:n){
-      if (length(list)>=n){break}
-      ru=runif(n)
-      p=ifelse(test = taget>=ru[j],"S","F")
-      list=c(list,p)
-      if (taget<ru[j]) {break}
+      taget=rb[i]
+      if(taget>=ru[j]) {p="S"
+      }else {p="F"}
+      list[j]=p
+      if (taget<ru[j]) {
+        i=i+1}
     }
-  }
-  list
   count=sum(list=="F")/n
   list(log=list,persent=count)
 }
@@ -39,135 +34,98 @@ kfail=function(a=1,b=1,n=100,alpha=0.1,t=0){
 mstep=function(a,b,m,n,alpha=0.1,t=0){
   if (t==1){rb=createbeta(n,alpha)}
   else {rb=rbeta(n = n,shape1 = a,shape2 = b)}
-  list=c()
-  mtotal=c()
-  p=0
-  count=0
-  for (i in 1:n){
-    taget=rb[i]
-    scount=0
-    if (length(list)>=n){break}
+  list=character(n);mtotal=c();p=0
+  i=1;scount=0;ru=runif(n)  
     for (j in 1:n){
-      if (length(list)>=n){break}
-      ###?p?G?????u?????Ƥj??m,?h???X???\?v?̰??????U?h
-      if (length(mtotal)==m) {taget=rb[which.max(mtotal)]} 
-      ru=runif(n)
-      ###?qbeta?��t???X?Ӫ??p?G??uniform?j?A?h??S,?Ϥ???F
-      if (taget>=ru[j]) p="S"
-      else p="F"
-      ###?????C???????絲?G
-      list=c(list,p)
-      ###?֭p?Ӥ??u???\??????
-      if (taget>=ru[j]) {scount=scount+1}
-      ####?ϥΪ????u?bm?ӥH?U?A?ӥB?Ӧ??????O???Ѫ??A?O???U?Ӧ????窺???\?`????
-      if (taget<ru[j] & length(mtotal)<m) {
+      if (length(mtotal)<m |scount>=m  ) { taget=rb[i]
+      }else {taget=rb[which.max(mtotal)]}
+      if(taget>=ru[j]) {p="S"
+      scount=scount+1
+      }else {p="F"}
+      list[j]=p
+      if (length(mtotal)==m) scount=0
+      if (taget<ru[j] & length(mtotal)<m & scount<m) {
         mtotal=c(mtotal,scount)
-        break
+        i=i+1
+        scount=0
       }
     }
-  }
   persent=sum(list=="F")/n
   list(list,persent,mtotal)
 }
+
 
 ####################################
 mreducestep=function(a,b,m,n,alpha=0.1,t=0){
   if (t==1){rb=createbeta(n,alpha)}
   else {rb=rbeta(n = n,shape1 = a,shape2 = b)}
-  list=c()
-  mtotal=c()
-  p=0
-  count=0
-  for (i in 1:n){
-    taget=rb[i]
-    scount=0
-    if (length(list)>=n){break}
-    for (j in 1:n){
-      if (length(list)>=n){break}
-      ru=runif(n)
-      ###?qbeta?��t???X?Ӫ??p?G??uniform?j?A?h??S,?Ϥ???F
-      p=ifelse(test = taget>=ru[j],"S","F")
-      ###?????C???????絲?G
-      list=c(list,p)
-      ###?֭p?Ӥ??u???\??????
-      if (taget>ru[j]) {
-        scount=scount+1
-      }else{
-        ####?ϥΪ????u?bm?ӥH?U?A?ӥB?Ӧ??????O???Ѫ??A?O???U?Ӧ????窺???\?`????
-        mtotal=c(mtotal,scount)
-        ######???u???\?Ƥ???m?A?????u
-        if (scount<m) break
-      }
+  list=character(n);mtotal=c();p=0
+  i=1;scount=0;ru=runif(n)  
+  for (j in 1:n){
+    if (scount>=m | scount==0) {taget=rb[i]}
+    if(taget>=ru[j]) {p="S"
+    scount=scount+1
+    }else {p="F"}
+    list[j]=p
+    if (taget<ru[j] & scount<m) {
+      mtotal=c(mtotal,scount)
+      i=i+1
+      scount=0
     }
   }
   persent=sum(list=="F")/n
   list(list,persent,mtotal)
 }
+
 
 ##########################################
 Nkfail=function(a,b,n,N,alpha=0.1,t=0){
   if (t==1){rb=createbeta(n,alpha)}
   else {rb=rbeta(n = n,shape1 = a,shape2 = b)}
-  list=c()
-  mtotal=c()
-  p=0
-  count=0
-  #####x=1?O?N???٥????찵?쩳?????u,x=0?O?N???????F
-  x=1
-  for (i in 1:n){
-    taget=rb[i]
-    scount=0
-    if (length(list)>=n){break}
+  list=character(n);mtotal=c();p=0
+  i=1;scount=0;ru=runif(n);x=1
+  ru=runif(n)
     for (j in 1:n){
-      if (length(list)>=n){break}
-      #####?b?j??N?H???A?Ĥ@???X?{F?A?P?_???\?v?̰??????u
-      if (length(mtotal)>=N & p=="F" & x==1) {taget=rb[which.max(mtotal)];x=0}
-      ru=runif(n)
-      ###?qbeta?��t???X?Ӫ??p?G??uniform?j?A?h??S,?Ϥ???F
+      if (x==1) taget=rb[i]
+      if (j>=N & p=="F" & x==1) {
+        taget=rb[which.max(mtotal)]
+        x=0}
       if (taget>=ru[j]) {
         p="S"
         scount=scount+1
-      }
-      else p="F"
-      ###?????C???????絲?G
-      list=c(list,p)
+      }else {p="F"}
+      list[j]=p
       if (taget<ru[j] & x==1) {
         mtotal=c(mtotal,scount)
-        break
+        i=i+1
+        scount=0
       }
-    }
   }
   persent=sum(list=="F")/n
   list(list,persent,mtotal)
 }
 
+
 ###########################################
 ifail=function(a=1,b=1,n=100,alpha=0.1,t=0){
   if (t==1){rb=createbeta(n,alpha)}
   else {rb=rbeta(n = n,shape1 = a,shape2 = b)}
-  list=c()
-  mtotal=c()
-  p=0
-  count=0
-  for (i in 1:n){
-    taget=rb[i]
-    scount=0
-    if (length(list)>=n){break}
+  list=character(n);p=0
+  i=1;ru=runif(n);Fcount=0
+  ru=runif(n)
     for (j in 1:n){
-      if (length(list)>=n){break}
-      ru=runif(n)
-      p=ifelse(test = taget>=ru[j],"S","F")
-      list=c(list,p)
-      if (taget>=ru[j]) {
-        scount=scount+1
-      }else{
-        mtotal=c(mtotal,scount)
-        if ((j-scount)>i) break
+      taget=rb[i]
+      if (taget>=ru[j]) {p="S"
+      }else {p="F"
+      Fcount=Fcount+1}
+      list[j]=p
+      if (Fcount==i) {
+        i=i+1
+        Fcount=0
       }
     }
-  }
   persent=sum(list=="F")/n
-  list(list,persent,mtotal)
+  list(list,persent)
 }
 
 
@@ -179,3 +137,77 @@ runs=function(run,fun,...){
   }
   mean(v)
 }
+
+
+#############################################
+bw=function(a,b,x,u){
+  expression( x^(a-1)*(1-x)^(b-1))
+}
+
+beint=function(a=0.1,b=1,u=1/2){
+  integrate(f= function(x) x^(a-1)*(1-x)^(b-1) ,lower=0,upper=u)
+}
+############################calculate TL rn,kn,Nn
+EX=function(a){
+  1-4^a*(gamma(1+a)^2/gamma(2+2*a))
+}
+EX2=function(a){
+  (2+a/1+a)-2^(1+2*a)*(gamma(1+a)^2/gamma(2+2*a))
+}
+betamean=function(a,b){
+  a/(a+b)
+}
+betavar=function(a,b){
+  (a*b)/((a+b)^2*(a+b+1))
+}
+sol=function(a,b,aphla){
+  betamean(a,b)-EX(aphla)
+}
+
+TL=function(x,a,j){
+  x^j*2*a*(1 - x)*x^(a-1)*(2 - x)^(a-1)
+}
+
+aaa=function(a,j){
+  integrate(TL,lower = 0,upper = 1,a=a,j=j)[[1]]
+}
+
+
+calculateN=function(a,b,n,m){
+  bb=beta(a=a+(0:(n-1)),b=b)
+  N=(sum(bb)*m)/beta(a,b)
+}
+
+L=function(a,b){
+  gamma(a+b)/(gamma(a)*gamma(b+1))
+}
+
+calculateRE=function(a,b,n){
+  (n*L(a,b)*gamma(1+b))^(1/(1+b))
+}
+
+calculateM=function(a,b,n){
+  ((n*gamma(1+1/b))/(b*L(a,b)^(1/b)))^(b/(1+b))
+}
+
+calculateN=function(a,b,n,m){
+  bb=beta(a=a+(0:(n-1)),b=b)
+  N=(sum(bb)*m)/beta(a,b)
+}
+
+calculateTLRn=function(a,n){
+  (2*n*a)^(1/3)
+}
+
+calculateTLKn=function(a,n){
+  kn=((n*sqrt(pi))/(4*sqrt(a)))^(2/3)
+  floor(kn)
+}
+
+calculateTLNn=function(a,n){
+  k=calculateTLKn(a,n)
+  k=floor(k)
+  N=k*sum(sapply(0:(n-1),aaa,a=a))
+  floor(N)
+}
+

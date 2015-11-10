@@ -43,9 +43,11 @@ kfail=function(a=1,b=1,n=100,alpha=0.1,t=1){
   count=sum(list=="F")/n
   list(log=list,persent=count)
 }
+
+runs(run = 100,fun = kfail,a=1,b=1,n=200,t=0)
 v=0
 for (i in 1:100){
-  a=kfail(a=1,b=1,n=200,t=1)$persent
+  a=kfail(a=1,b=1,n=200,t=0)$persent
   v=v+a
 }
 v/100
@@ -113,9 +115,9 @@ mstep=function(a,b,m,n,alpha=0.1,t=1){
 }
 
 
-v=rep(0,1000)
-for (i in 1:1000){
-  v[i]=mstep(a=1,b=1,m=44,t=1,n=200)[[2]]  
+v=rep(0,500)
+for (i in 1:500){
+  v[i]=mstep(a=1,b=1,m=5,t=0,n=200)[[2]]  
 }
 mean(v)
 
@@ -347,7 +349,7 @@ integrate(integrand, lower = 0, upper = Inf)
 
 ################################################################
 k=ifail(a=1,b=1,n=100)
-runs(run = 500,fun = ifail,a=1,b=1,n=100)
+runs(run = 1000,fun = ifail,a=1,b=1,n=100)
 
 f=createbeta(n = 200,v = 0.9)
 mf=mean(f)
@@ -370,7 +372,7 @@ vf
 runs(run = 200,fun = mstep,a=b1,b=b2,m=kn,n=500)
 runs(run = 200,fun = mstep,alpha=0.9,m=kn,n=500,t=1)
 
-
+####find a,b when varTL<varBETA
 bb=function(a,b){
   a/(a+b)-mf
 }
@@ -383,12 +385,25 @@ vf
 runs(run = 200,fun = mstep,a=0.5,b=mm$root,m=kn,n=500)
 runs(run = 200,fun = mstep,alpha=0.9,m=kn,n=500,t=1)
 
-##varTL>varBETA
+
+####find a,b when varTL>varBETA
 a=2
 mm=uniroot(bb,c(0,10),a=a)
 mm$root
 betavar(a,mm$root)
 vf
-
+##varTL>varBETA
 runs(run = 200,fun = mstep,a=a,b=mm$root,m=kn,n=500)
 runs(run = 200,fun = mstep,alpha=0.9,m=kn,n=500,t=1)
+
+
+plot(rbeta(n = 1000,2,1))
+plot(density(rbeta(n = 1000,2,1)))
+
+
+library(xtable)
+library(stargazer)
+
+# 生成prostate的摘要
+stargazer(iris)
+xtable(mtcars)
