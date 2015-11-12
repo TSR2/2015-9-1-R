@@ -32,7 +32,6 @@ gg=sqrt(c(3,11))
 format(gg,digits = 20)
 ################
 
-
 a=c(expression(x^2-y),expression(x^2-y^2))
 a[2]
 ta=c("x","y")
@@ -57,8 +56,13 @@ sqq()
 library(rpart)
 library(maptree)
 pp=rpart(Species~.,data=iris)
+summary(pp)
+names(pp)
 draw.tree(pp)
-
+plot(pp)
+text(pp)
+A=predict(pp,as.character(iris[1:61,1:4]),type="class")
+table(iris[1:61,5],A)
 #######################svm
 library(e1071)
 x=iris
@@ -71,4 +75,22 @@ aa=predict(ss,test[,1:4])
 table(test[,5],aa)
 
 #######################
+go=read.table("C:/Users/tsr/Desktop/額外檔案/新文字文件.txt",sep="",header=T)
+names(go)
+go=go[,-1]
+a=rpart.control(minsplit = 2,cp=0,minbucket = 2)
+mode=rpart(formula = PlayTennis~.,data=go,control = rpart.control(minsplit = 5,cp=0))
+par(mai=rep(0.5,4))
+plot(mode)
+text(mode)
+
+########################作業4
+library(C50)
+C5.0Control()
+f=C5.0(PlayTennis~.,data=go)
+summary(f)
+plot(f)
+####################333
 library(neuralnet)
+
+
