@@ -25,4 +25,6 @@ attr(aa,'class')="qw"
 aa
 teacher(aa)
 
-
+iris$Species
+iris %>% select(1:3)
+"["(iris)[1]
