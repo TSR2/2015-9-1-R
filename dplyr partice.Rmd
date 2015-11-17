@@ -32,5 +32,56 @@ cc=x %>%
     select(v1,v5,v6)
 cc
 
+
+
+
+x=iris
+names(x)=paste("v",1:5,sep="")
+
+
+x %>% select(v1,v5)  %>% arrange(v5) %>%
+  mutate(v6=1:150) %>% group_by(v5) %>% 
+  summarise(start=min(v6),end=max(v6))
+
+x %>% select(v5)  %>%
+  group_by(v5) %>% summarise(n=n())
+aggregate(Sepal.Length~Species,data=iris,length)
+aggregate(x=iris[,1:4],by=list(iris$Species),sum)
+################
+
+x[,1:4] %>% rowwise() %>% summarise(sum(v1,v2))
+?rowwise
+
+df <- expand.grid(x = 1:3, y = 3:1)
+ppp=df %>% rowwise() %>% do(i = seq(.$x, .$y))%>% summarise(n = length(i))
+ppp$i
+
+hhh=x %>% group_by(v5) %>% do( hh=hist(.$v1)) 
+hhh$hh[[1]] %>% plot
+
+by_cyl <- group_by(mtcars, cyl)
+do(by_cyl, head(., 2))
+
+models <- by_cyl %>% do(mod = lm(mpg ~ disp, data = .))
+models %>% summarise(rsq = summary(mod)$r.squared)
+models %>% do((coef = coef(.$mod)))
+
+models %>% do(data.frame(
+  sig=summary(.$mod)$r.squared,
+  coef(summary(.$mod))))
+
+models %>% summarise(R=summary(mod)[[4]])
+
+models %>% do(data.frame(v=.$mod[1]))
+
+
+a=summary(lm(iris[,1]~iris[,2])) 
+b=lm(iris[,1]~iris[,2])
+names(b)
+b[5]
+names(a)
+a[1]
+
+
 ```
 

@@ -82,3 +82,76 @@ for(i in 1: 4){
 dev.off()
 
 abline(0,1)
+
+
+methods(class="abline")
+plot %>% methods
+abline %>% methods
+
+
+x <- runif(12)
+y <- rnorm(12)
+plot(x, y, main="arrows and segments")
+arrows(x[1], y[1], x[2], y[2], col= "black", length=0.2)
+segments(x[3], y[3], x[4], y[4], col= "red")
+segments(x[3:4], y[3:4], x[5:6], y[5:6], col= c("blue", "green"))
+
+par(mfrow=c(1,2))
+
+plot(x, y, main="arrows and segments")
+cbind(x,y+0.1) %>% text(.,label=1:12)
+lines(x=cbind(x,y)[1:2,],col="black")
+lines(x=cbind(x,y)[3:4,],col="red")
+lines(x=cbind(x,y)[c(3,5),],col="blue")
+lines(x=cbind(x,y)[c(4,6),],col="green")
+
+par(mai=rep(0.1,4),fig=c(90,10))
+m=matrix(c(0,1,0,2,3,4,0,5,0),byrow = T,ncol=3)
+layout(mat = m,widths = c(1,3,1),heights = c(1,3,1))
+hist(iris[,1])
+boxplot(iris[,1])
+plot(iris[,c(1,3)],col=iris[,5])
+hist(iris[,3])
+boxplot(iris[,2],horizontal = T)
+
+###
+par(mfrow=c(1,1))
+plot(1:10,rep(1,10),cex=5,col=1:10,pch=20)
+text(1:10,rep(1.05,10),labels = 1:10)
+
+
+colors()
+col2rgb("tomato2")
+palette() #常用顏色
+
+plot(iris[,3], iris[,4], type="n")
+my.label <- c(rep("a", 50), rep("b", 50), rep("c", 50))
+text(iris[,3], iris[,4], labels=my.label, cex=0.7)
+
+plot(iris[,3], iris[,4], type="n")
+my.label <- c(rep("a", 50), rep("b", 50), rep("c", 50))
+text(iris[,3], iris[,4], my.label, cex=0.7,
+       col=ifelse(iris[,1] > median(iris[,1]), "red", "blue"))
+
+
+plot(iris[,3],iris[,4])
+plot(iris[,3:4],type="n")
+mylabel=rep(letters[1:3],each=50)
+mycol=rep(c("red","blue","green"),each=50)
+text(iris[,3:4],labels = mylabel,col=mycol)
+
+legend(5,0.6,legend = unique(iris$Species),
+       col =c("red","blue","green"),pch="abc" )
+
+################找出各分類有幾個
+x %>% select(v1,v5)  %>% arrange(v5) %>%
+  mutate(v6=1:150) %>% group_by(v5) %>% 
+  summarise(start=min(v6),end=max(v6))
+
+x %>% select(v5)  %>%
+  group_by(v5) %>% summarise(n=n())
+aggregate(Sepal.Length~Species,data=iris,length)
+aggregate(x=iris[,1:4],by=list(iris$Species),sum)
+################
+
+
