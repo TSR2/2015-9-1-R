@@ -12,7 +12,7 @@ library(data.table)
 library(lattice)
 library(ggplot2)
 library(readr)
-index="c:/Users/tsr/Desktop/上課用檔案/資料視覺化/DoubsFishData"
+index="c:/Users/tsr/Desktop/?W?狴??仵?/???け?覺??/DoubsFishData"
 c=list.files(index,full.names = T)
 c
 vv=list.files(c[6],full.names = T)
@@ -20,7 +20,7 @@ env=read.csv(file=vv[1],row.names = 1)
 spe=read.csv(file=vv[3],row.names = 1)
 spa=read.csv(file=vv[2],row.names = 1)
 index
-source('c:/Users/tsr/Desktop/上課用檔案/資料視覺化/DoubsFishData/panelutils.R')
+source('c:/Users/tsr/Desktop/?W?狴??仵?/???け?覺??/DoubsFishData/panelutils.R')
 spe[1:5,1:10]
 head(spe,n=2)
 dim(spe)
@@ -28,15 +28,15 @@ colnames(spe)
 summary(spe)
 range(spe)
 
-ab=table(unlist(spe))
+ab=table(unlist(spe[,-1]))
 barplot(ab)
 par(mfrow=c(1,1))
-pp=stack(spe)
+pp=stack(spe[,-1])
 names(pp)=c("v1","v2")
 head(pp)
 boxplot(v1~v2,data=pp)
 
-##計算0的比例
+##?p??0??????
 total0=sum(spe==0)
 total0/(dim(spe)[1]*dim(spe)[2])
 
@@ -102,7 +102,7 @@ bg=i, cex=5*env[,i]/max(env[,i]), xlab="x", ylab="y")
 lines(spa, col="light blue", lwd=2)
 }
 
-pp=read_csv('c:/Users/tsr/Desktop/上課用檔案/資料視覺化/hourly_44201_2014.csv')
+pp=read_csv('c:/Users/tsr/Desktop/?W?狴??仵?/???け?覺??/hourly_44201_2014.csv')
 
 head(problems(pp))
 names(pp)

@@ -21,6 +21,14 @@ spe %>% summary()
 plot(spa[,2:3],type="l")
 text(x=spa$x,y=spa$y,labels = spa$X,cex = 1)
 
+boxplot(spe[,-1])
+boxplot(env[,-1])
+boxplot(env[,c(-1,-2,-3)])
+std=function(x) (x-mean(x))/sd(x)
+
+stdenv=apply(env[,-1],2,std ) %>% as.data.frame
+ boxplot(stdenv)
+
 ########先畫點，再補線
 plot(spa[,2:3],cex=spe$TRU,main="TRU")
 lines(spa[,2:3],col="blue",lwd=2)
@@ -68,10 +76,16 @@ qqline(y=no)
 x$v1 %>% sort %>% plot
 sx=x$v1 %>% sort
 plot(sx[1:49],sx[2:50])
-
-
-
-
+###################################ch4
+r=rnorm(50)
+z= (r-min(r))/(max(r)-min(r))
+par(mfrow=c(1,1))
+rainbow(150) %>% plot(1:150,y=rep(1,150),col=.,pch=15)
+mycolor=rainbow(150)[1:100] 
+mycolor %>% plot(seq(0,1,length.out = 100),y=rep(1,100),col=.,pch=15)
+points(z,y=rep(0.8,50),col=mycolor[floor(z*99)+1],pch=15)
+points(z,y=rep(0.7,50),col=mycolor[floor(z*99)],pch=15)
+points(z,y=rep(0.6,50),col=mycolor[floor(z*100)],pch=15)
 
 ####################################chaper 5
 
@@ -154,4 +168,31 @@ aggregate(Sepal.Length~Species,data=iris,length)
 aggregate(x=iris[,1:4],by=list(iris$Species),sum)
 ################
 
+main.ex <- expression(paste("Math Symbols: ", list(alpha, theta)))
+plot(1:10, 1:10, type="n", main=main.ex, xlab="", ylab="")
+text(5, 9, expression(list({f * minute}(x), {f * second}(x))))
+text(5, 7, expression(hat(beta) == (X^t * X)^{-1} * X^t * y))
+text(5, 5, expression(bar(x) == sum(frac(x[i], n), i==1, n)))
 
+text(5, 5, expression("(a,b]"))
+par(mfrow=c(2,2))
+for (i in 1:4){
+  plot(iris[,i],col=iris[,5],main=names(iris)[i],ylim=c(0,8))
+}
+
+par(mfrow=c(2,2))
+for (i in 1:4){
+  hist(iris[,i],main=names(iris)[i],ylim=c(0,40),xlim=c(0,8))
+}
+par(mfrow=c(1,1))
+dotchart(as.matrix(iris[,1:4]))
+
+boxplot(iris[,1:4],horizontal = T)
+iris[,1] %>% hist(pro=T) 
+density(iris[,1]) %>% lines
+
+par(mfrow=c(2,2))
+for (i in 1:4){
+  iris[,i] %>% hist(main=names(iris)[i],pro=T)
+  iris[,i] %>% density() %>% lines(col="red")
+  }
