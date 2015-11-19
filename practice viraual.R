@@ -5,10 +5,15 @@ library(magrittr)
 spe=read.csv("c:/Users/tsr/Desktop/上課用檔案/資料視覺化/DoubsFishData/NEwR data/DoubsSpe.csv")
 env=read.csv("c:/Users/tsr/Desktop/上課用檔案/資料視覺化/DoubsFishData/NEwR data/DoubsEnv.csv")
 spa=read.csv("c:/Users/tsr/Desktop/上課用檔案/資料視覺化/DoubsFishData/NEwR data/DoubsSpa.csv")
+read.table("C:\\Users\\tsr\\Desktop\\上課用檔案\\資料視覺化\\100.txt",sep=",")
+
+
 
 spe[1:5,]
+head(spe,n=5)
 env[1:5,]
 spa[1:5,]
+dim(spe)
 spe %>% dim
 env %>% dim
 spa %>% dim
@@ -18,6 +23,8 @@ spa %>% names
 spa %>% summary()
 env %>% summary()
 spe %>% summary()
+plot(spa[,2],spa[,3])
+
 plot(spa[,2:3],type="l")
 text(x=spa$x,y=spa$y,labels = spa$X,cex = 1)
 
@@ -69,6 +76,7 @@ no=rnorm(100,mean = mean(x$v1),sd = sd(x$v1))
 x$v1 %>% plot(.,type="l")
 x %$% plot(v1[1:49],v1[2:50])
 x$v1 %>% hist
+
 x$v1 %>% qqnorm()
 qqline(y=no)
 
