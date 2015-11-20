@@ -203,4 +203,6 @@ par(mfrow=c(2,2))
 for (i in 1:4){
   iris[,i] %>% hist(main=names(iris)[i],pro=T)
   iris[,i] %>% density() %>% lines(col="red")
-  }
+}
+
+hist(iris[,1],horiz=T)
