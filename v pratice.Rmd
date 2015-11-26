@@ -102,7 +102,7 @@ bg=i, cex=5*env[,i]/max(env[,i]), xlab="x", ylab="y")
 lines(spa, col="light blue", lwd=2)
 }
 
-pp=read_csv('c:/Users/tsr/Desktop/?W?ҥ??ɮ?/???Ƶ?ı??/hourly_44201_2014.csv')
+pp=read_csv('C:/Users/tsr/Desktop/上課用檔案/資料視覺化/hourly_44201_2014.csv')
 
 head(problems(pp))
 names(pp)

@@ -78,6 +78,7 @@ table(test[,5],aa)
 go=read.table("C:/Users/tsr/Desktop/額外檔案/新文字文件.txt",sep="",header=T)
 names(go)
 go=go[,-1]
+go[14,'Wind']="True"
 a=rpart.control(minsplit = 2,cp=0,minbucket = 2)
 mode=rpart(formula = PlayTennis~.,data=go,control = rpart.control(minsplit = 5,cp=0))
 par(mai=rep(0.5,4))
@@ -90,6 +91,9 @@ C5.0Control()
 f=C5.0(PlayTennis~.,data=go)
 summary(f)
 plot(f)
+oo
+oo=go[1:2,]
+predict(f,oo)
 ####################333
 library(neuralnet)
 
