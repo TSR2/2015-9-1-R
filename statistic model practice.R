@@ -160,3 +160,49 @@ wilcox.test(y,x,alternative = "l")
  
 
 #####回歸
+
+x=iris
+plot(Sepal.Length~Sepal.Width,data=iris,col=Species)
+plot(Petal.Length~iris$Petal.Width,data=iris,col=Species)
+
+model=lm(Petal.Length~Petal.Width,data=iris)
+model
+anova(model)
+summary(model)
+
+###多元回歸
+model2=lm(Petal.Length~Petal.Width+Sepal.Width,data=iris)
+anova(model2)
+summary(model2)
+model3=update(model2,sqrt(.)~.)
+
+#####二次回歸項
+model4=update(model3,.~.+I(Sepal.Width^2),data=iris)
+model4
+model5=update(model4,.~.+Petal.Width:Sepal.Width)
+model5
+####逐步回歸
+model6=step(model5)
+drop1(model5)
+
+####殘差
+residuals(model2)
+rstandard(model2)
+rstudent(model2)
+plot(model2)
+plot(model2,which=1)
+plot(model2,which=2)
+plot(model2,which=3)
+plot(model2,which=4)
+
+##### 檢驗影響點
+hatvalues(model2)
+dffits(model2)
+cooks.distance(model2)
+covratio(model2)
+
+tt=data.frame(x1=c(rep(1,4),1.1),x2=c(rep(2,4),2.1),x3=seq(1,5,1))
+corr=cor(tt)
+kappa(corr)
+eigen(corr) ###找eigenvalue最小的，在看他的特徵向量
+

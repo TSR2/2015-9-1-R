@@ -154,6 +154,35 @@ str(oo)
 attributes(oo)
 summary(oo,digits = 12)
 
+library(magrittr)
+library(plyr)
+library(dplyr)
+
+data(airquality)
+id <- is.na(airquality$Ozone)
+Ozone <- airquality$Ozone[id==F]
+Temp <- airquality$Temp[id==F]
+# Fitting non-linear parametric curves: non-linear least square nls
+plot(Ozone~Temp, main="non-linear parametric curves 1")
+model1 <- nls(Ozone~a+b*Temp+c*Temp*Temp, start=list(a=1, b=1, c=1))
+range(Temp)
+xv <- seq(55, 100, 1)
+lines(xv, predict(model1, list(Temp=xv)), col="red", lwd=2)
+ss=Temp*Temp
+model2=lm(Ozone~Temp+ss)
+dd=plot(model2)
+class(model2)
+names(model2)
+model2[[1]]
+abline(model2,col="red",lwd=2)
+
+
+hist(iris[,1],probability = T)
+density(iris[,1]) %>% lines()
+
+
+
+
 ```
 
 
