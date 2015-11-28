@@ -110,7 +110,7 @@ var.test(x,y,conf.level = 0.99,alternative = "greater")
 
 #######################分組
 v=sample(0:100,20,replace = T)
-o=cut(v,breaks = c(0,40,50,70,100))
+o=cut(v,breaks = c(0,40,50,70,100),include.lowest = T,labels = 1:4)
 o
 as.numeric(o)
 table(o)
