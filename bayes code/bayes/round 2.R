@@ -99,3 +99,104 @@ curve(dbeta(x,a,b),add=TRUE,lty=3,lwd=4)
 legend(.7,4,c("Prior","Likelihood","Posterior"),
          lty=c(3,2,1),lwd=c(3,3,3))
 
+
+
+library(LearnBayes)
+ midpt = seq(0.05, 0.95, by = 0.1)
+prior = c(1, 5.2, 8, 7.2, 4.6, 2.1, 0.7, 0.1, 0, 0)
+prior = prior/sum(prior)
+curve(histprior(x,midpt,prior), from=0, to=1,
+        ylab="Prior density",ylim=c(0,.3))
+
+curve(histprior(x,midpt,prior) * dbeta(x,s+1,f+1),
+      from=0, to=1, ylab="Posterior density")
+
+p = seq(0, 1, by = 0.125)
+post = histprior(p, midpt, prior) *
+  dbeta(p, s+1, f+1)
+post = post/sum(post)
+ps = sample(p, replace = TRUE, prob = post)
+hist(ps, xlab="p", main="")
+
+
+
+
+##########################################################ex1
+p = seq(0,1, by = 0.125)
+prior = c(.001 ,.001 ,.950 ,.008 ,.008 ,.008 ,.008 ,.008 ,.008)
+prior = prior/sum(prior)
+plot(p, prior, type = "h", ylab="Prior Probability")
+library(LearnBayes)
+data = c(6, 4)
+post = pdisc(p, prior, data)
+round(cbind(p, prior, post),2)
+
+library(lattice)
+PRIOR=data.frame("prior",p,prior)
+POST=data.frame("posterior",p,post)
+names(PRIOR)=c("Type","P","Probability")
+names(POST)=c("Type","P","Probability")
+data=rbind(PRIOR,POST)
+xyplot(Probability~P|Type,data=data,layout=c(1,2),
+       type="h",lwd=3,col="black")
+
+
+
+
+############################ex2
+par(mfrow=c(1,3))
+library(LearnBayes)
+midpt = seq(0,1, by = 0.1)
+prior = c(0.01, 0.01, 0.02, 0.3, 0.3,0.6, 0.3, 0.02, 0.01, 0.01,0.01)
+prior = prior/sum(prior)
+curve(histprior(x,midpt,prior), from=0, to=1,
+      ylab="Prior density",ylim=c(0,.3))
+s=5
+f=15
+curve(histprior(x,midpt,prior) * dbeta(x,s+1,f+1),
+      from=0, to=1, ylab="Posterior density")
+
+p = seq(0, 1, by = 0.1)
+post = histprior(p, midpt, prior) *
+  dbeta(p, s+1, f+1)
+post = post/sum(post)
+ps = sample(p, replace = TRUE, prob = post)
+hist(ps, xlab="p", main="")
+
+
+
+
+
+####################################
+ab=c(3.26, 7.19)
+m=20; ys=0:20
+pred=pbetap(ab, m, ys)
+
+par(mfrow=c(1,1))
+p=rbeta(1000, 3.26, 7.19)
+y = rbinom(1000, 20, p)
+table(y)
+freq=table(y)
+ys=as.integer(names(freq))
+predprob=freq/sum(freq)
+plot(ys,predprob,type="h",xlab="y",
+        ylab="Predictive Probability")
+sum(predprob[1:12])
+
+####################################
+
+qbeta(c(0.05,0.95),shape1 = 23,shape2 = 8)
+for (i in seq(0.6,0.8,length.out = 30)){
+  print(c(i,pbeta(i,shape1 = 23,shape2 = 8)))
+}
+
+p=rbeta(1000,shape1 = 23,shape2 = 8)
+y = rbinom(1000, 10, p)
+fr=table(y)
+sum(fr[7:8])/sum(fr)
+
+
+
+
+
+
