@@ -12,6 +12,7 @@ library(data.table)
 library(lattice)
 library(ggplot2)
 library(readr)
+
 index="c:/Users/tsr/Desktop/?W?ҥ??ɮ?/???Ƶ?ı??/DoubsFishData"
 c=list.files(index,full.names = T)
 c
