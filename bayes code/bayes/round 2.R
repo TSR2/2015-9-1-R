@@ -195,8 +195,59 @@ y = rbinom(1000, 10, p)
 fr=table(y)
 sum(fr[7:8])/sum(fr)
 
+#############################q6
+lambda=c(.5, 1, 1.5, 2, 2.5,3)
+
+midpt = c(.5, 1, 1.5, 2, 2.5,3)
+prior=c(.1, .2, .3, .2, .15,0.05)
+
+aaa=function(g,t,lamb,y){
+  g*exp(-t*lamb)*(t*lamb)^y
+}
+
+#######因為天數是六天，次數是12
+post=aaa(prior,6,midpt,12)
+post=post/sum(post)
+
+ddd=cbind(midpt,prior,post)
+ddd
+
+####q6b
+bpost=aaa(prior,7,midpt,0)
+
+bpost =bpost/sum(bpost)
+kk=bpost*exp(-7*midpt)
+kk %>% sum()
 
 
 
+s=5
+f=15
+curve(histprior(x,midpt,prior) * dbeta(x,s+1,f+1),
+      from=0, to=1, ylab="Posterior density")
 
+p = seq(0, 1, by = 0.1)
+post = histprior(p, midpt, prior) *
+  dbeta(p, s+1, f+1)
+post = post/sum(post)
+ps = sample(p, replace = TRUE, prob = post)
+hist(ps, xlab="p", main="")
 
+data = c(11, 16)
+post = pdisc(p, prior, data)
+round(cbind(p, prior, post),2)
+
+########ch3
+data(footballscores)
+xx=footballscores
+head(xx)
+attach(xx)
+d = favorite - underdog - spread
+n = length(d)
+v = sum(d^2)
+
+p = rchisq(1000, n)/v
+s = sqrt(1/p)
+hist(s,main="")
+
+quantile(s, probs = c(0.025, 0.5, 0.975))
