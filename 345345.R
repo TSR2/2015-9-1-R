@@ -96,5 +96,6 @@ oo=go[1:2,]
 predict(f,oo)
 ####################333
 library(neuralnet)
-
+library(e1071)
+?svm
 

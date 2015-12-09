@@ -68,6 +68,7 @@ createh=function(data1,com){
   for (i in 1:n){
     bij=c()
     b=list()
+    #算出某個觀測值得每個值方圖資料有幾個分割
     for (j in 1:p){
       bij[j]=length(data1[[j]][[i]]$count)
       b[[j]]=1:bij[j]
