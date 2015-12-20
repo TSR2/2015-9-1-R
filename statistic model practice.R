@@ -95,6 +95,7 @@ optim(c(1,2),f2)
 
 ###################檢定平均數
 x=rnorm(100)
+?t.test
 t.test(x,alternative = "greater")
 t.test(x,alternative = "less",mu=3)
 t.test(x,m=3)
