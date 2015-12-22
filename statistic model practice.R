@@ -207,3 +207,5 @@ corr=cor(tt)
 kappa(corr)
 eigen(corr) ###找eigenvalue最小的，在看他的特徵向量
 
+
+
