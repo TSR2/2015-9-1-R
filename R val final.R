@@ -248,10 +248,11 @@ q6[c(6,8,17,21),4]=c(260,266,308,279)
 q6
 ggplot() + geom_map(data=q6, aes(map_id =Area , fill = total), map = twDist2) + expand_limits(x = twDist2$long, y = twDist2$lat)
 distanceCenter <- ddply(twDist2, .(id), summarize, latCenter = mean(lat), longCenter = mean(long))
-pdf('C:/Users/TSR/Desktop/各縣市汽車加油站汽柴油銷售統計分析表/test3.pdf',family="GB1")
+pdf('C:/Users/TSR/Desktop/各縣市汽車加油站汽柴油銷售統計分析表/test3.pdf')
 ggplot() + 
   geom_map(data=q6, aes(map_id = Area , fill = total), map = twDist2) + 
   expand_limits(x = twDist2$long, y = twDist2$lat) + 
   scale_fill_gradient2(low = "white",  mid = "palevioletred1", midpoint = mean(q6$total), high = muted("palevioletred4"), limits = c(min(q6$total)-3, max(q6$total)+3))+
   geom_text(data = distanceCenter, aes(x = longCenter, y = latCenter, label = id, size = 0.2))+xlab("")+ylab("")+ggtitle("count of gas station in Taiwan")
+
 dev.off()
