@@ -83,15 +83,17 @@ alldata$縣市別=pp2
 #########################################畫圖分析
 
 summary(alldata)
+alldata[75:95,]
+
 
 alldata %>%　filter(month==1)
 alldata[1,2:9] %>% barplot(height = .) 
 parnames=alldata %>% names %>%　'['(2:9)
-bplot=function(x,max=80,las=1){
+bplot=function(x,max=80,las=1,mon=''){
   y=x[2:9]
   if(is.vector(y)) y=t(y)
   names(y)=parnames
-  barplot(as.matrix(y),main=paste(x[1],x[11],sep='_'),ylim=c(0,max),las=las)
+  barplot(as.matrix(y),main=paste(x[1],paste(x[11],mon,sep=''),sep='_'),ylim=c(0,max),las=las)
 }
 #pdf('C:/Users/TSR/Desktop/各縣市汽車加油站汽柴油銷售統計分析表/test.pdf',onefile=T,family="GB1")
 #CairoPDF('C:/Users/TSR/Desktop/各縣市汽車加油站汽柴油銷售統計分析表/ro.pdf',family="SimHei")
@@ -104,16 +106,16 @@ bplot=function(x,max=80,las=1){
 #pdf('C:/Users/TSR/Desktop/各縣市汽車加油站汽柴油銷售統計分析表/test2.pdf',onefile=T,family="GB1")
 
 
-emf('C:/Users/TSR/Desktop/各縣市汽車加油站汽柴油銷售統計分析表/圖表/每個縣市一月份.emf')
+emf('C:/Users/TSR/Desktop/EDA/每個縣市一月份.emf')
 par(mfrow=c(5,5),mar=c(2,.5,1,.5))
 aa=alldata %>%　filter(month==1) 
-apply(aa, 1, bplot,las=1)
+apply(aa, 1, bplot,las=1,mon='月份')
 dev.off()
 ######畫單個城市每個月分
-emf('C:/Users/TSR/Desktop/各縣市汽車加油站汽柴油銷售統計分析表/圖表/臺中每個月.emf')
+emf('C:/Users/TSR/Desktop/EDA/臺中每個月.emf')
 par(mfrow=c(3,4),mar=rep(2,4))
 alldata %>% filter(縣市別=='臺中市') %>%
-  group_by(month) %>% do(ss=bplot(.))
+  group_by(month) %>% do(ss=bplot(.,max=110,mon='月份'))
 dev.off()
 
  
@@ -169,10 +171,10 @@ for (i in 2:11){
 str(testdata)
 
 ###向量化畫單個月分
-emf('C:/Users/TSR/Desktop/各縣市汽車加油站汽柴油銷售統計分析表/圖表/各縣市長條圖-標準化.emf')
+emf('C:/Users/TSR/Desktop/EDA/各縣市長條圖-標準化.emf')
 par(mfrow=c(5,5),mar=rep(2,4))
 aa=testdata %>%　filter(month==1) 
-apply(aa, 1, bplot,max=.5)
+apply(aa, 1, bplot,max=.5,mon='月份')
 dev.off()
 
 #####每個縣市各自的盒狀圖

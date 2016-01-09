@@ -1,0 +1,17 @@
+{
+    "contents" : "ttest=c(\"kfail\",'mstep','mreducestep','Nkfail','ifail')\n        \nruns(run = 100,fun = eval(parse(text=\"kfail\")),a=1,b=1,n=200,t=0)\n\nn=1000;a=0.9\nrn=(2*n*a)^(1/3)\nkn=((n*sqrt(pi))/(4*sqrt(a)))^(2/3)\nkn=floor(kn)\nNn=kn*sum(sapply(0:(n-1),aaa,a=0.9))\n\n\nlibrary(LearnBayes)\n\n######求 meanTL=meanBETA ,varTL=varBETA 時的 a,b\n\nf=createbeta(n = 200,v = 0.9)\nmf=mean(f)\nvf=var(f)\nff=function(z){\n  x=z[1]\n  y=z[2]\n  (x/(x+y)-mf)^2+((x*y)/((x+y)^2*(x+y+1))-vf)^2\n}\nll=nlm(ff,p = c(1,2),gradtol = 1e-20)\nb1=ll[[2]][1]\nb2=ll[[2]][2]\n\nggg=proc.time()\nruns(run = 1000,fun = kfail,a=1,b=1,n=100,t=0)\nproc.time()-ggg\n\nggg=proc.time()\nruns(run = 1000,fun = mstep,a=1,b=1,m=9,n=100,t=0)\nproc.time()-ggg\n\nggg=proc.time()\nruns(run = 1000,fun = mreducestep,a=1,b=1,m=9,n=100,t=0)\nproc.time()-ggg\n\nggg=proc.time()\nruns(run = 1000,fun = Nkfail,a=1,b=1,n=100,alpha=0.9,N=g,t=0)\nproc.time()-ggg\n\nggg=proc.time()\nruns(run = 1000,fun = ifail,a=1,b=1,n=100,t=0)\nproc.time()-ggg\n\n\n\nruns(run = 1000,fun = mstep,a=1,b=1,m=rn,n=100,t=0)\nruns(run = 100,fun = mreducestep,a=1,b=1,m=kn,n=100,t=0)\nruns(run = 100,fun = Nkfail,a=1,b=1,n=1000,alpha=0.9,N=Nn,t=1)\nruns(run = 100,fun = ifail,a=1,b=1,n=100,t=0)\n \nruns(run = 100,fun = kfail,a=1,b=1,n=200,t=1)\nruns(run = 100,fun = mstep,a=1,b=1,m=4,n=200,t=1)\nruns(run = 100,fun = mreducestep,a=1,b=1,m=4,n=200,t=1)\nruns(run = 100,fun = Nkfail,a=1,b=1,n=200,N=50,t=1)\nruns(run = 100,fun = ifail,a=1,b=1,n=200,t=1)\n\n\n\n\nif(1>2) {p=\"S\"\n}else {p=\"F\"}",
+    "created" : 1452344738051.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1108378659",
+    "id" : "108648DD",
+    "lastKnownWriteTime" : 1448987990,
+    "path" : "C:/Users/TSR/Desktop/2015-9-1-R/bayes code/bayes/work.R",
+    "project_path" : "work.R",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
