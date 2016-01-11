@@ -11,22 +11,77 @@ Nn=kn*sum(sapply(0:(n-1),aaa,a=0.9))
 
 library(LearnBayes)
 
-######求 meanTL=meanBETA ,varTL=varBETA 時的 a,b
 
-f=createbeta(n = 200,v = 0.9)
+#################test
+f=createbeta(n = 2000,v = 0.2)
 mf=mean(f)
 vf=var(f)
-ff=function(z){
+
+ff=function(x,mf=mf,vf=bvar){
+  y=2
+  (x/(x+y)-mf)^2+((x*y)/((x+y)^2*(x+y+1))-vf)^2
+}
+ll=uniroot(ff,mf=mf,vf=vf,interval = c(0,10),tol = 1e-10)
+ll
+
+b1=ll[[2]][1]
+b2=ll[[2]][2]
+b1
+b2
+
+
+######求 meanTL=meanBETA ,varTL=varBETA 時的 a,b
+c(0.05240259,.1,.15,.02,.03)
+f=createbeta(n = 2000,v = .5)
+mf=mean(f)
+vf=var(f)
+bvar=.15
+ff=function(z,mf=mf,vf=bvar){
   x=z[1]
   y=z[2]
   (x/(x+y)-mf)^2+((x*y)/((x+y)^2*(x+y+1))-vf)^2
 }
-ll=nlm(ff,p = c(1,2),gradtol = 1e-20)
+ll=nlm(ff,mf=mf,vf=bvar,p = c(1,2),gradtol = 1e-20)
 b1=ll[[2]][1]
 b2=ll[[2]][2]
+vf
+b1
+b2
+
+m=calculateM(a=b1,b=b2,n=1000)
+N=calculateN(a=b1,b=b2,n=1000,m=m)
+re=calculateRE(a=b1,b=b2,n=1000)
+a1=allrun(run=1000,n=500,a=b1,b=b2,t=0,m=m,N=N,re=re)
+a1
+a=0.5;n=1000
+rn=calculateTLRn(a = .5,n=1000)
+kn=calculateTLKn(a = .5,n=1000)
+Nn=calculateTLNn(a = .5,n=1000)
+a2=allrun(run=1000,n=500,alpha=.5,t=1,m=kn,N=Nn,re=rn)
+a2
+
+test1=rbind(a1,a2)
+a3=matrix(c('Beta','TL',paste('a=',round(b1,2),',','b=',round(b2,2),sep='')
+            ,a,n,n,'=','=',round(bvar,2),round(vf,2))
+  ,byrow = F,ncol=5)
+colnames(a3)=c('distributed','parameter','n','EX','Var')
+a4=cbind(a3,test1)
+a4
+
+last=rbind(last,a4)
+
+last1=last
+
+
+
+
+
+if(1>2) {p="S"
+}else {p="F"}
+
 
 ggg=proc.time()
-runs(run = 1000,fun = kfail,a=1,b=1,n=100,t=0)
+runs(run = 1000,fun = kfail,a=1,b=1,n=1000,t=0)
 proc.time()-ggg
 
 ggg=proc.time()
@@ -44,22 +99,3 @@ proc.time()-ggg
 ggg=proc.time()
 runs(run = 1000,fun = ifail,a=1,b=1,n=100,t=0)
 proc.time()-ggg
-
-
-
-runs(run = 1000,fun = mstep,a=1,b=1,m=rn,n=100,t=0)
-runs(run = 100,fun = mreducestep,a=1,b=1,m=kn,n=100,t=0)
-runs(run = 100,fun = Nkfail,a=1,b=1,n=1000,alpha=0.9,N=Nn,t=1)
-runs(run = 100,fun = ifail,a=1,b=1,n=100,t=0)
- 
-runs(run = 100,fun = kfail,a=1,b=1,n=200,t=1)
-runs(run = 100,fun = mstep,a=1,b=1,m=4,n=200,t=1)
-runs(run = 100,fun = mreducestep,a=1,b=1,m=4,n=200,t=1)
-runs(run = 100,fun = Nkfail,a=1,b=1,n=200,N=50,t=1)
-runs(run = 100,fun = ifail,a=1,b=1,n=200,t=1)
-
-
-
-
-if(1>2) {p="S"
-}else {p="F"}

@@ -56,18 +56,18 @@ mstep=function(a,b,m,n,alpha=0.1,t=0){
 
 
 ####################################
-mreducestep=function(a,b,m,n,alpha=0.1,t=0){
+mreducestep=function(a,b,re,n,alpha=0.1,t=0){
   if (t==1){rb=createbeta(n,alpha)}
   else {rb=rbeta(n = n,shape1 = a,shape2 = b)}
   list=character(n);mtotal=c();p=0
   i=1;scount=0;ru=runif(n)  
   for (j in 1:n){
-    if (scount>=m | scount==0) {taget=rb[i]}
+    if (scount>=re | scount==0) {taget=rb[i]}
     if(taget>=ru[j]) {p="S"
     scount=scount+1
     }else {p="F"}
     list[j]=p
-    if (taget<ru[j] & scount<m) {
+    if (taget<ru[j] & scount<re) {
       mtotal=c(mtotal,scount)
       i=i+1
       scount=0
@@ -183,20 +183,21 @@ L=function(a,b){
 }
 
 calculateRE=function(a,b,n){
-  (n*L(a,b)*gamma(1+b))^(1/(1+b))
+  round((n*L(a,b)*gamma(1+b))^(1/(1+b)))
 }
 
 calculateM=function(a,b,n){
-  ((n*gamma(1+1/b))/(b*L(a,b)^(1/b)))^(b/(1+b))
+  round(((n*gamma(1+1/b))/(b*L(a,b)^(1/b)))^(b/(1+b)))
 }
 
 calculateN=function(a,b,n,m){
   bb=beta(a=a+(0:(n-1)),b=b)
   N=(sum(bb)*m)/beta(a,b)
+  round(N)
 }
 
 calculateTLRn=function(a,n){
-  (2*n*a)^(1/3)
+  round((2*n*a)^(1/3))
 }
 
 calculateTLKn=function(a,n){
@@ -209,5 +210,16 @@ calculateTLNn=function(a,n){
   k=floor(k)
   N=k*sum(sapply(0:(n-1),aaa,a=a))
   floor(N)
+}
+
+allrun=function(run=100,a=1,b=1,n=200,alpha=.1,t=1,m=4,N=50,re=4){ 
+  pp=c()
+  pp[1]=runs(run = run,fun = kfail,a=a,b=b,n=n,alpha=alpha,t=t)
+  pp[2]=runs(run = run,fun = mstep,a=a,b=b,n=n,alpha=alpha,t=t,m=m)
+  pp[3]=runs(run = run,fun = mreducestep,a=a,b=b,n=n,alpha=alpha,t=t,re=re)
+  pp[4]=runs(run = run,fun = Nkfail,a=a,b=b,n=n,alpha=alpha,t=t,N=N)
+  pp[5]=runs(run = run,fun = ifail,a=a,b=b,n=n,alpha=alpha,t=t)
+  names(pp)=c('kfail','mstep','mreduce','Nkfail','ifail')
+  pp
 }
 
