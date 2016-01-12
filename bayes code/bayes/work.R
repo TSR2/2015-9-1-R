@@ -31,45 +31,76 @@ b2
 
 
 ######求 meanTL=meanBETA ,varTL=varBETA 時的 a,b
-c(0.05240259,.1,.15,.02,.03)
-f=createbeta(n = 2000,v = .5)
-mf=mean(f)
-vf=var(f)
-bvar=.15
-ff=function(z,mf=mf,vf=bvar){
-  x=z[1]
-  y=z[2]
-  (x/(x+y)-mf)^2+((x*y)/((x+y)^2*(x+y+1))-vf)^2
+
+c(0.05240259,.1,.15,.02,.03) #v=0.5
+c(0.04310766,.07,.1,.02,.03) #v=0.3
+c(0.01681744,.03,.04,.01,.005) #v=0.1
+varlist=list(v1=c(0.01681744,.03,.04,.01,.005),
+             v3=c(0.04310766,.07,.1,.02,.03),
+             v5=c(0.05240259,.1,.15,.02,.03),
+             v9=c(0.05702166,.1,.18,.02,.03))
+aa=c(.1,.3,.5,.9)
+n=1000
+alllast=list()
+for (j in 1:4){
+  a=aa[j]
+  test=data.frame()
+  for (i in varlist[[j]] ) {
+    f=createbeta(n = 2000,v = j)
+    mf=mean(f)
+    vf=var(f)
+    bvar=i
+    ff=function(z,mf=mf,vf=bvar){
+      x=z[1]
+      y=z[2]
+      (x/(x+y)-mf)^2+((x*y)/((x+y)^2*(x+y+1))-vf)^2
+    }
+    ll=nlm(ff,mf=mf,vf=bvar,p = c(1,2),gradtol = 1e-20)
+    b1=ll[[2]][1]
+    b2=ll[[2]][2]
+    vf
+    b1
+    b2
+    
+    m=calculateM(a=b1,b=b2,n=n)
+    N=calculateN(a=b1,b=b2,n=n,m=m)
+    re=calculateRE(a=b1,b=b2,n=n)
+    a1=allrun(run=500,n=n,a=b1,b=b2,t=0,m=m,N=N,re=re)
+    a1
+    
+    rn=calculateTLRn(a=a,n=n)
+    kn=calculateTLKn(a=a,n=n)
+    Nn=calculateTLNn(a=a,n=n)
+    a2=allrun(run=500,n=n,alpha=a,t=1,m=kn,N=Nn,re=rn)
+    a2
+    
+    test1=rbind(a1,a2)
+    a3=matrix(c('Beta','TL',paste('a=',round(b1,2),',','b=',round(b2,2),sep='')
+                ,a,n,n,'=','=',round(bvar,3),round(vf,3))
+      ,byrow = F,ncol=5)
+    colnames(a3)=c('distributed','parameter','n','EX','Var')
+    a4=cbind(a3,test1)
+    a4
+  
+    test=rbind(test,a4)
+  }
+  alllast[[j]]=test
 }
-ll=nlm(ff,mf=mf,vf=bvar,p = c(1,2),gradtol = 1e-20)
-b1=ll[[2]][1]
-b2=ll[[2]][2]
-vf
-b1
-b2
 
-m=calculateM(a=b1,b=b2,n=1000)
-N=calculateN(a=b1,b=b2,n=1000,m=m)
-re=calculateRE(a=b1,b=b2,n=1000)
-a1=allrun(run=1000,n=500,a=b1,b=b2,t=0,m=m,N=N,re=re)
-a1
-a=0.5;n=1000
-rn=calculateTLRn(a = .5,n=1000)
-kn=calculateTLKn(a = .5,n=1000)
-Nn=calculateTLNn(a = .5,n=1000)
-a2=allrun(run=1000,n=500,alpha=.5,t=1,m=kn,N=Nn,re=rn)
-a2
+write.csv(x = n500,'G:/貝氏輩分/500.csv',row.names = F)
+write.csv(x = n1000,'G:/貝氏輩分/1000.csv',row.names = F)
+n1000=alllast
 
-test1=rbind(a1,a2)
-a3=matrix(c('Beta','TL',paste('a=',round(b1,2),',','b=',round(b2,2),sep='')
-            ,a,n,n,'=','=',round(bvar,2),round(vf,2))
-  ,byrow = F,ncol=5)
-colnames(a3)=c('distributed','parameter','n','EX','Var')
-a4=cbind(a3,test1)
-a4
+n500
 
-last=rbind(last,a4)
+test
 
+
+
+v1.500
+v3.500
+v5.500
+v9.500
 last1=last
 
 
