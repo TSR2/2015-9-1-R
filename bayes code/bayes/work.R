@@ -40,7 +40,7 @@ varlist=list(v1=c(0.01681744,.03,.04,.01,.005),
              v5=c(0.05240259,.1,.15,.02,.03),
              v9=c(0.05702166,.1,.18,.02,.03))
 aa=c(.1,.3,.5,.9)
-n=1000
+n=1500
 alllast=list()
 for (j in 1:4){
   a=aa[j]
@@ -87,9 +87,9 @@ for (j in 1:4){
   alllast[[j]]=test
 }
 
-write.csv(x = n500,'G:/貝氏輩分/500.csv',row.names = F)
-write.csv(x = n1000,'G:/貝氏輩分/1000.csv',row.names = F)
-n1000=alllast
+
+n1500=alllast
+n1000
 
 n500
 
@@ -97,36 +97,38 @@ test
 
 
 
-v1.500
-v3.500
-v5.500
-v9.500
-last1=last
+tt1=function(x){ 
+  x=as.character(x) %>% as.numeric()
+  round(x,digits = 4)
+}
+
+trans=function(x){  
+  test1500=do.call(rbind,x)
+  kk1=test1500 %>% colwise(tt1,.cols = 6:10)(.)
+  cbind(test1500[,1:5],kk1)
+}
 
 
+final500=trans(n500)
+final1000=trans(n1000)
+final1500=trans(n1500)
 
 
+library(xtable)
+final500 %>% dim
+final1000 %>% dim
+final1500 %>% dim
+names(final500)[6:10]=c('1-fa','m-run','non','Nlearn','i')
+names(final1000)[6:10]=c('1-fa','m-run','non','Nlearn','i')
+names(final1500)[6:10]=c('1-fa','m-run','non','Nlearn','i')
+row.names(final500)=1:40
+row.names(final1000)=1:40
+row.names(final1500)=1:40
+final500$group=rep(1:4,each=10)
+final1000$group=rep(1:4,each=10)
+final1500$group=rep(1:4,each=10)
+xtable(final500,digits=4)
+xtable(final1000,digits=4)
+xtable(final1500,digits=4)
 
-if(1>2) {p="S"
-}else {p="F"}
 
-
-ggg=proc.time()
-runs(run = 1000,fun = kfail,a=1,b=1,n=1000,t=0)
-proc.time()-ggg
-
-ggg=proc.time()
-runs(run = 1000,fun = mstep,a=1,b=1,m=9,n=100,t=0)
-proc.time()-ggg
-
-ggg=proc.time()
-runs(run = 1000,fun = mreducestep,a=1,b=1,m=9,n=100,t=0)
-proc.time()-ggg
-
-ggg=proc.time()
-runs(run = 1000,fun = Nkfail,a=1,b=1,n=100,alpha=0.9,N=g,t=0)
-proc.time()-ggg
-
-ggg=proc.time()
-runs(run = 1000,fun = ifail,a=1,b=1,n=100,t=0)
-proc.time()-ggg
