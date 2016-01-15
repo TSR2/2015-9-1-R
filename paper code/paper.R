@@ -236,7 +236,7 @@ createh=function(data1,com){
   list(hhh,ppp)
 }
 
-
+createh(data1=total,com=1)
 
 
 
@@ -267,6 +267,9 @@ for (j in 1:2){
 dd=c(dda1,dda2)
 xx=-2:6
 yy=-2:6
+
+
+
 
 for (i in 1:30){  
   b1=dd[[1]][[1]]

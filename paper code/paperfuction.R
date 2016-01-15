@@ -95,7 +95,7 @@ createh=function(data1,com){
     maxI
     #判定細數是否小於0，如果小於0，該系數的區間交換大小位置
     for (j in 1:p){
-      if (coef[com,j]<0) {
+      if (coef[j,com]<0) {
         a=minI[,j]
         minI[,j]=maxI[,j]
         maxI[,j]=a
@@ -103,8 +103,8 @@ createh=function(data1,com){
     }
     
     #計算線性組合後的區間
-    linmin=minI %*% coef[com,]
-    linmax=maxI %*% coef[com,]
+    linmin=minI %*% coef[,com]
+    linmax=maxI %*% coef[,com]
     m=cbind(linmin[,1],linmax[,1])
     
     np=as.data.frame(m)
@@ -185,7 +185,7 @@ createh=function(data1,com){
     coef=hcalcov(data1)[[2]]$vectors
     #判定細數是否小於0，如果小於0，該系數的區間交換大小位置
     for (j in 1:p){
-      if (coef[com,j]<0) {
+      if (coef[j,com]<0) {
         a=minI[,j]
         minI[,j]=maxI[,j]
         maxI[,j]=a
@@ -193,8 +193,8 @@ createh=function(data1,com){
     }
     
     #計算線性組合後的區間
-    linmin=minI %*% coef[com,]
-    linmax=maxI %*% coef[com,]
+    linmin=minI %*% coef[,com]
+    linmax=maxI %*% coef[,com]
     m=cbind(linmin[,1],linmax[,1])
     
     np=as.data.frame(m)

@@ -75,3 +75,10 @@ list(mu=mu, s2=s2)
 #####################################################
 
 
+test1=kmeans(iris[,1:4],centers = 3)
+test1 %>% names()
+test1$centers
+p=iris[,1:4] %>% as.matrix()
+t1=t(p) %*% p
+eig=eigen(t1)
+plot(p %*% eig$vectors[,2],p %*% eig$vectors[,1],col=rep(1:3,each=50))
