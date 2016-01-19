@@ -72,7 +72,7 @@ for(j in 1: p){
 }
 
 list(mu=mu, s2=s2)
-#####################################################
+#####################################################簡單一般pca測試
 
 
 test1=kmeans(iris[,1:4],centers = 3)
@@ -82,3 +82,27 @@ p=iris[,1:4] %>% as.matrix()
 t1=t(p) %*% p
 eig=eigen(t1)
 plot(p %*% eig$vectors[,2],p %*% eig$vectors[,1],col=rep(1:3,each=50))
+
+dr1=p %*% eig$vectors[,1]
+dr2=p %*% eig$vectors[,2]
+
+test2=cbind(dr1,dr2)
+des_e=function(x,b=10){
+  ymin=min(x[,1])
+  ymax=max(x[,1])
+  xmin=min(x[,2])
+  xmax=max(x[,2])
+  
+  yrange=seq(ymin,ymax,length.out = b+1)
+  xrange=seq(xmin,xmax,length.out = b+1)
+  
+  qq1=matrix(0,nrow=b,ncol=b)
+  for (j in 1:b){
+    for(i in 1:b){
+      qq1[i,j]=sum(x[,1]>=yrange[j] & x[,1]<=yrange[j+1] & x[,2]>=xrange[i] & x[,2]<=xrange[i+1])
+    }
+  }
+  qq1
+}
+
+image(des_e(test2,b=10))

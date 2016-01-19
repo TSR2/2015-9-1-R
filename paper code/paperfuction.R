@@ -242,3 +242,52 @@ createh=function(data1,com){
   }
   list(hhh,ppp)
 }
+
+
+###################################common desity estmate
+des_e=function(x,b=10){
+  ymin=min(x[,1])
+  ymax=max(x[,1])
+  xmin=min(x[,2])
+  xmax=max(x[,2])
+  
+  yrange=seq(ymin,ymax,length.out = b+1)
+  xrange=seq(xmin,xmax,length.out = b+1)
+  
+  qq1=matrix(0,nrow=b,ncol=b)
+  for (j in 1:b){
+    for(i in 1:b){
+      qq1[i,j]=sum(x[,1]>=yrange[j] & x[,1]<=yrange[j+1] & x[,2]>=xrange[i] & x[,2]<=xrange[i+1])
+    }
+  }
+  qq1
+}
+
+
+
+
+#####################
+color.Palette <- function(low = "black",
+                          high = c("green", "red"),
+                          mid="black",
+                          k =50)
+{
+  low <- col2rgb(low)/255
+  high <- col2rgb(high)/255
+  if(is.null(mid)){
+    r <- seq(low[1], high[1], len = k)
+    g <- seq(low[2], high[2], len = k)
+    b <- seq(low[3], high[3], len = k)
+  }
+  if(!is.null(mid)){
+    k2 <- round(k/2)
+    mid <- col2rgb(mid)/255
+    r <- c(seq(low[1], mid[1], len = k2),
+           seq(mid[1], high[1], len = k2))
+    g <- c(seq(low[2], mid[2], len = k2),
+           seq(mid[2], high[2], len = k2))
+    b <- c(seq(low[3], mid[3], len = k2),
+           seq(mid[3], high[3], len = k2))
+  }
+  rgb(r, g, b)
+}

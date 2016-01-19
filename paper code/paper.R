@@ -241,7 +241,7 @@ createh(data1=total,com=1)
 
 
 
-
+####################畫30*2 抽取iris的質方圖
 for (j in 1:2){
   if(j==1) {
     par(mfcol=c(30,2),mai=c(0,0,0,0))
@@ -262,6 +262,105 @@ for (j in 1:2){
     plot(kk,xlim=c(bmi-2,bma+1),ylim=c(0,pma),main="",col="blue",ylab = "")
   }
 }
+
+
+
+##################################照組別分群製作成直方圖
+test3=iris
+gr=list(1:50,51:100,101:150)
+point_to_h=function(x,group){
+  d=dim(x)
+  h=list()
+  a=list()
+
+  for ( j in 1:d[2]){
+    for(i in 1:length(group)){
+      ff=hist(x[group[[i]],j])
+      ff$counts=ff$counts/sum(ff$counts)
+      a[[i]]=ff
+    }
+    h[[j]]=a
+  }
+  h
+}
+par(mfcol=c(3,4))
+test4=point_to_h(iris[,1:4],group=gr)
+
+#####################取兩個主成分畫出來
+
+for (j in 1:2){
+  if(j==1) {
+    par(mfcol=c(3,2),mai=c(0,0,0,0))
+    kk=hist(iris[,1],plot=F)
+  }
+  dda=createh(data1=test4,com=j)
+  tt=laply(dda[[1]],max)
+  bma=max(tt)
+  tt=laply(dda[[1]],min)
+  bmi=min(tt)
+  tt=laply(dda[[2]],max)
+  pma=max(tt)
+  tt=laply(dda[[2]],min)
+  pmi=min(tt)
+  for (i in 1:3){
+    kk$breaks=dda[[1]][[i]]
+    kk$counts=dda[[2]][[i]]
+    plot(kk,xlim=c(bmi-2,bma+1),ylim=c(0,pma),main="",col="blue",ylab = "")
+  }
+}
+par(mfrow=c(1,1))
+dda1=createh(data1=test4,com=1)
+dda2=createh(data1=test4,com=2)
+#############################################joint histo
+for (s in 1:3){
+  b1=list(breaks=dda1[[1]][[s]],counts=dda1[[2]][[s]])
+  b2=list(breaks=dda2[[1]][[s]],counts=dda2[[2]][[s]])
+  yr=-4:4
+  xr=2:12
+  joint=matrix(0,ncol=(length(yr)-1),nrow=(length(xr)-1))
+  lastjoint=matrix(0,ncol=(length(yr)-1),nrow=(length(xr)-1))
+  for (j in 1:(length(yr)-1)){
+    for (i in 1:(length(xr)-1)){
+      gg=0
+      allrange=(xr[i+1]-xr[i])*(yr[j+1]-yr[j])
+      for(p in 1:length(b1$counts)){
+        for(k in 1:length(b2$counts)){
+          aa=min(xr[i+1]-b1$breaks[p],b1$breaks[p+1]-xr[i])
+          if (aa<0) aa=0
+          bb=min(yr[j+1]-b2$breaks[k],b2$breaks[k+1]-yr[j])
+          if (bb<0) bb=0
+          if (b1$breaks[p]>=xr[i] & b1$breaks[p+1]<=xr[i+1]) aa=b1$breaks[p+1]-b1$breaks[p]
+          if (b2$breaks[k]>=yr[j] & b2$breaks[k+1]<=yr[j+1]) bb=b2$breaks[k+1]-b2$breaks[k]
+          coverratio=(aa*bb)/allrange
+          gg=gg+coverratio*b1$counts[p]*b2$counts[k]
+          }
+        }
+        joint[i,j]=gg
+    }
+  }
+  lastjoint=lastjoint+joint
+}
+  
+  
+
+GBRcol=color.Palette(low='green',mid='black',high='red')
+image(lastjoint,col=GBRcol)
+
+
+expand.grid(-4:4,2:12)
+
+##########################################
+
+
+
+
+
+
+
+
+
+
+
 
 
 dd=c(dda1,dda2)
