@@ -241,6 +241,17 @@ createh(data1=total,com=1)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 ####################畫30*2 抽取iris的質方圖
 for (j in 1:2){
   if(j==1) {
@@ -265,24 +276,34 @@ for (j in 1:2){
 
 
 
-##################################照組別分群製作成直方圖
+
+
+
+
+#####################################################簡單一般pca測試
+
+par(mfrow=c(1,1))
+test1=kmeans(iris[,1:4],centers = 3)
+test1 %>% names()
+test1$centers
+
+p=iris[,1:4] %>% as.matrix()
+t1=t(p) %*% p
+eig=eigen(t1)
+plot(p %*% eig$vectors[,2],p %*% eig$vectors[,1],col=rep(1:3,each=50))
+
+dr1=p %*% eig$vectors[,1]
+dr2=p %*% eig$vectors[,2]
+
+test2=cbind(dr1,dr2)
+
+
+image(des_e(test2,b=10))
+
+##################################將iris原始資料照組別分群製作成直方圖資料3*4
 test3=iris
 gr=list(1:50,51:100,101:150)
-point_to_h=function(x,group){
-  d=dim(x)
-  h=list()
-  a=list()
 
-  for ( j in 1:d[2]){
-    for(i in 1:length(group)){
-      ff=hist(x[group[[i]],j])
-      ff$counts=ff$counts/sum(ff$counts)
-      a[[i]]=ff
-    }
-    h[[j]]=a
-  }
-  h
-}
 par(mfcol=c(3,4))
 test4=point_to_h(iris[,1:4],group=gr)
 
@@ -312,13 +333,14 @@ par(mfrow=c(1,1))
 dda1=createh(data1=test4,com=1)
 dda2=createh(data1=test4,com=2)
 #############################################joint histo
+lastjoint=matrix(0,ncol=(length(yr)-1),nrow=(length(xr)-1))
+part=list()
 for (s in 1:3){
   b1=list(breaks=dda1[[1]][[s]],counts=dda1[[2]][[s]])
   b2=list(breaks=dda2[[1]][[s]],counts=dda2[[2]][[s]])
   yr=-4:4
-  xr=2:12
+  xr=3:12
   joint=matrix(0,ncol=(length(yr)-1),nrow=(length(xr)-1))
-  lastjoint=matrix(0,ncol=(length(yr)-1),nrow=(length(xr)-1))
   for (j in 1:(length(yr)-1)){
     for (i in 1:(length(xr)-1)){
       gg=0
@@ -330,7 +352,9 @@ for (s in 1:3){
           bb=min(yr[j+1]-b2$breaks[k],b2$breaks[k+1]-yr[j])
           if (bb<0) bb=0
           if (b1$breaks[p]>=xr[i] & b1$breaks[p+1]<=xr[i+1]) aa=b1$breaks[p+1]-b1$breaks[p]
+          if (b1$breaks[p]<=xr[i] & b1$breaks[p+1]>=xr[i+1]) aa=xr[i+1]-xr[i]
           if (b2$breaks[k]>=yr[j] & b2$breaks[k+1]<=yr[j+1]) bb=b2$breaks[k+1]-b2$breaks[k]
+          if (b2$breaks[k]<=yr[j] & b2$breaks[k+1]>=yr[j+1]) bb=yr[j+1]-yr[j]
           coverratio=(aa*bb)/allrange
           gg=gg+coverratio*b1$counts[p]*b2$counts[k]
           }
@@ -338,16 +362,22 @@ for (s in 1:3){
         joint[i,j]=gg
     }
   }
+  part[[s]]=joint
   lastjoint=lastjoint+joint
 }
+par(mfrow=c(1,1))
   
-  
-
+lastjoint
 GBRcol=color.Palette(low='green',mid='black',high='red')
-image(lastjoint,col=GBRcol)
+for ( i in 1:3){
+  image(part[[i]])
+}
 
+image(lastjoint)
+image(lastjoint,col=rainbow(100)[lastjoint*10000])
 
-expand.grid(-4:4,2:12)
+plot(1:50,col=rainbow(100))
+image(matrix(1:15,ncol=3),col=1:5)
 
 ##########################################
 

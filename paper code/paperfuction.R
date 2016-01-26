@@ -147,13 +147,14 @@ createh=function(data1,com){
       p2=sum(ratio2*pro[takeindex])
       pp[b]=p1+p2
     }
-    ppp[[i]]=pp
+    ppp[[i]]=pp/sum(pp)
     hhh[[i]]=his
   }
   list(hhh,ppp)
 }
 
 #################################test
+if (0){
 createh=function(data1,com){
   p=length(data1)
   n=length(data1[[1]])
@@ -242,7 +243,7 @@ createh=function(data1,com){
   }
   list(hhh,ppp)
 }
-
+}
 
 ###################################common desity estmate
 des_e=function(x,b=10){
@@ -263,7 +264,21 @@ des_e=function(x,b=10){
   qq1
 }
 
-
+###################################一般資料轉換成直方圖資料
+point_to_h=function(x,group){
+  d=dim(x)
+  h=list()
+  a=list()
+  for ( j in 1:d[2]){
+    for(i in 1:length(group)){
+      ff=hist(x[group[[i]],j])
+      ff$counts=ff$counts/sum(ff$counts)
+      a[[i]]=ff
+    }
+    h[[j]]=a
+  }
+  h
+}
 
 
 #####################
