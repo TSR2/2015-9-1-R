@@ -280,6 +280,32 @@ point_to_h=function(x,group){
   h
 }
 
+#############################################取出質方圖資料的主成分畫圖
+plotcom=function(x){
+  n=length(x[[1]])
+  p=length(x)
+  for (j in 1:2){
+    if(j==1) {
+      par(mfcol=c(n,2),mai=c(0,0,0,0))
+      kk=hist(iris[,1],plot=F)
+    }
+    dda=createh(data1=x,com=j)
+    tt=laply(dda[[1]],max)
+    bma=max(tt)
+    tt=laply(dda[[1]],min)
+    bmi=min(tt)
+    tt=laply(dda[[2]],max)
+    pma=max(tt)
+    tt=laply(dda[[2]],min)
+    pmi=min(tt)
+    for (i in 1:n){
+      kk$breaks=dda[[1]][[i]]
+      kk$counts=dda[[2]][[i]]
+      plot(kk,xlim=c(bmi-2,bma+1),ylim=c(0,pma),main="",col="blue",ylab = "")
+    }
+  }
+}
+
 
 #####################
 color.Palette <- function(low = "black",
@@ -305,4 +331,50 @@ color.Palette <- function(low = "black",
            seq(mid[3], high[3], len = k2))
   }
   rgb(r, g, b)
+}
+
+
+###################################################plot joint histo
+#yr=seq(-4,4,by=.1)
+#xr=seq(4,12,by=.1)
+plotjointh=function(x,b){
+  dda1=createh(data1=x,com=1)
+  dda2=createh(data1=x,com=2)
+  xmax=dda1[[1]] %>% unlist %>% max
+  xmin=dda1[[1]] %>% unlist %>% min
+  ymax=dda2[[1]] %>% unlist %>% max
+  ymin=dda2[[1]] %>% unlist %>% min
+  xr=seq(xmin,xmax,length.out = b)
+  yr=seq(ymin,ymax,length.out = b)
+  lastjoint=matrix(0,ncol=(length(yr)-1),nrow=(length(xr)-1))
+  part=list()
+  for (s in 1:length(dda1[[1]])){
+    b1=list(breaks=dda1[[1]][[s]],counts=dda1[[2]][[s]])
+    b2=list(breaks=dda2[[1]][[s]],counts=dda2[[2]][[s]])
+    joint=matrix(0,ncol=(length(yr)-1),nrow=(length(xr)-1))
+    for (j in 1:(length(yr)-1)){
+      for (i in 1:(length(xr)-1)){
+        gg=0
+        allrange=(xr[i+1]-xr[i])*(yr[j+1]-yr[j])
+        for(p in 1:length(b1$counts)){
+          for(k in 1:length(b2$counts)){
+            aa=min(xr[i+1]-b1$breaks[p],b1$breaks[p+1]-xr[i])
+            if (aa<0) aa=0
+            bb=min(yr[j+1]-b2$breaks[k],b2$breaks[k+1]-yr[j])
+            if (bb<0) bb=0
+            if (b1$breaks[p]>=xr[i] & b1$breaks[p+1]<=xr[i+1]) aa=b1$breaks[p+1]-b1$breaks[p]
+            if (b1$breaks[p]<=xr[i] & b1$breaks[p+1]>=xr[i+1]) aa=xr[i+1]-xr[i]
+            if (b2$breaks[k]>=yr[j] & b2$breaks[k+1]<=yr[j+1]) bb=b2$breaks[k+1]-b2$breaks[k]
+            if (b2$breaks[k]<=yr[j] & b2$breaks[k+1]>=yr[j+1]) bb=yr[j+1]-yr[j]
+            coverratio=(aa*bb)/allrange
+            gg=gg+coverratio*b1$counts[p]*b2$counts[k]
+          }
+        }
+        joint[i,j]=gg
+      }
+    }
+    part[[s]]=joint
+    lastjoint=lastjoint+joint
+  }
+  image(lastjoint)
 }
