@@ -60,7 +60,7 @@ hcalcov=function(x){
 
 
 #########################create compo hist
-createh=function(data1,com){
+createh=function(data1,com,B=0){
   p=length(data1)
   n=length(data1[[1]])
   ppp=list()
@@ -111,7 +111,8 @@ createh=function(data1,com){
     names(np)=c("Imin","Imax")
     #找出合併後直方圖的range
     his=np %>% summarise(hmin=min(Imin),hmax=max(Imax))
-    Bi=max(bij)
+    if (B==0) {Bi=max(bij)
+    }else{Bi=B}
     his=seq(from=his$hmin,to=his$hmax,length.out=Bi+1)
     
     
@@ -153,7 +154,9 @@ createh=function(data1,com){
   list(hhh,ppp)
 }
 
-#################################test
+###########################################test
+
+######錯誤
 if (0){
 createh=function(data1,com){
   p=length(data1)
@@ -244,6 +247,104 @@ createh=function(data1,com){
   list(hhh,ppp)
 }
 }
+#######去除which 反而比較慢
+if (0){
+createh=function(data1,com){
+  p=length(data1)
+  n=length(data1[[1]])
+  ppp=list()
+  hhh=list()
+  for (i in 1:n){
+    bij=c()
+    b=list()
+    #算出某個觀測值得每個值方圖資料有幾個分割
+    for (j in 1:p){
+      bij[j]=length(data1[[j]][[i]]$count)
+      b[[j]]=1:bij[j]
+    }
+    #造所有區間的組合
+    exp=expand.grid(b)
+    #把區間最小值和最大值分別放在不同矩陣(此時只是index)
+    minI=matrix(0,ncol=p,nrow=dim(exp)[1])
+    maxI=matrix(0,ncol=p,nrow=dim(exp)[1])
+    #收集每個區間機率容器
+    pro=rep(1,dim(exp)[1])
+    #放入正確的數值
+    for (j in 1:p){
+      x=data1[[j]][[i]]$breaks
+      count=data1[[j]][[i]]$count
+      minI[,j]=x[exp[,j]]
+      maxI[,j]=x[exp[,j]+1]
+      pro=pro*count
+    }
+    #獲得主成分的係數向量
+    coef=hcalcov(data1)[[2]]$vectors
+    pro
+    minI
+    maxI
+    #判定細數是否小於0，如果小於0，該系數的區間交換大小位置
+    for (j in 1:p){
+      if (coef[j,com]<0) {
+        a=minI[,j]
+        minI[,j]=maxI[,j]
+        maxI[,j]=a
+      }
+    }
+    
+    #計算線性組合後的區間
+    linmin=minI %*% coef[,com]
+    linmax=maxI %*% coef[,com]
+    m=cbind(linmin[,1],linmax[,1])
+    
+    np=as.data.frame(m)
+    names(np)=c("Imin","Imax")
+    #找出合併後直方圖的range
+    his=np %>% summarise(hmin=min(Imin),hmax=max(Imax))
+    Bi=max(bij)
+    his=seq(from=his$hmin,to=his$hmax,length.out=Bi+1)
+    
+    
+    #以下先進行對一個區間重疊的計算
+    pp=c()
+    for (b in 1:Bi){
+      testm=cbind(linmin,linmax,his[b],his[b+1])
+      
+      #########完全包含的index  有時候會是空的，沒有任何全包含
+      allcoverindex=(testm[,2]<=testm[,4] & testm[,1]>=testm[,3]) |
+                            (testm[,2]>=testm[,4] & testm[,1]<=testm[,3])     #########篩選出完全包含的
+      allcover=testm[allcoverindex,]
+      if (is(allcover)[2]=="vector"){
+        allcover=t(as.matrix(allcover))
+      }
+      #計算完全包含的p值
+      ratio1=min(abs(allcover[,4]-allcover[,3]),abs(allcover[,2]-allcover[,1]))/abs(allcover[,2]-allcover[,1])
+      p1=sum(ratio1*pro[allcoverindex])
+      
+      ################判斷有重疊的index
+      coverindex=(testm[,2]>testm[,3] & testm[,1]<testm[,4]) |
+                  (testm[,2]<testm[,3] & testm[,1]>testm[,4])
+      #######找出有相交，但不是完全包含的index
+      #######找出有相交，但是不是完全包含的
+      takem=testm[coverindex,]
+      if (is(takem)[2]=="vector"){
+        takem=t(as.matrix(takem))
+      }
+      ####算出有take重疊的長度
+      gg=cbind(takem[,2]-takem[,3],takem[,4]-takem[,1])
+      takelen=apply(abs(gg),1,FUN = min)
+      
+      ratio2=takelen/abs(takem[,2]-takem[,1])
+      p2=sum(ratio2*pro[coverindex])
+      pp[b]=p1+p2
+    }
+    ppp[[i]]=pp/sum(pp)
+    hhh[[i]]=his
+  }
+  list(hhh,ppp)
+}
+}
+
+
 
 ###################################common desity estmate
 des_e=function(x,b=10){
@@ -337,9 +438,9 @@ color.Palette <- function(low = "black",
 ###################################################plot joint histo
 #yr=seq(-4,4,by=.1)
 #xr=seq(4,12,by=.1)
-plotjointh=function(x,b){
-  dda1=createh(data1=x,com=1)
-  dda2=createh(data1=x,com=2)
+plotjointh=function(x,b,...){
+  dda1=createh(data1=x,com=1,...)
+  dda2=createh(data1=x,com=2,...)
   xmax=dda1[[1]] %>% unlist %>% max
   xmin=dda1[[1]] %>% unlist %>% min
   ymax=dda2[[1]] %>% unlist %>% max
@@ -373,7 +474,7 @@ plotjointh=function(x,b){
         joint[i,j]=gg
       }
     }
-    part[[s]]=joint
+    #part[[s]]=joint
     lastjoint=lastjoint+joint
   }
   image(lastjoint)
