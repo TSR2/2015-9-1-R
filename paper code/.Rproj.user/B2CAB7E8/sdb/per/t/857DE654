@@ -1,0 +1,18 @@
+{
+    "contents" : "a1=read.table('Skin_NonSkin.txt')\na1 %>% head\ntest3=a1[,1:3]\n#test3=iris[,1:4]\npar(mfrow=c(1,1))\n\np=test3 %>% as.matrix()\nt1=t(p) %*% p\neig=eigen(t1)\n#plot(p %*% eig$vectors[,2],p %*% eig$vectors[,1],col=a1$V4)\n\np=test3 %>% as.matrix() \nt1=t(p) %*% p\neig=eigen(t1)\ndr1=p %*% eig$vectors[,1]\ndr2=p %*% eig$vectors[,2]\n\ntest2=cbind(dr1,dr2)\nimage(des_e(test2,b=10))\n\n\n\n#####################\ngr=list(which(a1$V4==1),which(a1$V4==2))\ntest4=point_to_h(p,group=gr)\nplotjointh(test4,10,B=10)\n\n\n\n###############################################kmean\ntest1=kmeans(a1[,1:3],centers = 2)\ntest1 %>% names()\ntt1=test1$cluster\ngr=list(which(tt1==1),which(tt1==2))\ntest4=point_to_h(p,group=gr)\nplotjointh(test4,10,B=7)\n\n\n\nnnn=iris[iris[,5]=='p',]\nnnn=iris[1,]\nnnn %>% is\n",
+    "created" : 1454318591707.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3558943974",
+    "id" : "857DE654",
+    "lastKnownWriteTime" : 1454331637,
+    "path" : "C:/Users/TSR/Desktop/2015-9-1-R/paper code/test.R",
+    "project_path" : "test.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

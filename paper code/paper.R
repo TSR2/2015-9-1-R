@@ -69,7 +69,7 @@ test1$centers
 
 #####################################################簡單一般pca測試
 test3=bigtest[,1:4]
-#test3=iris[,1:4]
+test3=iris[,1:4]
 par(mfrow=c(1,1))
 
 p=test3 %>% as.matrix()
@@ -107,12 +107,11 @@ plotcom(test4)
 
 #############################################joint histo
 par(mfcol=c(1,1))
-#Rprof()
+Rprof()
 pp=Sys.time()
-plotjointh(test4,10,B=8)
+plotjointh(test4,10,B=10)
 tt2=Sys.time()-pp
 tt2
-
 
 Rprof(NULL)
 summaryRprof()
@@ -126,4 +125,4 @@ for ( i in 1:3){
 
 
 ##########################################
-
+iris %>% select(min(.[,1],.[,2]))
