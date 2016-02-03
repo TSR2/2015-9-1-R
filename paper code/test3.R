@@ -5,7 +5,7 @@ a1 %>% summary()
 #test3=iris[,1:4]
 par(mfrow=c(1,1))
 
-p=test3 %>% as.matrix()
+p=scale(test3)%>% as.matrix()
 t1=t(p) %*% p
 eig=eigen(t1)
 plot(p %*% eig$vectors[,2],p %*% eig$vectors[,1],col=a1$V5+1)

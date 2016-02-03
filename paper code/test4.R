@@ -1,15 +1,16 @@
 source('paperfunction.R')
-a1=iris
-test3=iris[,1:4]
+a1=read.table('wine.data',sep=',')
+a1 %>% head
+test3=a1[,11:14]
 #test3=iris[,1:4]
 par(mfrow=c(1,1))
 
-p=test3 %>% as.matrix()
+p=scale(test3) %>% as.matrix()
 t1=t(p) %*% p
 eig=eigen(t1)
-#plot(p %*% eig$vectors[,2],p %*% eig$vectors[,1],col=a1$Species)
+plot(p %*% eig$vectors[,2],p %*% eig$vectors[,1],col=a1$V1)
 
-p=test3 %>% as.matrix() 
+p=scale(test3) %>% as.matrix() 
 t1=t(p) %*% p
 eig=eigen(t1)
 dr1=p %*% eig$vectors[,1]
@@ -22,9 +23,9 @@ image(des_e(test2,b=10))
 
 #####################
 par(mfrow=c(2,2),mai=rep(.3,4))
-gr=list(which(a1[,5]=='setosa'),which(a1[,5]=='versicolor'),which(a1[,5]=='virginica'))
-test4=point_to_h(p,group=gr)
 
+gr=list(which(a1$V1==1),which(a1$V1==2),which(a1$V1==3))
+test4=point_to_h(p,group=gr)
 plotjointh(test4,10,B=10)
 
 
@@ -36,17 +37,14 @@ test4=point_to_h(p,group=gr)
 plotjointh(test4,10,B=10)
 
 
-###################output
-pdf('me_iris.pdf')
-par(mfrow=c(2,2))
-gr=list(which(a1[,5]=='setosa'),which(a1[,5]=='versicolor'),which(a1[,5]=='virginica'))
-test4=point_to_h(p,group=gr)
+plotcom(test4)
 
+
+#################################output
+par(mfrow=c(2,2))
+pdf('me_wine.pdf')
+par(mfrow=c(2,2))
+gr=list(which(a1$V1==1),which(a1$V1==2),which(a1$V1==3))
+test4=point_to_h(p,group=gr)
 plotjointh(test4,10,B=10)
 dev.off()
-
-
-################################################big iris
-
-
-

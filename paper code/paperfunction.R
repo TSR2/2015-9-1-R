@@ -633,7 +633,7 @@ color.Palette <- function(low = "black",
 #yr=seq(-4,4,by=.1)
 #xr=seq(4,12,by=.1)
 plotjointh=function(x,b,...){
-  par(mfrow=c(1,1))
+
   dda1=createh(data1=x,com=1,...)
   dda2=createh(data1=x,com=2,...)
   xmax=dda1[[1]] %>% unlist %>% max
@@ -670,7 +670,10 @@ plotjointh=function(x,b,...){
       }
     }
     #part[[s]]=joint
+    mcol=c(rainbow(10, start=0, end=0.5),rainbow(190, start=0.5, end=0.7))
+    image(joint,col=mcol)
     lastjoint=lastjoint+joint
   }
-  image(lastjoint)
+  mcol=c(rainbow(10, start=0, end=0.5),rainbow(190, start=0.5, end=0.7))
+  image(lastjoint,col=mcol)
 }
