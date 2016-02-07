@@ -22,11 +22,11 @@ image(des_e(test2,b=10))
 
 
 #####################
-par(mfrow=c(2,2),mai=rep(.3,4))
+par(mfrow=c(1,1),mai=rep(.3,4))
 
 gr=list(which(a1$V1==1),which(a1$V1==2),which(a1$V1==3))
 test4=point_to_h(p,group=gr)
-plotjointh(test4,10,B=10)
+plotjointh(test4,30,B=10)
 
 
 #############################kmean

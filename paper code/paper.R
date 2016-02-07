@@ -1,7 +1,7 @@
 library(plyr)
 library(dplyr)
 library(magrittr)
-source('c:/Users/TSR/Desktop/2015-9-1-R/paper code/paperfuction.R',encoding = "UTF-8")
+source('c:/Users/TSR/Desktop/2015-9-1-R/paper code/paperfunction.R',encoding = "UTF-8")
 #####################?H?????ͪ????ϸ???
 a=list()
 total=list()
