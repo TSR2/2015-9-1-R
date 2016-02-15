@@ -59,8 +59,25 @@ hcalcov=function(x){
 }
 
 
+hsir=function(x,index){
+  #x=total
+  #index=list(c(1:10),c(11:20),c(21:30))
+  n=length(index)
+  dp=length(x)
+  dn=length(x[[1]])
+  allmean=hcalEX(x)
+  pp=matrix(0,ncol=dp,nrow=dp)
+  for (k in 1:n){
+    xx=llply(x,'[',index[[k]])
+    p=length(xx)
+    a=hcalEX(xx)-allmean
+    parcov=a %*% t(a)
+    pp=pp+parcov
+  }
+  list(pp,eigen(pp))
+}
 #########################create compo hist
-createh=function(data1,com,B=0){
+createh=function(data1,com,B=0,method='SIR',...){
   p=length(data1)
   n=length(data1[[1]])
   ppp=list()
@@ -89,7 +106,10 @@ createh=function(data1,com,B=0){
       pro=pro*count
     }
     #獲得主成分的係數向量
-    coef=hcalcov(data1)[[2]]$vectors
+    if(method=='SIR'){
+      coef=hsir(data1,...)[[2]]$vectors
+    }else{coef=hcalcov(data1)[[2]]$vectors}
+
     #判定細數是否小於0，如果小於0，該系數的區間交換大小位置
     for (j in 1:p){
       if (coef[j,com]<0) {
@@ -136,7 +156,7 @@ createh=function(data1,com,B=0){
       ####算出有take重疊的長度
       if(dim(takem)[1]>0){
         gg=data.frame(a=takem[,2]-takem[,3],b=takem[,4]-takem[,1])
-        takelen=gg %>% select(h=min(a,b))
+        takelen=apply(abs(gg),1,FUN = min)
         ratio2=takelen/abs(takem[,2]-takem[,1])
         p2=sum(ratio2*pro[takeindex])
       }else{p2=0}
@@ -150,9 +170,10 @@ createh=function(data1,com,B=0){
 
 ###########################################test
 
-
+aaa=list(c(1:10),c(11:20),c(21:30))
 
 ########2/1 以前
+if (0){
 createh=function(data1,com,B=0){
   p=length(data1)
   n=length(data1[[1]])
@@ -343,7 +364,7 @@ createh=function(data1,com,B=0){
   list(hhh,ppp)
 }
 ######錯誤
-if (0){
+
 createh=function(data1,com){
   p=length(data1)
   n=length(data1[[1]])
@@ -530,15 +551,6 @@ createh=function(data1,com){
 }
 }
 
-pp=proc.time()
-
-createh(data1 = test4,com=1)
-tt2=proc.time()-pp
-tt2
-
-
-Rprof(NULL)
-summaryRprof()
 
 ###################################common desity estmate
 des_e=function(x,b=10){
@@ -576,7 +588,7 @@ point_to_h=function(x,group){
 }
 
 #############################################取出質方圖資料的主成分畫圖
-plotcom=function(x){
+plotcom=function(x,...){
   n=length(x[[1]])
   p=length(x)
   for (j in 1:2){
@@ -584,7 +596,7 @@ plotcom=function(x){
       par(mfcol=c(n,2),mai=c(0,0,0,0))
       kk=hist(iris[,1],plot=F)
     }
-    dda=createh(data1=x,com=j)
+    dda=createh(data1=x,com=j,...)
     tt=laply(dda[[1]],max)
     bma=max(tt)
     tt=laply(dda[[1]],min)

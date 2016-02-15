@@ -123,6 +123,35 @@ for ( i in 1:3){
   image(part[[i]])
 }
 
+#################################sir
 
-##########################################
-iris %>% select(min(.[,1],.[,2]))
+sir=function(x,index){
+  dn=dim(x)[1]
+  dp=dim(x)[2]
+  x1=x[,index] %>% as.factor() %>% as.numeric()
+  n=max(x1)
+  x2=x[,-index] %>% colMeans()
+  x2=matrix(rep(x2,dn),nrow=dn,byrow = T)
+  pp=matrix(0,ncol=dp-1,nrow=dp-1)
+  for (i in 1:n){
+    xx=x %>% filter(.[,index]==levels(x[,index])[i]) %>% select(-index)
+    x3=as.matrix(xx-x2)
+    a=t(x3) %*% x3
+    pp=pp+a
+    }
+  eigen(pp)
+}
+
+sir(iris,5)
+
+
+test3=iris[,1:4]
+#test3=iris[,1:4]
+par(mfrow=c(1,1))
+
+p=test3 %>% as.matrix()
+t1=t(p) %*% p
+eig=sir(iris,5)
+plot(p %*% eig$vectors[,2],p %*% eig$vectors[,1],col=a1$Species)
+
+
