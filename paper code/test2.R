@@ -21,8 +21,8 @@ image(des_e(test2,b=10))
 
 
 #####################
-gr=list(which(a1$V5==0),which(a1$V5==1))
-test4=point_to_h(p,group=gr)
+par(mfrow=c(2,2),mai=rep(.3,4))
+test4=point_to_h(p,group=a1$V5)
 
 plotjointh(test4,10,B=10)
 

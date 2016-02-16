@@ -1,10 +1,10 @@
 {
-    "contents" : "q1=matrix(rep(c(1,2,3),3),ncol = 3)\nq2=c(2,3,4)\nq1-q2\ncov(q1)\naaa=q1-rowMeans(q1)\naaa %*% t(aaa)\n",
+    "contents" : "q1=matrix(rep(c(1,2,3),3),ncol = 3)\nq2=c(2,3,4)\nq1-q2\ncov(q1)\naaa=q1-rowMeans(q1)\naaa %*% t(aaa)\n\nlibrary(data.table)\nsa=data.table(aa=c(list(1:10,2:10),list(1:10,2:10)))\n\n",
     "created" : 1455515613120.000,
     "dirty" : true,
     "encoding" : "",
     "folds" : "",
-    "hash" : "4181252728",
+    "hash" : "769027791",
     "id" : "4A0DB46A",
     "lastKnownWriteTime" : 27866499440705583,
     "path" : null,
@@ -12,7 +12,7 @@
     "properties" : {
         "tempName" : "Untitled1"
     },
-    "relative_order" : 5,
+    "relative_order" : 2,
     "source_on_save" : false,
     "type" : "r_source"
 }

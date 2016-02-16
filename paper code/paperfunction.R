@@ -76,6 +76,28 @@ hsir=function(x,index){
   }
   list(pp,eigen(pp))
 }
+
+
+
+hsir=function(x,index=1){
+  #x=total
+  #index=list(c(1:10),c(11:20),c(21:30))
+  if(length(index)==1) index=1:length(x[[1]])
+  n=index %>% unique() %>% length()
+  uni=index %>% unique
+  dp=length(x)
+  dn=length(x[[1]])
+  allmean=hcalEX(x)
+  pp=matrix(0,ncol=dp,nrow=dp)
+  for (k in 1:n){
+    xx=llply(x,'[',index==uni[k])
+    p=length(xx)
+    a=hcalEX(xx)-allmean
+    parcov=a %*% t(a)
+    pp=pp+parcov
+  }
+  list(pp,eigen(pp))
+}
 #########################create compo hist
 createh=function(data1,com,B=0,method='SIR',...){
   p=length(data1)
@@ -550,7 +572,32 @@ createh=function(data1,com){
   list(hhh,ppp)
 }
 }
+###############################################
+transgroup=function(x){
+  xx=x %>% as.factor() %>% as.numeric()
+  as=unique(iris[,1]) 
+  as[1]==5.1
+  }
 
+
+############################################
+
+sir=function(x,index=1){
+  dn=dim(x)[1]
+  dp=dim(x)[2]
+  x1=x[,index] %>% as.factor() %>% as.numeric()
+  n=max(x1)
+  x2=x[,-index] %>% colMeans()
+  x2=matrix(rep(x2,dn),nrow=dn,byrow = T)
+  pp=matrix(0,ncol=dp-1,nrow=dp-1)
+  for (i in 1:n){
+    xx=x %>% filter(.[,index]==levels(x[,index])[i]) %>% select(-index)
+    x3=as.matrix(xx-x2)
+    a=t(x3) %*% x3
+    pp=pp+a
+  }
+  eigen(pp)
+}
 
 ###################################common desity estmate
 des_e=function(x,b=10){
@@ -574,11 +621,13 @@ des_e=function(x,b=10){
 ###################################一般資料轉換成直方圖資料
 point_to_h=function(x,group){
   d=dim(x)
+  n=group %>% unique() %>% length()
+  uni=group %>% unique
   h=list()
   a=list()
   for ( j in 1:d[2]){
-    for(i in 1:length(group)){
-      ff=hist(x[group[[i]],j],plot=F)
+    for(i in 1:length(uni)){
+      ff=hist(x[group==uni[i],j],plot=F)
       #ff$counts=ff$counts/sum(ff$counts)
       a[[i]]=ff
     }
@@ -655,6 +704,7 @@ plotjointh=function(x,b,...){
   xr=seq(xmin,xmax,length.out = b)
   yr=seq(ymin,ymax,length.out = b)
   lastjoint=matrix(0,ncol=(length(yr)-1),nrow=(length(xr)-1))
+  par(mfrow=c(round(length(dda1[[1]])+1/2),2))
   part=list()
   for (s in 1:length(dda1[[1]])){
     b1=list(breaks=dda1[[1]][[s]],counts=dda1[[2]][[s]])

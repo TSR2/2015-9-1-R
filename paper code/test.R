@@ -22,8 +22,8 @@ ddd <- des_e(test2,b=10)
 ddd <- as.numeric(ddd)
 boxplot(ddd)
 #####################
-gr=list(which(a1$V4==1),which(a1$V4==2))
-test4=point_to_h(p,group=gr)
+par(mfrow=c(2,2),mai=rep(.3,4))
+test4=point_to_h(p,group=a1$V4)
 plotjointh(test4,10,B=10)
 
 
@@ -32,8 +32,7 @@ plotjointh(test4,10,B=10)
 test1=kmeans(a1[,1:3],centers = 2)
 test1 %>% names()
 tt1=test1$cluster
-gr=list(which(tt1==1),which(tt1==2))
-test4=point_to_h(p,group=gr)
+test4=point_to_h(p,group=tt1)
 plotjointh(test4,10,B=7)
 
 

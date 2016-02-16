@@ -22,18 +22,17 @@ image(des_e(test2,b=10))
 
 
 #####################
-par(mfrow=c(1,1),mai=rep(.3,4))
 
-gr=list(which(a1$V1==1),which(a1$V1==2),which(a1$V1==3))
-test4=point_to_h(p,group=gr)
+
+par(mfrow=c(2,2),mai=rep(.3,4))
+test4=point_to_h(p,group=a1$V1)
 plotjointh(test4,30,B=10)
 
 
 #############################kmean
 test1=kmeans(test3,centers = 3)
 tt1=test1$cluster
-gr=list(which(tt1==1),which(tt1==2),which(tt1==3))
-test4=point_to_h(p,group=gr)
+test4=point_to_h(p,group=tt1)
 plotjointh(test4,10,B=10)
 
 
