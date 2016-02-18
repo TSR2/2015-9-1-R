@@ -6,9 +6,9 @@
         "windowheight" : 810
     },
     "right" : {
-        "panelheight" : 771,
-        "splitterpos" : 470,
+        "panelheight" : 754,
+        "splitterpos" : 460,
         "topwindowstate" : "NORMAL",
-        "windowheight" : 810
+        "windowheight" : 793
     }
 }

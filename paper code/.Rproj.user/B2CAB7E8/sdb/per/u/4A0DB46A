@@ -1,10 +1,10 @@
 {
-    "contents" : "q1=matrix(rep(c(1,2,3),3),ncol = 3)\nq2=c(2,3,4)\nq1-q2\ncov(q1)\naaa=q1-rowMeans(q1)\naaa %*% t(aaa)\n\nlibrary(data.table)\nsa=data.table(aa=c(list(1:10,2:10),list(1:10,2:10)))\n\n",
+    "contents" : "q1=matrix(rep(c(1,2,3),3),ncol = 3)\nq2=c(2,3,4)\nq1-q2\ncov(q1)\naaa=q1-rowMeans(q1)\naaa %*% t(aaa)\n\nlibrary(data.table)\nsa=data.table(aa=c(list(1:10,2:10),list(1:10,2:10)))\n\na=list()\nfor (i in 1:50){\n  a[[i]]=readLines('C:\\\\Users\\\\TSR\\\\Desktop\\\\123123\\\\3D_spatial_network.txt',n=1)\n}\na\n",
     "created" : 1455515613120.000,
     "dirty" : true,
     "encoding" : "",
     "folds" : "",
-    "hash" : "769027791",
+    "hash" : "1167823274",
     "id" : "4A0DB46A",
     "lastKnownWriteTime" : 27866499440705583,
     "path" : null,

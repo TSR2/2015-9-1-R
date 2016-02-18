@@ -1,6 +1,7 @@
 library(plyr)
 library(dplyr)
 library(magrittr)
+library(MASS)
 
 ############################### mean parallel 
 hcalEX=function(var){
@@ -62,6 +63,7 @@ hcalcov=function(x){
 hsir=function(x,index){
   #x=total
   #index=list(c(1:10),c(11:20),c(21:30))
+  xcov=cov(x)
   n=length(index)
   dp=length(x)
   dn=length(x[[1]])
@@ -74,7 +76,8 @@ hsir=function(x,index){
     parcov=a %*% t(a)
     pp=pp+parcov
   }
-  list(pp,eigen(pp))
+  gx=ginv(xcov)
+  list(pp,eigen(gx %*% pp))
 }
 
 
