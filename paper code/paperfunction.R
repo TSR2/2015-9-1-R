@@ -48,6 +48,7 @@ hcalcov=function(x){
     sum(a)
   }
   p=length(x)
+  n=length(x[[1]])
   cov=matrix(0,ncol=p,nrow=p)
   for (i in 1:p){
     m1=laply(x[[i]],calEX)
@@ -60,31 +61,31 @@ hcalcov=function(x){
 }
 
 
-hsir=function(x,index){
-  #x=total
-  #index=list(c(1:10),c(11:20),c(21:30))
-  xcov=cov(x)
-  n=length(index)
-  dp=length(x)
-  dn=length(x[[1]])
-  allmean=hcalEX(x)
-  pp=matrix(0,ncol=dp,nrow=dp)
-  for (k in 1:n){
-    xx=llply(x,'[',index[[k]])
-    p=length(xx)
-    a=hcalEX(xx)-allmean
-    parcov=a %*% t(a)
-    pp=pp+parcov
+if(0){
+  hsir=function(x,index){
+    #x=total
+    xcov=cov(x)
+    n=length(index)
+    dp=length(x)
+    dn=length(x[[1]])
+    allmean=hcalEX(x)
+    pp=matrix(0,ncol=dp,nrow=dp)
+    for (k in 1:n){
+      xx=llply(x,'[',index[[k]])
+      p=length(xx)
+      a=hcalEX(xx)-allmean
+      parcov=a %*% t(a)
+      pp=pp+parcov
+    }
+    gx=ginv(xcov)
+    list(pp,eigen(gx %*% pp))
   }
-  gx=ginv(xcov)
-  list(pp,eigen(gx %*% pp))
 }
-
-
 
 hsir=function(x,index=1){
   #x=total
   #index=list(c(1:10),c(11:20),c(21:30))
+  pca=hcalcov(x)[[1]]
   if(length(index)==1) index=1:length(x[[1]])
   n=index %>% unique() %>% length()
   uni=index %>% unique
@@ -94,12 +95,13 @@ hsir=function(x,index=1){
   pp=matrix(0,ncol=dp,nrow=dp)
   for (k in 1:n){
     xx=llply(x,'[',index==uni[k])
-    p=length(xx)
     a=hcalEX(xx)-allmean
     parcov=a %*% t(a)
-    pp=pp+parcov
+    w=length(xx[[1]])/dn
+    pp=pp+parcov*w
   }
-  list(pp,eigen(pp))
+  gpca=ginv(pca)
+  list(pp,eigen(gpca %*% pp))
 }
 #########################create compo hist
 createh=function(data1,com,B=0,method='SIR',...){
@@ -586,20 +588,29 @@ transgroup=function(x){
 ############################################
 
 sir=function(x,index=1){
+  x=iris
+  =
+  index=5
+  xx=x[,-index]
+  xx=t(t(xx)-colMeans(xx)) 
+  xcov=cov(xx)
   dn=dim(x)[1]
   dp=dim(x)[2]
   x1=x[,index] %>% as.factor() %>% as.numeric()
   n=max(x1)
   x2=x[,-index] %>% colMeans()
-  x2=matrix(rep(x2,dn),nrow=dn,byrow = T)
+  #x2=matrix(rep(x2,dn),nrow=dn,byrow = T)
   pp=matrix(0,ncol=dp-1,nrow=dp-1)
   for (i in 1:n){
     xx=x %>% filter(.[,index]==levels(x[,index])[i]) %>% select(-index)
-    x3=as.matrix(xx-x2)
-    a=t(x3) %*% x3
-    pp=pp+a
+    w=dim(xx)[1]/dn
+    x3=xx %>% colMeans()
+    x4=as.matrix(x3-x2)
+    a=x4 %*% t(x4)
+    pp=pp+w*a
   }
-  eigen(pp)
+  gx=ginv(xcov)
+  eigen(gx %*% pp)
 }
 
 ###################################common desity estmate
@@ -707,7 +718,7 @@ plotjointh=function(x,b,...){
   xr=seq(xmin,xmax,length.out = b)
   yr=seq(ymin,ymax,length.out = b)
   lastjoint=matrix(0,ncol=(length(yr)-1),nrow=(length(xr)-1))
-  par(mfrow=c(round(length(dda1[[1]])+1/2),2))
+  #par(mfrow=c(round(length(dda1[[1]])+1/2),2))
   part=list()
   for (s in 1:length(dda1[[1]])){
     b1=list(breaks=dda1[[1]][[s]],counts=dda1[[2]][[s]])
