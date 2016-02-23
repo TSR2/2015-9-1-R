@@ -1,10 +1,10 @@
 {
-    "contents" : "q1=matrix(rep(c(1,2,3),3),ncol = 3)\nq2=c(2,3,4)\nq1-q2\ncov(q1)\naaa=q1-rowMeans(q1)\naaa %*% t(aaa)\n\nlibrary(data.table)\nsa=data.table(aa=c(list(1:10,2:10),list(1:10,2:10)))\n\na=list()\nfor (i in 1:50){\n  a[[i]]=readLines('C:\\\\Users\\\\TSR\\\\Desktop\\\\123123\\\\3D_spatial_network.txt',n=1)\n}\na\n\nlibrary(dr)\nnames(iris)\n\na1=iris\ntest3=iris[,1:4]\n#test3=iris[,1:4]\npar(mfrow=c(1,1))\np=scale(test3) %>% as.matrix()\n\nt1=t(p) %*% p\neig=eigen(t1)\n\neig\n\n####dr package\nsir1=dr.compute(iris[1:4],iris[,5],weight=rep(1/150,150),method='sir')\nsir1 %>% str\nsir1 %>% summary\nsir1$ evectors\nplot(p %*% sir1$ evectors[,2],p %*% sir1$ evectors[,1],col=a1$Species)\n\n####my point sir\n\nmysir=sir(iris,5)\nmysir$vectors\nplot(p %*% mysir$vectors [,2],p %*% mysir$vectors[,1],col=a1$Species)\n\n\n\ndiag(x=2)\n\np1=matrix(rep(c(1,2,4),each=3),ncol=3)\nt(p1)-colMeans(p1)\niris[,1:4] %>% as.list()\n\ncov(xx)\n(t(xx) %*% xx)/150\nt1=colMeans(xx)\nt1 %*% t(t1)\n",
+    "contents" : "q1=matrix(rep(c(1,2,3),3),ncol = 3)\nq2=c(2,3,4)\nq1-q2\ncov(q1)\naaa=q1-rowMeans(q1)\naaa %*% t(aaa)\n\nlibrary(data.table)\nsa=data.table(aa=c(list(1:10,2:10),list(1:10,2:10)))\n\na=list()\nfor (i in 1:50){\n  a[[i]]=readLines('C:\\\\Users\\\\TSR\\\\Desktop\\\\123123\\\\3D_spatial_network.txt',n=1)\n}\na\n\nlibrary(dr)\nnames(iris)\n\na1=iris\ntest3=iris[,1:4]\n#test3=iris[,1:4]\npar(mfrow=c(1,1))\np=scale(test3) %>% as.matrix()\n\nt1=t(p) %*% p\neig=eigen(t1)\n\neig\nasd=hist(iris[,1],probability = T)\nasd\n####dr package\nsir1=dr.compute(iris[1:4],iris[,5],weight=rep(1/150,150),method='sir')\nsir1 %>% str\nsir1 %>% summary\nsir1$ evectors\nplot(p %*% sir1$ evectors[,2],p %*% sir1$ evectors[,1],col=a1$Species)\n\n####my point sir\n\nmysir=sir(iris,5)\nmysir$vectors\nplot(p %*% mysir$vectors [,2],p %*% mysir$vectors[,1],col=a1$Species)\n\n\n\ndiag(x=2)\n\np1=matrix(rep(c(1,2,4),each=3),ncol=3)\nt(p1)-colMeans(p1)\niris[,1:4] %>% as.list()\n\ncov(xx)\n(t(xx) %*% xx)/150\nt1=colMeans(xx)\nt1 %*% t(t1)\n",
     "created" : 1455515613120.000,
     "dirty" : true,
     "encoding" : "",
     "folds" : "",
-    "hash" : "2323846999",
+    "hash" : "2314755423",
     "id" : "4A0DB46A",
     "lastKnownWriteTime" : 27866499440705583,
     "path" : null,

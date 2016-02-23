@@ -85,6 +85,7 @@ if(0){
 hsir=function(x,index=1){
   #x=total
   #index=list(c(1:10),c(11:20),c(21:30))
+  x=test4
   pca=hcalcov(x)[[1]]
   if(length(index)==1) index=1:length(x[[1]])
   n=index %>% unique() %>% length()
@@ -101,7 +102,10 @@ hsir=function(x,index=1){
     pp=pp+parcov*w
   }
   gpca=ginv(pca)
-  list(pp,eigen(gpca %*% pp))
+  ei=eigen(gpca %*% pp)
+  ei$values=Re(ei$values)
+  ei$vectors=Re(ei$vectors)
+  list(pp,ei)
 }
 #########################create compo hist
 createh=function(data1,com,B=0,method='SIR',...){
@@ -588,9 +592,8 @@ transgroup=function(x){
 ############################################
 
 sir=function(x,index=1){
-  x=iris
-  =
-  index=5
+  #x=iris
+  #index=5
   xx=x[,-index]
   xx=t(t(xx)-colMeans(xx)) 
   xcov=cov(xx)

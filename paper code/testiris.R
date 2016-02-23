@@ -3,7 +3,7 @@ a1=iris
 test3=iris[,1:4]
 #test3=iris[,1:4]
 par(mfrow=c(1,1))
-p=test3 %>% as.matrix()
+p=scale(test3) %>% as.matrix()
 
 t1=t(p) %*% p
 eig=eigen(t1)
@@ -25,9 +25,10 @@ par(mfrow=c(2,2),mai=rep(.3,4))
 #gr=list(which(a1[,5]=='setosa'),which(a1[,5]=='versicolor'),which(a1[,5]=='virginica'))
 
 test4=point_to_h(p,group=iris[,5])
-plotcom(test4)
-
-plotjointh(test4,10,B=10)
+test4=total
+plotcom(test4,index=rep(c(1,2,3),each=10))
+par(mfrow=c(1,1))
+plotjointh(test4,10,B=10,index=rep(c(1,2,3),each=10))
 
 
 #############################kmean

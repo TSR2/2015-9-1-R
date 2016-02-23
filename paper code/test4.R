@@ -6,6 +6,7 @@ test3=a1[,11:14]
 par(mfrow=c(1,1))
 
 p=scale(test3) %>% as.matrix()
+
 t1=t(p) %*% p
 eig=eigen(t1)
 plot(p %*% eig$vectors[,2],p %*% eig$vectors[,1],col=a1$V1)
@@ -26,7 +27,9 @@ image(des_e(test2,b=10))
 
 par(mfrow=c(2,2),mai=rep(.3,4))
 test4=point_to_h(p,group=a1$V1)
-plotjointh(test4,30,B=10)
+
+plotcom(test4)
+plotjointh(test4,15,B=15)
 
 
 #############################kmean

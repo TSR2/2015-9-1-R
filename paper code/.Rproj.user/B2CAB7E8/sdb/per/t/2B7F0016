@@ -1,12 +1,12 @@
 {
-    "contents" : "source('paperfunction.R')\na1=iris\ntest3=iris[,1:4]\n#test3=iris[,1:4]\npar(mfrow=c(1,1))\np=test3 %>% as.matrix()\n\nt1=t(p) %*% p\neig=eigen(t1)\nplot(p %*% eig$vectors[,2],p %*% eig$vectors[,1],col=a1$Species)\n\np=test3 %>% as.matrix() \nt1=t(p) %*% p\neig=eigen(t1)\ndr1=p %*% eig$vectors[,1]\ndr2=p %*% eig$vectors[,2]\n\ntest2=cbind(dr1,dr2)\nimage(des_e(test2,b=10))\n\n\n\n#####################\npar(mfrow=c(2,2),mai=rep(.3,4))\n#gr=list(which(a1[,5]=='setosa'),which(a1[,5]=='versicolor'),which(a1[,5]=='virginica'))\n\ntest4=point_to_h(p,group=iris[,5])\nplotcom(test4)\n\nplotjointh(test4,10,B=10)\n\n\n#############################kmean\ntest1=kmeans(test3,centers = 3)\ntt1=test1$cluster\ntest4=point_to_h(p,group=tt1)\nplotjointh(test4,10,B=10,method='1')\nplotjointh(test4,10,B=10)\n\n###################output\npdf('me_iris.pdf')\npar(mfrow=c(2,2))\ntest4=point_to_h(p,group=gr)\n\nplotjointh(test4,10,B=10)\ndev.off()\n\n\n################################################big iris\n\n\n\n",
+    "contents" : "source('paperfunction.R')\na1=iris\ntest3=iris[,1:4]\n#test3=iris[,1:4]\npar(mfrow=c(1,1))\np=scale(test3) %>% as.matrix()\n\nt1=t(p) %*% p\neig=eigen(t1)\nplot(p %*% eig$vectors[,2],p %*% eig$vectors[,1],col=a1$Species)\n\np=test3 %>% as.matrix() \nt1=t(p) %*% p\neig=eigen(t1)\ndr1=p %*% eig$vectors[,1]\ndr2=p %*% eig$vectors[,2]\n\ntest2=cbind(dr1,dr2)\nimage(des_e(test2,b=10))\n\n\n\n#####################\npar(mfrow=c(2,2),mai=rep(.3,4))\n#gr=list(which(a1[,5]=='setosa'),which(a1[,5]=='versicolor'),which(a1[,5]=='virginica'))\n\ntest4=point_to_h(p,group=iris[,5])\ntest4=total\nplotcom(test4,index=rep(c(1,2,3),each=10))\npar(mfrow=c(1,1))\nplotjointh(test4,10,B=10,index=rep(c(1,2,3),each=10))\n\n\n#############################kmean\ntest1=kmeans(test3,centers = 3)\ntt1=test1$cluster\ntest4=point_to_h(p,group=tt1)\nplotjointh(test4,10,B=10,method='1')\nplotjointh(test4,10,B=10)\n\n###################output\npdf('me_iris.pdf')\npar(mfrow=c(2,2))\ntest4=point_to_h(p,group=gr)\n\nplotjointh(test4,10,B=10)\ndev.off()\n\n\n################################################big iris\n\n\n\n",
     "created" : 1454496676320.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3716584731",
+    "hash" : "832243981",
     "id" : "2B7F0016",
-    "lastKnownWriteTime" : 1455974561,
+    "lastKnownWriteTime" : 1456223092,
     "path" : "C:/Users/TSR/Desktop/2015-9-1-R/paper code/testiris.R",
     "project_path" : "testiris.R",
     "properties" : {
