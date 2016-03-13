@@ -2,7 +2,7 @@ library(plyr)
 library(dplyr)
 library(magrittr)
 library(MASS)
-
+library(geigen)
 ############################### mean parallel 
 hcalEX=function(var){
   p=length(var)
@@ -19,6 +19,7 @@ hcalEX=function(var){
   }
   mu
 }
+
 ##################################var parallel
 hcalvar=function(hisvar){
   p=length(hisvar)
@@ -40,6 +41,7 @@ hcalvar=function(hisvar){
   var=EX2-mu^2
   var
 }
+
 #########################################calculate covance matrix
 hcalcov=function(x){
   calEX=function(x){
@@ -54,7 +56,7 @@ hcalcov=function(x){
     m1=laply(x[[i]],calEX)
     for (j in 1:p){
       m2=laply(x[[j]],calEX)
-      cov[i,j]=sum(m1*m2)/(4*p)-sum(m1)*sum(m2)/(4*p^2)
+      cov[i,j]=sum(m1*m2)/(4*p)-(sum(m1)*sum(m2)/(4*p^2))
     }
   }
   list(cov,eigen(cov))
@@ -83,9 +85,6 @@ if(0){
 }
 
 hsir=function(x,index=1){
-  #x=total
-  #index=list(c(1:10),c(11:20),c(21:30))
-  x=test4
   pca=hcalcov(x)[[1]]
   if(length(index)==1) index=1:length(x[[1]])
   n=index %>% unique() %>% length()

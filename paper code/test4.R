@@ -4,6 +4,22 @@ a1 %>% head
 test3=a1[,11:14]
 #test3=iris[,1:4]
 par(mfrow=c(1,1))
+set.seed(123456789)
+a=list()
+total2=list()
+for (j in 1:4){
+  for (i in 1:30){
+    range1=switch (((i-1) %/% 10)+1,1:59,60:130,131:178) 
+    p=scale(test3)
+    his <- hist(p[sample(x=range1,40),j])
+    his$counts <- his$counts/sum(his$counts)
+    a[[i]] <- his
+  }
+  total2[[j]] <- a
+}
+
+
+
 
 p=scale(test3) %>% as.matrix()
 
@@ -23,6 +39,13 @@ image(des_e(test2,b=10))
 
 
 #####################
+test4=total2
+plotcom(test4,index=rep(c(1,2,3),each=10))
+par(mfrow=c(1,1))
+plotjointh(test4,10,method=1,B=10,index=rep(c(1,2,3),each=10))
+
+
+
 
 
 par(mfrow=c(2,2),mai=rep(.3,4))

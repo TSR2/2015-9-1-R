@@ -3,12 +3,28 @@ library(dplyr)
 library(magrittr)
 source('c:/Users/TSR/Desktop/2015-9-1-R/paper code/paperfunction.R',encoding = "UTF-8")
 #####################?H?????ͪ????ϸ???
+set.seed(123456789)
 a=list()
 total=list()
 for (j in 1:4){
   for (i in 1:30){
     range1=switch (((i-1) %/% 10)+1,1:50,51:100,101:150) 
-    his <- hist(iris[sample(x=range1,20),j])
+    p=scale(iris[,1:4])
+    his <- hist(p[sample(x=range1,20),j])
+    his$counts <- his$counts/sum(his$counts)
+    a[[i]] <- his
+  }
+  total[[j]] <- a
+}
+#######################################3
+set.seed(123456789)
+a=list()
+total=list()
+for (j in 1:4){
+  for (i in 1:30){
+    range1=switch (((i-1) %/% 10)+1,1:50,51:100,101:150) 
+    p=scale(iris[,1:4])
+    his <- hist(p[sample(x=range1,20),j])
     his$counts <- his$counts/sum(his$counts)
     a[[i]] <- his
   }
