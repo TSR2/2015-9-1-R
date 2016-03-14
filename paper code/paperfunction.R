@@ -85,6 +85,8 @@ if(0){
 }
 
 hsir=function(x,index=1){
+  #x=total2
+  #index=rep(c(1,2,3),each=10)
   pca=hcalcov(x)[[1]]
   if(length(index)==1) index=1:length(x[[1]])
   n=index %>% unique() %>% length()
@@ -100,10 +102,18 @@ hsir=function(x,index=1){
     w=length(xx[[1]])/dn
     pp=pp+parcov*w
   }
-  gpca=ginv(pca)
-  ei=eigen(gpca %*% pp)
-  ei$values=Re(ei$values)
-  ei$vectors=Re(ei$vectors)
+  
+  if(1){
+    ei=geigen(pp,pca,symmetric = T)
+    ss=order(ei$values,decreasing = T)
+    ei$vectors=ei$vectors[,ss]
+  }
+  if(0){
+    gpca=ginv(pca)
+    ei=eigen(gpca %*% pp)
+    ei$values=Re(ei$values)
+    ei$vectors=Re(ei$vectors)
+  }
   list(pp,ei)
 }
 #########################create compo hist
@@ -115,7 +125,7 @@ createh=function(data1,com,B=0,method='SIR',...){
   for (i in 1:n){
     bij=c()
     b=list()
-    #算出某個觀測值得每個值方圖資料有幾個分割
+    ##算出某個觀測值得每個值方圖資料有幾個分割
     for (j in 1:p){
       bij[j]=length(data1[[j]][[i]]$count)
       b[[j]]=1:bij[j]
@@ -199,8 +209,6 @@ createh=function(data1,com,B=0,method='SIR',...){
 }
 
 ###########################################test
-
-aaa=list(c(1:10),c(11:20),c(21:30))
 
 ########2/1 以前
 if (0){
@@ -591,10 +599,11 @@ transgroup=function(x){
 ############################################
 
 sir=function(x,index=1){
-  #x=iris
-  #index=5
+  x=iris
+  index=5
   xx=x[,-index]
-  xx=t(t(xx)-colMeans(xx)) 
+  #xx=scale(xx)
+  #xx=t(t(xx)-colMeans(xx)) 
   xcov=cov(xx)
   dn=dim(x)[1]
   dp=dim(x)[2]
@@ -604,13 +613,14 @@ sir=function(x,index=1){
   #x2=matrix(rep(x2,dn),nrow=dn,byrow = T)
   pp=matrix(0,ncol=dp-1,nrow=dp-1)
   for (i in 1:n){
-    xx=x %>% filter(.[,index]==levels(x[,index])[i]) %>% select(-index)
+    xx=x %>% filter(.[,index]==levels(x[,index])[i]) %>% '['(-index)
     w=dim(xx)[1]/dn
     x3=xx %>% colMeans()
     x4=as.matrix(x3-x2)
     a=x4 %*% t(x4)
     pp=pp+w*a
   }
+  geigen(pp,xcov,symmetric = F)
   gx=ginv(xcov)
   eigen(gx %*% pp)
 }
@@ -755,3 +765,5 @@ plotjointh=function(x,b,...){
   mcol=c(rainbow(10, start=0, end=0.5),rainbow(190, start=0.5, end=0.7))
   image(lastjoint,col=mcol)
 }
+
+

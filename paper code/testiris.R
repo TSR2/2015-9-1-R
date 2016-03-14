@@ -1,4 +1,6 @@
 source('paperfunction.R')
+
+
 a1=iris
 test3=iris[,1:4]
 #test3=iris[,1:4]
@@ -47,7 +49,9 @@ plotjointh(test4,10,B=10)
 dev.off()
 
 
-################################################big iris
+################################################dr tset
 
-
-
+library(dr)
+dr.compute(x=p,y=iris[,5],weights=1/150)
+aaa=dr(formula = Species~.,data = iris)
+aaa$method

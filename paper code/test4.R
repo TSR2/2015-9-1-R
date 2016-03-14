@@ -1,23 +1,34 @@
 source('paperfunction.R')
 a1=read.table('wine.data',sep=',')
 a1 %>% head
-test3=a1[,11:14]
+test3=a1[,9:14]
 #test3=iris[,1:4]
 par(mfrow=c(1,1))
 set.seed(123456789)
 a=list()
 total2=list()
-for (j in 1:4){
-  for (i in 1:30){
-    range1=switch (((i-1) %/% 10)+1,1:59,60:130,131:178) 
+for (j in 1:dim(test3)[2]){
+  for (i in 1:15){
+    range1=switch (((i-1) %/% 5)+1,1:59,60:130,131:178) 
     p=scale(test3)
-    his <- hist(p[sample(x=range1,40),j])
+    his <- hist(p[sample(x=range1,20),j],plot=F)
     his$counts <- his$counts/sum(his$counts)
     a[[i]] <- his
   }
   total2[[j]] <- a
 }
 
+total3=list()
+for (j in 1:dim(test3)[2]){
+  for (i in 1:15){
+    range1=switch (((i-1) %/% 5)+1,1:59,60:130,131:178) 
+    p=scale(test3)
+    his <- hist(p[sample(x=range1,40),j],plot=F)
+    his$counts <- his$counts/sum(his$counts)
+    a[[i]] <- his
+  }
+  total3[[j]] <- a
+}
 
 
 
@@ -40,7 +51,8 @@ image(des_e(test2,b=10))
 
 #####################
 test4=total2
-plotcom(test4,index=rep(c(1,2,3),each=10))
+test4=total3
+plotcom(test4,method=1,index=rep(c(1,2,3),each=10))
 par(mfrow=c(1,1))
 plotjointh(test4,10,method=1,B=10,index=rep(c(1,2,3),each=10))
 
