@@ -85,9 +85,9 @@ if(0){
 }
 
 hsir=function(x,index=1){
-  #x=total2
-  #index=rep(c(1,2,3),each=10)
-  pca=hcalcov(x)[[1]]
+  x=total2
+  index=rep(c(1,2,3),each=10)
+  pcacov=hcalcov(x)[[1]]
   if(length(index)==1) index=1:length(x[[1]])
   n=index %>% unique() %>% length()
   uni=index %>% unique
@@ -104,7 +104,7 @@ hsir=function(x,index=1){
   }
   
   if(1){
-    ei=geigen(pp,pca,symmetric = T)
+    ei=geigen(pp,pcacov,symmetric =T)
     ss=order(ei$values,decreasing = T)
     ei$vectors=ei$vectors[,ss]
   }
@@ -202,6 +202,7 @@ createh=function(data1,com,B=0,method='SIR',...){
       }else{p2=0}
       pp[b]=p1+p2
     }
+    cat(paste('',i))
     ppp[[i]]=pp/sum(pp)
     hhh[[i]]=his
   }
@@ -599,28 +600,30 @@ transgroup=function(x){
 ############################################
 
 sir=function(x,index=1){
-  x=iris
-  index=5
+  x=a1[,c(1,11:14)]
+  index=1
   xx=x[,-index]
   #xx=scale(xx)
   #xx=t(t(xx)-colMeans(xx)) 
   xcov=cov(xx)
   dn=dim(x)[1]
   dp=dim(x)[2]
-  x1=x[,index] %>% as.factor() %>% as.numeric()
+  x1=x[,index] %>% unique() %>% as.numeric()
+  uni=x[,index] %>% unique()
   n=max(x1)
   x2=x[,-index] %>% colMeans()
   #x2=matrix(rep(x2,dn),nrow=dn,byrow = T)
   pp=matrix(0,ncol=dp-1,nrow=dp-1)
   for (i in 1:n){
-    xx=x %>% filter(.[,index]==levels(x[,index])[i]) %>% '['(-index)
+    i=1
+    xx=x %>% filter(.[,index]==uni[i]) %>% '['(-index)
     w=dim(xx)[1]/dn
     x3=xx %>% colMeans()
     x4=as.matrix(x3-x2)
     a=x4 %*% t(x4)
     pp=pp+w*a
   }
-  geigen(pp,xcov,symmetric = F)
+  geigen(pp,xcov,symmetric = T)
   gx=ginv(xcov)
   eigen(gx %*% pp)
 }
@@ -687,7 +690,31 @@ plotcom=function(x,...){
     }
   }
 }
-
+################################################seperate
+plotcom=function(reduceh){
+  n=length(reduceh[[1]][[1]])
+  p=length(reduceh)
+  for (j in 1:2){
+    if(j==1) {
+      par(mfcol=c(n,2),mai=c(0,0,0,0))
+      kk=hist(iris[,1],plot=F)
+    }
+    dda=reh[[j]]
+    tt=laply(dda[[1]],max)
+    bma=max(tt)
+    tt=laply(dda[[1]],min)
+    bmi=min(tt)
+    tt=laply(dda[[2]],max)
+    pma=max(tt)
+    tt=laply(dda[[2]],min)
+    pmi=min(tt)
+    for (i in 1:n){
+      kk$breaks=dda[[1]][[i]]
+      kk$counts=dda[[2]][[i]]
+      plot(kk,xlim=c(bmi-2,bma+1),ylim=c(0,pma),main="",col="blue",ylab = "")
+    }
+  }
+}
 
 #####################
 color.Palette <- function(low = "black",
@@ -766,4 +793,49 @@ plotjointh=function(x,b,...){
   image(lastjoint,col=mcol)
 }
 
-
+#####################################################seperate
+plotjointh=function(reh,b,...){
+  dda1=reh[[1]]
+  dda2=reh[[2]]
+  xmax=dda1[[1]] %>% unlist %>% max
+  xmin=dda1[[1]] %>% unlist %>% min
+  ymax=dda2[[1]] %>% unlist %>% max
+  ymin=dda2[[1]] %>% unlist %>% min
+  xr=seq(xmin,xmax,length.out = b)
+  yr=seq(ymin,ymax,length.out = b)
+  lastjoint=matrix(0,ncol=(length(yr)-1),nrow=(length(xr)-1))
+  #par(mfrow=c(round(length(dda1[[1]])+1/2),2))
+  part=list()
+  for (s in 1:length(dda1[[1]])){
+    b1=list(breaks=dda1[[1]][[s]],counts=dda1[[2]][[s]])
+    b2=list(breaks=dda2[[1]][[s]],counts=dda2[[2]][[s]])
+    joint=matrix(0,ncol=(length(yr)-1),nrow=(length(xr)-1))
+    for (j in 1:(length(yr)-1)){
+      for (i in 1:(length(xr)-1)){
+        gg=0
+        allrange=(xr[i+1]-xr[i])*(yr[j+1]-yr[j])
+        for(p in 1:length(b1$counts)){
+          for(k in 1:length(b2$counts)){
+            aa=min(xr[i+1]-b1$breaks[p],b1$breaks[p+1]-xr[i])
+            if (aa<0) aa=0
+            bb=min(yr[j+1]-b2$breaks[k],b2$breaks[k+1]-yr[j])
+            if (bb<0) bb=0
+            if (b1$breaks[p]>=xr[i] & b1$breaks[p+1]<=xr[i+1]) aa=b1$breaks[p+1]-b1$breaks[p]
+            if (b1$breaks[p]<=xr[i] & b1$breaks[p+1]>=xr[i+1]) aa=xr[i+1]-xr[i]
+            if (b2$breaks[k]>=yr[j] & b2$breaks[k+1]<=yr[j+1]) bb=b2$breaks[k+1]-b2$breaks[k]
+            if (b2$breaks[k]<=yr[j] & b2$breaks[k+1]>=yr[j+1]) bb=yr[j+1]-yr[j]
+            coverratio=(aa*bb)/allrange
+            gg=gg+coverratio*b1$counts[p]*b2$counts[k]
+          }
+        }
+        joint[i,j]=gg
+      }
+    }
+    #part[[s]]=joint
+    mcol=c(rainbow(10, start=0, end=0.5),rainbow(190, start=0.5, end=0.7))
+    image(joint,col=mcol)
+    lastjoint=lastjoint+joint
+  }
+  mcol=c(rainbow(10, start=0, end=0.5),rainbow(190, start=0.5, end=0.7))
+  image(lastjoint,col=mcol)
+}

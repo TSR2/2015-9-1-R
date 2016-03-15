@@ -27,10 +27,32 @@ par(mfrow=c(2,2),mai=rep(.3,4))
 #gr=list(which(a1[,5]=='setosa'),which(a1[,5]=='versicolor'),which(a1[,5]=='virginica'))
 
 test4=point_to_h(p,group=iris[,5])
+
+
+
+
+
+#####################################
+
+
+
+
+
+
+
+
 test4=total
-plotcom(test4,index=rep(c(1,2,3),each=10))
+index=rep(c(1,2,3),each=10)
+method='SIR'
+reh=list(createh(data1=test4,com=1,method=method,index=index)
+         ,createh(data1=test4,com=2,method=method,index=index))
+
+
+
+
+plotcom(reh)
 par(mfrow=c(1,1))
-plotjointh(test4,10,B=10,index=rep(c(1,2,3),each=10))
+plotjointh(reh,10)
 
 
 #############################kmean
@@ -52,6 +74,9 @@ dev.off()
 ################################################dr tset
 
 library(dr)
-dr.compute(x=p,y=iris[,5],weights=1/150)
+
 aaa=dr(formula = Species~.,data = iris)
-aaa$method
+aaa
+
+dr(formula = Species~.,data = iris)
+dr(formula = V1~V11+V12+V13+V14,data = a1)

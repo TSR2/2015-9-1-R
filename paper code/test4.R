@@ -1,15 +1,15 @@
 source('paperfunction.R')
 a1=read.table('wine.data',sep=',')
 a1 %>% head
-test3=a1[,9:14]
+test3=a1[,11:14]
 #test3=iris[,1:4]
 par(mfrow=c(1,1))
-set.seed(123456789)
+#set.seed(123456789)
 a=list()
 total2=list()
 for (j in 1:dim(test3)[2]){
-  for (i in 1:15){
-    range1=switch (((i-1) %/% 5)+1,1:59,60:130,131:178) 
+  for (i in 1:30){
+    range1=switch (((i-1) %/% 10)+1,1:59,60:130,131:178) 
     p=scale(test3)
     his <- hist(p[sample(x=range1,20),j],plot=F)
     his$counts <- his$counts/sum(his$counts)
@@ -50,11 +50,41 @@ image(des_e(test2,b=10))
 
 
 #####################
-test4=total2
-test4=total3
-plotcom(test4,method=1,index=rep(c(1,2,3),each=10))
+
+
+
+source('paperfunction.R')
+a1=read.table('wine.data',sep=',')
+a1 %>% head
+test3=a1[,11:14]
+#test3=iris[,1:4]
 par(mfrow=c(1,1))
-plotjointh(test4,10,method=1,B=10,index=rep(c(1,2,3),each=10))
+#set.seed(123456789)
+a=list()
+total2=list()
+for (j in 1:dim(test3)[2]){
+  for (i in 1:30){
+    range1=switch (((i-1) %/% 10)+1,1:59,60:130,131:178) 
+    p=scale(test3)
+    his <- hist(p[sample(x=range1,30),j],plot=F)
+    his$counts <- his$counts/sum(his$counts)
+    a[[i]] <- his
+  }
+  total2[[j]] <- a
+}
+test4=total2
+#test4=total3
+
+index=rep(c(1,2,3),each=10)
+method='SR'
+reh=list(createh(data1=test4,com=1,method=method,index=index)
+         ,createh(data1=test4,com=2,method=method,index=index))
+
+plotcom(reh)
+
+
+par(mfrow=c(1,1))
+plotjointh(reh,10)
 
 
 
@@ -65,6 +95,12 @@ test4=point_to_h(p,group=a1$V1)
 
 plotcom(test4)
 plotjointh(test4,15,B=15)
+###################################################seperate
+test4=total2
+test4=total3
+plotcom(test4,method=1,index=rep(c(1,2,3),each=10))
+par(mfrow=c(1,1))
+plotjointh(test4,10,method=1,B=10,index=rep(c(1,2,3),each=10))
 
 
 #############################kmean
