@@ -76,7 +76,8 @@ test4=total2
 #test4=total3
 
 index=rep(c(1,2,3),each=10)
-method='SR'
+method='SIR'
+hsir(test4,index)
 reh=list(createh(data1=test4,com=1,method=method,index=index)
          ,createh(data1=test4,com=2,method=method,index=index))
 

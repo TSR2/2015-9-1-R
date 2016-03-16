@@ -85,8 +85,6 @@ if(0){
 }
 
 hsir=function(x,index=1){
-  x=total2
-  index=rep(c(1,2,3),each=10)
   pcacov=hcalcov(x)[[1]]
   if(length(index)==1) index=1:length(x[[1]])
   n=index %>% unique() %>% length()
@@ -105,15 +103,23 @@ hsir=function(x,index=1){
   
   if(1){
     ei=geigen(pp,pcacov,symmetric =T)
+    ei$values=(ei$values)^2
     ss=order(ei$values,decreasing = T)
+    ei$values=ei$values[ss]
     ei$vectors=ei$vectors[,ss]
   }
+
   if(0){
     gpca=ginv(pca)
     ei=eigen(gpca %*% pp)
-    ei$values=Re(ei$values)
-    ei$vectors=Re(ei$vectors)
+    ss=order(ei$values,decreasing = T)
+    ei$values=ei$values[ss]
+    ei$vectors=ei$vectors[,ss]
+    #ei$values=Re(ei$values)
+    #ei$vectors=Re(ei$vectors)
   }
+  #ei
+  #print(hcalcov(x))
   list(pp,ei)
 }
 #########################create compo hist
@@ -600,30 +606,36 @@ transgroup=function(x){
 ############################################
 
 sir=function(x,index=1){
-  x=a1[,c(1,11:14)]
-  index=1
-  xx=x[,-index]
+  #x=iris
+  #index=5
+  #xcov=cov(x[,-index])
+  xx=x[,-index] %>% scale
+  x=cbind(x[,index],scale(x[,-index])) %>% as.data.frame()
+  
+  #xx=x[,-index]
+  #x=cbind(x[,index],x[,-index]) %>% as.data.frame()
+  xcov=cov(x[,-1])
+  
   #xx=scale(xx)
   #xx=t(t(xx)-colMeans(xx)) 
-  xcov=cov(xx)
+  
   dn=dim(x)[1]
   dp=dim(x)[2]
-  x1=x[,index] %>% unique() %>% as.numeric()
-  uni=x[,index] %>% unique()
+  x1=x[,1] %>% unique() %>% as.numeric()
+  uni=x[,1] %>% unique()
   n=max(x1)
-  x2=x[,-index] %>% colMeans()
+  x2=x[,-1] %>% colMeans()
   #x2=matrix(rep(x2,dn),nrow=dn,byrow = T)
   pp=matrix(0,ncol=dp-1,nrow=dp-1)
   for (i in 1:n){
-    i=1
-    xx=x %>% filter(.[,index]==uni[i]) %>% '['(-index)
+    xx=x %>% filter(.[,1]==uni[i]) %>% '['(-1)
     w=dim(xx)[1]/dn
     x3=xx %>% colMeans()
-    x4=as.matrix(x3-x2)
+    x4=as.matrix(x3)
     a=x4 %*% t(x4)
     pp=pp+w*a
   }
-  geigen(pp,xcov,symmetric = T)
+  print(geigen(pp,xcov,symmetric = T))
   gx=ginv(xcov)
   eigen(gx %*% pp)
 }
