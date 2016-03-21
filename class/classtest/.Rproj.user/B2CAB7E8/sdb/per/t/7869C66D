@@ -1,0 +1,17 @@
+{
+    "contents" : "#library(VIM)\n#library(VIMGUI)\nlibrary(plyr)\nlibrary(dplyr)\nlibrary(magrittr)\n\n\npp=read.table('sleep.txt')\n\npp %>% head\npp %>% dim\n\npp %>% na.omit\npp %>% na.omit %>% dim\ncomplete.cases(pp)\npp %>% '['(complete.cases(pp),)\n\n\ncc=iris\ncc[1,1]=NA\ncomplete.cases(cc)\n\ncov(pp)\ncov(pp,use = 'complete.obs')\ncov(pp,use = 'pairwise.complete.obs')\npp %>% is\npp %>% select(NonD) \npp %>% names\n\npp1=pp %>% '['(complete.cases(pp),)\n\n\n",
+    "created" : 1458267757903.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1587396168",
+    "id" : "7869C66D",
+    "lastKnownWriteTime" : 1458273591,
+    "path" : "C:/Users/TSR/Desktop/2015-9-1-R/class/classtest/classtest.R",
+    "project_path" : "classtest.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

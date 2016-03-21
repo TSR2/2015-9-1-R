@@ -1,0 +1,18 @@
+{
+    "contents" : "library(VIM)\npp=read.table()",
+    "created" : 1458266053092.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "71459360",
+    "id" : "12959792",
+    "lastKnownWriteTime" : 1458267626,
+    "path" : "C:/Users/TSR/Desktop/2015-9-1-R/class/classtest.R",
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
